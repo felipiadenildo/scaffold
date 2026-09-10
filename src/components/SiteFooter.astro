@@ -1,7 +1,13 @@
 ---
-// Rodapé institucional do site inteiro: uma vez por página, largura
-// total, fora da coluna de conteúdo. Ver PageFrame.astro para o
-// porquê de viver aqui e não no Footer nativo do Starlight.
+// Rodapé institucional do site inteiro, uma vez por página. Alinhado
+// com a largura de leitura (--sl-content-width), não com a largura
+// total da tela: tanto a sidebar esquerda quanto o índice "Nesta
+// página" à direita são `position: fixed`, ocupando a altura inteira
+// da viewport pra sempre, não só até onde o conteúdo termina. Um
+// rodapé de largura total ficaria atrás de uma delas ou das duas,
+// dependendo da largura da tela. Alinhado à coluna de leitura, ele
+// nunca entra nessas duas faixas — e mantém o mesmo ritmo do resto
+// da página. Ver PageFrame.astro para onde ele entra na árvore.
 const links = [
 	{ href: '/sobre/', label: 'Sobre este material' },
 	{ href: '/como-citar/', label: 'Como citar' },
@@ -34,8 +40,9 @@ const links = [
 
 <style>
 	.scaffold-site-footer {
+		max-width: var(--sl-content-width);
 		border-top: 1px solid var(--scaffold-border);
-		padding: 1.5rem clamp(1rem, 4vw, 3rem);
+		padding-block: 1.5rem;
 		margin-top: 3rem;
 	}
 

@@ -52,11 +52,6 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Cartão SOS',
-					link: '/templates/cartao-sos/',
-					badge: { text: 'SOS', variant: 'danger' },
-				},
-				{
 					label: 'Manual',
 					items: [
 						{ label: '01. Fundamentos', slug: 'manual/01-fundamentos' },
@@ -76,6 +71,11 @@ export default defineConfig({
 				{
 					label: 'Templates prontos',
 					items: [
+						{
+							label: 'Cartão SOS',
+							slug: 'templates/cartao-sos',
+							badge: { text: 'SOS', variant: 'danger' },
+						},
 						{ label: 'Folha A5', slug: 'templates/folha-a5' },
 						{ label: 'Lista de Compras', slug: 'templates/lista-compras' },
 						{ label: 'Meal Prep', slug: 'templates/meal-prep' },

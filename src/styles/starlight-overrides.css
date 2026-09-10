@@ -76,6 +76,19 @@ starlight-menu-button + nav {
 }
 
 /* ===========================================================
+   "NESTA PÁGINA" (TOC da direita)
+   O padrão do Starlight só troca a cor do texto ao rolar por um
+   tópico — mudança sutil demais para servir como indicador de
+   posição. Acrescenta peso, fundo e uma borda de destaque à
+   esquerda, o mesmo motivo visual usado nos títulos h2.
+   =========================================================== */
+starlight-toc a[aria-current='true'] {
+	font-weight: 700;
+	background-color: var(--scaffold-bg-raised);
+	border-inline-start: 2px solid var(--scaffold-accent);
+}
+
+/* ===========================================================
    PAGINAÇÃO
    Mantida só dentro do Manual (onde a ordem numérica faz
    sentido); desligada nas demais seções via frontmatter
