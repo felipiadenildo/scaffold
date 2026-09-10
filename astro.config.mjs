@@ -43,12 +43,11 @@ export default defineConfig({
 				// Substitui o dropdown de 3 opções do Starlight por um botão único
 				// de sol/lua (ver comentário em ThemeToggle.astro).
 				ThemeSelect: './src/components/ThemeToggle.astro',
-				// O Starlight não tem um slot de "rodapé de site inteiro" — só o
-				// Footer por página (paginação/edição/data). O rodapé
-				// institucional (links, aviso legal, copyright) precisa da
-				// largura total da página e aparece uma vez por página, então
-				// vive no PageFrame, não no Footer.
-				PageFrame: './src/components/PageFrame.astro',
+				// O rodapé institucional entra dentro do ".main-pane" (via
+				// TwoColumnContent), como irmão do artigo, pra herdar a mesma
+				// largura responsiva dele — inclusive quando o índice à
+				// direita aparece e reserva espaço. Ver TwoColumnContent.astro.
+				TwoColumnContent: './src/components/TwoColumnContent.astro',
 			},
 			sidebar: [
 				{

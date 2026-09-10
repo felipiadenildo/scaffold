@@ -32,29 +32,14 @@ const links = [
 
 <style>
 	.scaffold-site-footer {
-		/* As duas linhas verticais (sidebar esquerda e índice à direita)
-		   são fixas e correm a altura inteira da viewport de propósito —
-		   são divisórias permanentes de página, não só do artigo. O
-		   rodapé mora no espaço entre as duas, não preso à largura mais
-		   estreita do texto: padding-inline dá o respiro da esquerda
-		   (mesmo valor do artigo), margin-inline-end reserva à direita
-		   exatamente a mesma largura que o Starlight reserva pro índice
-		   (replicando a fórmula de TwoColumnContent, mesmo breakpoint de
-		   72rem), então a borda do rodapé encontra a linha da direita
-		   sem invadi-la nem sobrar espaço vazio entre as duas. */
+		/* Vive dentro do ".main-pane" (ver TwoColumnContent.astro), como
+		   irmão do artigo — herda a largura responsiva de verdade, sem
+		   precisar duplicar a fórmula do Starlight pro espaço reservado
+		   do índice à direita. Só o respiro lateral do texto é nosso. */
 		border-top: 1px solid var(--scaffold-border);
 		padding-block: 1.5rem;
 		padding-inline: var(--sl-content-pad-x);
 		margin-top: 3rem;
-	}
-
-	@media (min-width: 72rem) {
-		.scaffold-site-footer {
-			margin-inline-end: max(
-				var(--sl-sidebar-width),
-				calc(var(--sl-sidebar-width) + (100% - var(--sl-content-width) - var(--sl-sidebar-width)) / 2)
-			);
-		}
 	}
 
 	.scaffold-footer-links ul {
