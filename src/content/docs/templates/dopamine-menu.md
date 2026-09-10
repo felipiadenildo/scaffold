@@ -5,7 +5,7 @@ prev: false
 next: false
 ---
 
-Uma lista pronta de atividades prazerosas, organizada por esforço, montada num dia calmo e consultada no momento em que bate a vontade de distração. Veja o [mockup em HTML](/_mockups/dopamine-menu.html) para uma ideia visual do formato.
+Uma lista pronta de atividades prazerosas, organizada por esforço, montada num dia calmo e consultada no momento em que bate a vontade de distração. Veja o [mockup em HTML](../../_mockups/dopamine-menu.html) para uma ideia visual do formato.
 
 :::note[Por que funciona]
 O cérebro TDAH busca estímulo e recompensa imediata. Se a única opção rápida disponível for o Instagram, é o Instagram que ganha. Ter alternativas igualmente rápidas e já decididas reduz a chance de escolha por impulso.

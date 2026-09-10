@@ -5,7 +5,7 @@ prev: false
 next: false
 ---
 
-Duas partes: uma folha física preenchida à mão durante a semana, e uma lista padrão digital pra quando a folha física não existir ou estiver vazia. Um exemplo visual está no [mockup em HTML](/_mockups/lista-compras.html).
+Duas partes: uma folha física preenchida à mão durante a semana, e uma lista padrão digital pra quando a folha física não existir ou estiver vazia. Um exemplo visual está no [mockup em HTML](../../_mockups/lista-compras.html).
 
 ## Parte 1: folha física, no quadro de cortiça
 

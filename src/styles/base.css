@@ -17,6 +17,17 @@ body {
 }
 
 .sl-markdown-content {
+	/* O índice "Nesta página" usa um IntersectionObserver que só conta
+	   uma seção como atual quando ela cruza uma faixa fina perto do
+	   topo da viewport. Pra isso acontecer com o último título da
+	   página, precisa dar pra rolar esse título até essa faixa — o
+	   que exige espaço rolável depois dele pelo menos do tamanho da
+	   viewport. Sem isso, o índice trava no penúltimo item e nunca
+	   marca o último (normalmente "Fontes") como atual, mesmo com a
+	   página rolada até o fim. Testado empiricamente: 55vh cobre
+	   confortavelmente alturas de tela comuns.
+	*/
+	padding-bottom: 55vh;
 	line-height: var(--sl-line-height);
 }
 

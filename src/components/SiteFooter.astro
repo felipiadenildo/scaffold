@@ -8,13 +8,18 @@
 // dependendo da largura da tela. Alinhado à coluna de leitura, ele
 // nunca entra nessas duas faixas — e mantém o mesmo ritmo do resto
 // da página. Ver PageFrame.astro para onde ele entra na árvore.
+// import.meta.env.BASE_URL (não um "/" cru): o site é publicado sob
+// /scaffold/ no GitHub Pages, então um href absoluto sem o prefixo
+// aponta pro domínio errado e cai em 404 — foi exatamente o que
+// aconteceu aqui antes desta correção.
+const base = import.meta.env.BASE_URL;
 const links = [
-	{ href: '/sobre/', label: 'Sobre este material' },
-	{ href: '/como-citar/', label: 'Como citar' },
-	{ href: '/licenca/', label: 'Licença' },
-	{ href: '/acessibilidade/', label: 'Acessibilidade' },
-	{ href: '/contato/', label: 'Contato' },
-	{ href: '/changelog/', label: 'Changelog' },
+	{ href: `${base}sobre/`, label: 'Sobre este material' },
+	{ href: `${base}como-citar/`, label: 'Como citar' },
+	{ href: `${base}licenca/`, label: 'Licença' },
+	{ href: `${base}acessibilidade/`, label: 'Acessibilidade' },
+	{ href: `${base}contato/`, label: 'Contato' },
+	{ href: `${base}changelog/`, label: 'Changelog' },
 ];
 ---
 

@@ -7,7 +7,7 @@ next: false
 
 Uma folha por dia. No fim do dia ela sai do fichário e vira arquivo morto ou lixo. Amanhã começa em folha limpa, sem carregar a culpa de ontem.
 
-**Formato sugerido:** dobrar uma folha A4 ao meio, ou imprimir direto em A5. Frente é o dia. Verso é descarga mental e dia de crise. Uma versão visual do layout está no [mockup em HTML](/_mockups/folha-a5.html) deste template.
+**Formato sugerido:** dobrar uma folha A4 ao meio, ou imprimir direto em A5. Frente é o dia. Verso é descarga mental e dia de crise. Uma versão visual do layout está no [mockup em HTML](../../_mockups/folha-a5.html) deste template.
 
 ## Frente: o dia
 

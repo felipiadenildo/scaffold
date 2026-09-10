@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup — Dopamine Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink:#1b1b1f; --line:#c9c9d0; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    background: #e9e9ec;
+    margin: 0;
+    padding: 2rem 1rem 4rem;
+    color: var(--ink);
+  }
+  h1 { max-width: 900px; margin: 0 auto 0.25rem; }
+  .subtitle { max-width: 900px; margin: 0 auto 1.5rem; color: #555; }
+  .menu {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fffaf2;
+    border: 3px double #a9762f;
+    border-radius: 10px;
+    padding: 2rem 2.2rem;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.12);
+  }
+  .menu-title {
+    text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.2rem;
+  }
+  .menu-sub { text-align: center; font-size: 0.85rem; color: #7a5a2a; margin-bottom: 1.6rem; }
+  .course { margin-bottom: 1.4rem; }
+  .course h2 {
+    font-size: 1rem;
+    border-bottom: 1.5px solid #d8c48a;
+    padding-bottom: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .course .effort { font-size: 0.72rem; font-weight: 400; color: #8a6a2a; }
+  .course ul { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+  .course li {
+    font-size: 0.92rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px dotted #e3d3ac;
+  }
+  .course li:last-child { border-bottom: none; }
+  @media print {
+    body { background: white; padding: 0; }
+    h1, .subtitle { display: none; }
+    .menu { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+  <h1>🍽️ Dopamine Menu — mockup visual</h1>
+  <p class="subtitle">Template ilustrativo. Conteúdo e instruções de preenchimento em <code>/templates/dopamine-menu/</code> no site.</p>
+  <div class="menu">
+    <div class="menu-title">Cardápio de Dopamina</div>
+    <div class="menu-sub">para escolher em vez de rolar o feed no automático</div>
+
+    <div class="course">
+      <h2>Entradas <span class="effort">até 5 min</span></h2>
+      <ul>
+        <li>Ouvir uma música favorita</li>
+        <li>Esticar o corpo</li>
+        <li>Copo de água gelada</li>
+      </ul>
+    </div>
+
+    <div class="course">
+      <h2>Acompanhamentos <span class="effort">durante uma tarefa chata</span></h2>
+      <ul>
+        <li>Podcast lavando louça</li>
+        <li>Chá enquanto revisa planilha</li>
+      </ul>
+    </div>
+
+    <div class="course">
+      <h2>Pratos principais <span class="effort">fim do dia</span></h2>
+      <ul>
+        <li>Um episódio de série</li>
+        <li>Banho mais longo</li>
+      </ul>
+    </div>
+
+    <div class="course">
+      <h2>Sobremesas <span class="effort">com limite definido</span></h2>
+      <ul>
+        <li>Rede social — com timer</li>
+        <li>Um doce específico</li>
+      </ul>
+    </div>
+
+    <div class="course">
+      <h2>Especiais <span class="effort">planejado com antecedência</span></h2>
+      <ul>
+        <li>Passeio combinado</li>
+        <li>Dia de descanso total</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
