@@ -9,17 +9,21 @@
 // nunca entra nessas duas faixas — e mantém o mesmo ritmo do resto
 // da página. Ver PageFrame.astro para onde ele entra na árvore.
 // import.meta.env.BASE_URL (não um "/" cru): o site é publicado sob
-// /scaffold/ no GitHub Pages, então um href absoluto sem o prefixo
-// aponta pro domínio errado e cai em 404 — foi exatamente o que
-// aconteceu aqui antes desta correção.
-const base = import.meta.env.BASE_URL;
+// /scaffold no GitHub Pages, então um href absoluto sem o prefixo
+// aponta pro domínio errado e cai em 404. BASE_URL vem SEM barra
+// final ("/scaffold", não "/scaffold/"), então a barra entre base e
+// caminho precisa ser explícita — concatenar direto gerava
+// "/scaffoldsobre/" (uma palavra só, 404), que passou despercebido
+// numa verificação anterior por testar a URL esperada em vez do
+// href de verdade renderizado na página.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const links = [
-	{ href: `${base}sobre/`, label: 'Sobre este material' },
-	{ href: `${base}como-citar/`, label: 'Como citar' },
-	{ href: `${base}licenca/`, label: 'Licença' },
-	{ href: `${base}acessibilidade/`, label: 'Acessibilidade' },
-	{ href: `${base}contato/`, label: 'Contato' },
-	{ href: `${base}changelog/`, label: 'Changelog' },
+	{ href: `${base}/sobre/`, label: 'Sobre este material' },
+	{ href: `${base}/como-citar/`, label: 'Como citar' },
+	{ href: `${base}/licenca/`, label: 'Licença' },
+	{ href: `${base}/acessibilidade/`, label: 'Acessibilidade' },
+	{ href: `${base}/contato/`, label: 'Contato' },
+	{ href: `${base}/changelog/`, label: 'Changelog' },
 ];
 ---
 
@@ -45,9 +49,14 @@ const links = [
 
 <style>
 	.scaffold-site-footer {
+		/* Mesma margem lateral que o artigo usa (--sl-content-pad-x),
+		   pra não colar nas linhas da sidebar esquerda nem chegar perto
+		   da faixa do índice à direita — mesmo respiro do texto, não
+		   flush com a borda do miolo de conteúdo. */
 		max-width: var(--sl-content-width);
 		border-top: 1px solid var(--scaffold-border);
 		padding-block: 1.5rem;
+		padding-inline: var(--sl-content-pad-x);
 		margin-top: 3rem;
 	}
 
