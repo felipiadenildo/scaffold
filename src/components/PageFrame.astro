@@ -1,0 +1,21 @@
+---
+// O Starlight não expõe um slot de "rodapé do site inteiro" — só o
+// PageFrame (cabeçalho + sidebar + conteúdo) e o Footer por página
+// (paginação/edição/data). O rodapé institucional (links, aviso
+// legal, copyright) é o mesmo em toda página e precisa de largura
+// total, então entra aqui, como irmão do conteúdo, não dentro dele.
+// Padrão de reuso documentado pelo Starlight: reexportar o Default
+// e repassar os slots nomeados que ele espera.
+import Default from '@astrojs/starlight/components/PageFrame.astro';
+import type { Props } from '@astrojs/starlight/props';
+import SiteFooter from './SiteFooter.astro';
+
+const props = Astro.props as Props;
+---
+
+<Default {...props}>
+	<slot name="header" slot="header" />
+	<slot name="sidebar" slot="sidebar" />
+	<slot />
+</Default>
+<SiteFooter />

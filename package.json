@@ -1,7 +1,7 @@
 {
   "name": "site",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.0",
-    "astro": "^7.2.10",
+    "@fontsource/atkinson-hyperlegible-next": "^5.2.6",
+    "astro": "^7.3.2",
     "sharp": "^0.35.3"
   }
 }

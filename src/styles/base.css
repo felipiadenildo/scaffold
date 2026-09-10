@@ -1,0 +1,104 @@
+/* ===========================================================
+   RITMO DE LEITURA
+   Corpo levemente acima do padrão do navegador (17px), 1.65 de
+   altura de linha, largura de prosa entre 70-75ch. Consistente
+   em toda página, seja capítulo longo ou referência rápida —
+   a densidade de informação muda pela estrutura (tabela, lista,
+   definição), nunca pelo ritmo de leitura em si.
+   =========================================================== */
+:root {
+	--sl-text-base: 1.0625rem;
+	--sl-line-height: 1.65;
+	--sl-content-width: 72ch;
+}
+
+body {
+	font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+.sl-markdown-content {
+	line-height: var(--sl-line-height);
+}
+
+.sl-markdown-content p,
+.sl-markdown-content ul,
+.sl-markdown-content ol {
+	max-width: var(--sl-content-width);
+}
+
+/* ===========================================================
+   HIERARQUIA DE TÍTULOS
+   Poucos níveis, espaçamento generoso antes (agrupamento por
+   proximidade), pouco depois. Uma régua curta à esquerda no h2
+   funciona como âncora de escaneamento, sem caixa nem sombra.
+   =========================================================== */
+.sl-markdown-content h1 {
+	font-size: 2.25rem;
+	line-height: 1.2;
+	font-weight: 700;
+}
+
+.sl-markdown-content h2 {
+	font-size: 1.5rem;
+	line-height: 1.25;
+	font-weight: 700;
+	margin-top: 2.5em;
+	margin-bottom: 0.6em;
+	padding-left: 0.75rem;
+	border-left: 3px solid var(--scaffold-accent);
+}
+
+.sl-markdown-content h3 {
+	font-size: 1.15rem;
+	line-height: 1.3;
+	font-weight: 700;
+	margin-top: 1.75em;
+	margin-bottom: 0.5em;
+}
+
+/* ===========================================================
+   BLOCOS DE CÓDIGO / ASCII
+   Sem moldura de editor (ver expressiveCode em astro.config).
+   Largura de rolagem horizontal explícita para os templates
+   ASCII, com indício visual de que o conteúdo continua.
+   =========================================================== */
+.sl-markdown-content pre {
+	font-family: var(--scaffold-font-mono);
+	font-size: 0.9rem;
+	line-height: 1.5;
+	border: 1px solid var(--scaffold-border);
+	border-radius: var(--scaffold-radius);
+	overflow-x: auto;
+	background-image: linear-gradient(to right, var(--scaffold-bg-raised), transparent 12px),
+		linear-gradient(to left, var(--scaffold-bg-raised), transparent 12px);
+	background-repeat: no-repeat;
+	background-attachment: local, local;
+}
+
+.sl-markdown-content code {
+	font-family: var(--scaffold-font-mono);
+}
+
+/* ===========================================================
+   TABELAS
+   Peso do cabeçalho vem de negrito + hairline, nunca só de cor.
+   Rolagem horizontal contida, corpo da página nunca rola de lado.
+   =========================================================== */
+.sl-markdown-content table {
+	display: block;
+	overflow-x: auto;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.sl-markdown-content th {
+	font-weight: 700;
+	text-align: left;
+	border-bottom: 2px solid var(--scaffold-ink);
+	padding: 0.5rem 0.75rem;
+}
+
+.sl-markdown-content td {
+	border-bottom: 1px solid var(--scaffold-border);
+	padding: 0.5rem 0.75rem;
+}
