@@ -1,21 +1,4 @@
 ---
-// Rodapé institucional do site inteiro, uma vez por página. Alinhado
-// com a largura de leitura (--sl-content-width), não com a largura
-// total da tela: tanto a sidebar esquerda quanto o índice "Nesta
-// página" à direita são `position: fixed`, ocupando a altura inteira
-// da viewport pra sempre, não só até onde o conteúdo termina. Um
-// rodapé de largura total ficaria atrás de uma delas ou das duas,
-// dependendo da largura da tela. Alinhado à coluna de leitura, ele
-// nunca entra nessas duas faixas — e mantém o mesmo ritmo do resto
-// da página. Ver PageFrame.astro para onde ele entra na árvore.
-// import.meta.env.BASE_URL (não um "/" cru): o site é publicado sob
-// /scaffold no GitHub Pages, então um href absoluto sem o prefixo
-// aponta pro domínio errado e cai em 404. BASE_URL vem SEM barra
-// final ("/scaffold", não "/scaffold/"), então a barra entre base e
-// caminho precisa ser explícita — concatenar direto gerava
-// "/scaffoldsobre/" (uma palavra só, 404), que passou despercebido
-// numa verificação anterior por testar a URL esperada em vez do
-// href de verdade renderizado na página.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const links = [
 	{ href: `${base}/sobre/`, label: 'Sobre este material' },
@@ -49,15 +32,29 @@ const links = [
 
 <style>
 	.scaffold-site-footer {
-		/* Mesma margem lateral que o artigo usa (--sl-content-pad-x),
-		   pra não colar nas linhas da sidebar esquerda nem chegar perto
-		   da faixa do índice à direita — mesmo respiro do texto, não
-		   flush com a borda do miolo de conteúdo. */
-		max-width: var(--sl-content-width);
+		/* As duas linhas verticais (sidebar esquerda e índice à direita)
+		   são fixas e correm a altura inteira da viewport de propósito —
+		   são divisórias permanentes de página, não só do artigo. O
+		   rodapé mora no espaço entre as duas, não preso à largura mais
+		   estreita do texto: padding-inline dá o respiro da esquerda
+		   (mesmo valor do artigo), margin-inline-end reserva à direita
+		   exatamente a mesma largura que o Starlight reserva pro índice
+		   (replicando a fórmula de TwoColumnContent, mesmo breakpoint de
+		   72rem), então a borda do rodapé encontra a linha da direita
+		   sem invadi-la nem sobrar espaço vazio entre as duas. */
 		border-top: 1px solid var(--scaffold-border);
 		padding-block: 1.5rem;
 		padding-inline: var(--sl-content-pad-x);
 		margin-top: 3rem;
+	}
+
+	@media (min-width: 72rem) {
+		.scaffold-site-footer {
+			margin-inline-end: max(
+				var(--sl-sidebar-width),
+				calc(var(--sl-sidebar-width) + (100% - var(--sl-content-width) - var(--sl-sidebar-width)) / 2)
+			);
+		}
 	}
 
 	.scaffold-footer-links ul {
