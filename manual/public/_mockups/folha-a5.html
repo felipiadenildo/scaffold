@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup — Folha A5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink:#1b1b1f; --line:#c9c9d0; --accent:#2456c9; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    background: #e9e9ec;
+    margin: 0;
+    padding: 2rem 1rem 4rem;
+    color: var(--ink);
+  }
+  h1 { max-width: 1000px; margin: 0 auto 0.25rem; }
+  .subtitle { max-width: 1000px; margin: 0 auto 1.5rem; color: #555; }
+  .sheets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+  .sheet {
+    width: 420px;
+    min-height: 594px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .sheet-label {
+    text-align: center;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 0.5rem;
+  }
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+  .energy label { margin-right: 0.5rem; }
+  .block {
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 0.65rem 0.8rem;
+    margin-bottom: 0.7rem;
+  }
+  .block h3 {
+    margin: 0 0 0.4rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .block .anchor { font-size: 0.75rem; color: #777; font-weight: 400; }
+  .field { font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; }
+  .field .box { width: 0.9em; height: 0.9em; border: 1.5px solid var(--ink); flex-shrink: 0; }
+  .field .line { flex-grow: 1; border-bottom: 1px dotted #999; height: 1em; }
+  .victory {
+    margin-top: auto;
+    border-top: 2px solid var(--ink);
+    padding-top: 0.6rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .victory .line { flex-grow: 1; border-bottom: 1px dotted #999; height: 1.2em; }
+  .braindump {
+    border: 1.5px dashed var(--line);
+    border-radius: 8px;
+    flex-grow: 1;
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.85rem;
+  }
+  .braindump h3 { margin-top: 0; font-size: 0.95rem; }
+  .braindump .lines { margin-top: 0.6rem; }
+  .braindump .lines div { border-bottom: 1px dotted #ccc; height: 1.6rem; }
+  .crisis-box {
+    border: 2.5px solid #b3221e;
+    background: #fdeceb;
+    border-radius: 8px;
+    padding: 0.7rem 0.8rem;
+  }
+  .crisis-box h3 { margin-top: 0; color: #b3221e; font-size: 0.95rem; }
+  .crisis-box .field .box { border-color: #b3221e; }
+  @media print {
+    body { background: white; padding: 0; }
+    h1, .subtitle { display: none; }
+    .sheets { gap: 1cm; }
+    .sheet { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <h1>📋 Folha A5 — mockup visual</h1>
+  <p class="subtitle">Frente e verso lado a lado. Conteúdo e explicação completos em <code>/templates/folha-a5/</code> no site.</p>
+  <div class="sheets">
+    <div class="sheet">
+      <div class="sheet-label">Frente — o dia</div>
+      <div class="top-row">
+        <div>DATA: ___ / ___ / ___</div>
+        <div class="energy">ENERGIA: ☐ Baixa ☐ Média ☐ Alta</div>
+      </div>
+
+      <div class="block">
+        <h3>🌅 Manhã <span class="anchor">(âncora: café)</span></h3>
+        <div class="field"><span class="box"></span> Ritual de partida</div>
+        <div class="field">Principal: <span class="line"></span></div>
+        <div class="field">Apoio: <span class="line"></span></div>
+      </div>
+
+      <div class="block">
+        <h3>☀️ Tarde 1 <span class="anchor">(âncora: almoço)</span></h3>
+        <div class="field"><span class="box"></span> Retorno calmo</div>
+        <div class="field">Foco: <span class="line"></span></div>
+      </div>
+
+      <div class="block">
+        <h3>🌤️ Tarde 2 <span class="anchor">(âncora: lanche)</span></h3>
+        <div class="field"><span class="box"></span> Pausa ativa</div>
+        <div class="field">Conclusão: <span class="line"></span></div>
+      </div>
+
+      <div class="block">
+        <h3>🌙 Noite <span class="anchor">(âncora: jantar)</span></h3>
+        <div class="field"><span class="box"></span> Desaceleração sem culpa</div>
+        <div class="field"><span class="box"></span> Pouso do dia</div>
+      </div>
+
+      <div class="victory">🏆 Vitória do dia: <span class="line"></span></div>
+    </div>
+
+    <div class="sheet">
+      <div class="sheet-label">Verso — descarga mental</div>
+      <div class="braindump">
+        <h3>🧠 Caixa de entrada</h3>
+        <div class="lines">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+      </div>
+      <div class="crisis-box">
+        <h3>🆘 Se hoje for um dia ruim</h3>
+        <div class="field"><span class="box"></span> Água / remédio</div>
+        <div class="field"><span class="box"></span> Comer algo, mesmo pronto</div>
+        <div class="field"><span class="box"></span> Só a tarefa principal</div>
+        <div class="field"><span class="box"></span> Aceitar o descanso sem culpa</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

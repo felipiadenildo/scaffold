@@ -1,0 +1,82 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = [
+	{ href: `${base}/sobre/`, label: 'Sobre este material' },
+	{ href: `${base}/como-citar/`, label: 'Como citar' },
+	{ href: `${base}/licenca/`, label: 'Licença' },
+	{ href: `${base}/acessibilidade/`, label: 'Acessibilidade' },
+	{ href: `${base}/contato/`, label: 'Contato' },
+	{ href: `${base}/changelog/`, label: 'Changelog' },
+];
+---
+
+<footer class="scaffold-site-footer">
+	<nav class="scaffold-footer-links" aria-label="Links institucionais">
+		<ul>
+			{
+				links.map((link) => (
+					<li>
+						<a href={link.href}>{link.label}</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+	<div class="scaffold-footer-bottom">
+		<p class="scaffold-footer-note">
+			Scaffold é um material de referência, não um substituto de diagnóstico ou tratamento.
+		</p>
+		<p class="scaffold-footer-copyright">&copy; {new Date().getFullYear()} Scaffold</p>
+	</div>
+</footer>
+
+<style>
+	.scaffold-site-footer {
+		/* Vive dentro do ".main-pane" (ver TwoColumnContent.astro), como
+		   irmão do artigo — herda a largura responsiva de verdade, sem
+		   precisar duplicar a fórmula do Starlight pro espaço reservado
+		   do índice à direita. Só o respiro lateral do texto é nosso. */
+		border-top: 1px solid var(--scaffold-border);
+		padding-block: 1.5rem;
+		padding-inline: var(--sl-content-pad-x);
+		margin-top: 3rem;
+	}
+
+	.scaffold-footer-links ul {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.5rem;
+		margin: 0 0 1rem;
+		padding: 0;
+	}
+
+	.scaffold-footer-links a {
+		font-size: var(--sl-text-sm);
+		color: var(--scaffold-ink-soft);
+		text-decoration: none;
+	}
+
+	.scaffold-footer-links a:hover,
+	.scaffold-footer-links a:focus-visible {
+		color: var(--scaffold-accent);
+		text-decoration: underline;
+	}
+
+	.scaffold-footer-bottom {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1.5rem;
+		border-top: 1px solid var(--scaffold-border);
+		padding-top: 1rem;
+	}
+
+	.scaffold-footer-note,
+	.scaffold-footer-copyright {
+		margin: 0;
+		font-size: var(--sl-text-xs);
+		color: var(--scaffold-ink-soft);
+		max-width: 60ch;
+	}
+</style>

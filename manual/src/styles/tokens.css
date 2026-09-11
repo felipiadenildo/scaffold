@@ -1,0 +1,96 @@
+/* ===========================================================
+   FONTES
+   Atkinson Hyperlegible Next, self-hosted via Fontsource.
+   Uma família só, para corpo e títulos: menos decisão visual,
+   menos peso de carregamento, sem perder alcance de peso (400/700).
+   Monoespaçado fica com a pilha de sistema (ver base.css) — não
+   vale outra webfont para os poucos blocos ASCII do site.
+   =========================================================== */
+@import '@fontsource/atkinson-hyperlegible-next/400.css';
+@import '@fontsource/atkinson-hyperlegible-next/700.css';
+
+/* ===========================================================
+   TOKENS — modo claro (padrão)
+   Contraste calculado (fórmula WCAG de luminância relativa),
+   não estimado: bg/ink ~16.7:1, accent/bg ~5.8:1.
+   Nenhuma cor pura (#000/#fff) — evita halação/fadiga visual.
+   =========================================================== */
+:root {
+	--scaffold-bg: #fbfaf7;
+	--scaffold-bg-raised: #f3f1ec;
+	--scaffold-ink: #1a1a18;
+	--scaffold-ink-soft: #55534c;
+	--scaffold-border: #ddd9d0;
+	--scaffold-accent: #3d6b66;
+	--scaffold-accent-ink: #ffffff;
+
+	--scaffold-note: #2f5f8a;
+	--scaffold-tip: #2f7a52;
+	--scaffold-caution: #92621b;
+
+	/* Vermelho reservado só para o sistema de crise/SOS. Nunca usado
+	   em qualquer outro lugar do site (validação, ênfase, decoração). */
+	--scaffold-sos: #b3261e;
+	--scaffold-sos-ink: #ffffff;
+
+	--scaffold-radius: 0.5rem;
+	--scaffold-font-body: 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
+	--scaffold-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+}
+
+/* ===========================================================
+   TOKENS — modo escuro
+   bg/ink ~14.2:1, accent/bg ~10.1:1 (AAA).
+   =========================================================== */
+:root[data-theme='dark'] {
+	--scaffold-bg: #18181a;
+	--scaffold-bg-raised: #212124;
+	--scaffold-ink: #e8e6e1;
+	--scaffold-ink-soft: #a8a59c;
+	--scaffold-border: #35343a;
+	--scaffold-accent: #8fcfc7;
+	--scaffold-accent-ink: #0c1f1d;
+
+	--scaffold-note: #8ec2ef;
+	--scaffold-tip: #8fd6ac;
+	--scaffold-caution: #e7b667;
+
+	--scaffold-sos: #ff6f66;
+	--scaffold-sos-ink: #2a0704;
+}
+
+/* ===========================================================
+   MAPEAMENTO — variáveis nativas do Starlight (--sl-*)
+   Alimenta o sistema de tokens acima nos componentes nativos
+   (busca, paginação, TOC, breadcrumbs) sem precisar sobrescrever
+   cada componente um a um.
+   =========================================================== */
+:root {
+	--sl-color-bg: var(--scaffold-bg);
+	--sl-color-bg-nav: var(--scaffold-bg);
+	--sl-color-bg-sidebar: var(--scaffold-bg);
+	--sl-color-bg-inline-code: var(--scaffold-bg-raised);
+	--sl-color-text: var(--scaffold-ink);
+	--sl-color-text-accent: var(--scaffold-accent);
+	--sl-color-white: var(--scaffold-ink);
+	--sl-color-gray-1: var(--scaffold-ink);
+	--sl-color-gray-2: var(--scaffold-ink-soft);
+	--sl-color-gray-3: var(--scaffold-ink-soft);
+	--sl-color-gray-4: var(--scaffold-border);
+	--sl-color-gray-5: var(--scaffold-border);
+	--sl-color-gray-6: var(--scaffold-bg-raised);
+	--sl-color-hairline: var(--scaffold-border);
+	--sl-color-hairline-light: var(--scaffold-border);
+	--sl-color-hairline-shade: var(--scaffold-border);
+	--sl-color-accent: var(--scaffold-accent);
+	--sl-color-accent-high: var(--scaffold-accent);
+	--sl-color-accent-low: var(--scaffold-bg-raised);
+
+	--sl-font: var(--scaffold-font-body);
+	--sl-font-mono: var(--scaffold-font-mono);
+
+	/* Sem sombra flutuante em lugar nenhum do sistema. */
+	--sl-shadow-sm: none;
+	--sl-shadow-md: none;
+	--sl-shadow-lg: none;
+}

@@ -1,0 +1,21 @@
+---
+// O rodapé institucional precisa ocupar exatamente a mesma largura
+// que o artigo, responsiva do mesmo jeito (inclusive quando as duas
+// sidebars aparecem juntas e reservam espaço pro índice à direita).
+// Tentar replicar essa largura com uma fórmula de CSS separada, num
+// elemento irmão fora daqui, é frágil e já mostrou não bater 100% em
+// algumas larguras. O jeito robusto é colocar o rodapé dentro do
+// próprio ".main-pane", como irmão do artigo — aí ele herda a largura
+// de verdade, sem duplicar cálculo nenhum.
+import Default from '@astrojs/starlight/components/TwoColumnContent.astro';
+import type { Props } from '@astrojs/starlight/props';
+import SiteFooter from './SiteFooter.astro';
+
+const props = Astro.props as Props;
+---
+
+<Default {...props}>
+	<slot name="right-sidebar" slot="right-sidebar" />
+	<slot />
+	<SiteFooter />
+</Default>

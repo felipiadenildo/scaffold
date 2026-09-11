@@ -1,0 +1,128 @@
+---
+// Substitui o ThemeSelect padrão do Starlight (um dropdown de 3 opções) por um
+// botão simples de alternância, no mesmo padrão visual usado nos outros
+// projetos (site-izadora, CatalIza): ícone de sol/lua, sem borda, círculo.
+// A lógica de tema em si continua sendo a do Starlight — este componente só
+// troca a interface, lendo e escrevendo na mesma chave de localStorage
+// ("starlight-theme") que o ThemeProvider nativo já usa, para não haver
+// conflito nem flash de tema errado ao carregar a página.
+---
+
+<button
+	id="scaffold-theme-toggle"
+	type="button"
+	class="scaffold-theme-toggle"
+	aria-label="Alternar entre modo claro e escuro"
+>
+	<svg
+		class="icon icon-sun"
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="1.8"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+	>
+		<circle cx="12" cy="12" r="4.2"></circle>
+		<path
+			d="M12 3v2.2M12 18.8V21M4.5 4.5l1.55 1.55M17.95 17.95 19.5 19.5M3 12h2.2M18.8 12H21M4.5 19.5l1.55-1.55M17.95 6.05 19.5 4.5"
+		></path>
+	</svg>
+	<svg
+		class="icon icon-moon"
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="1.8"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+	>
+		<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5Z"></path>
+	</svg>
+</button>
+
+<style>
+	.scaffold-theme-toggle {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		border: none;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--sl-color-gray-2);
+		cursor: pointer;
+		transition: background-color 0.2s ease, color 0.2s ease;
+	}
+
+	.scaffold-theme-toggle:hover {
+		background: var(--sl-color-gray-6);
+		color: var(--sl-color-white);
+	}
+
+	.scaffold-theme-toggle .icon {
+		position: absolute;
+		width: 1.15rem;
+		height: 1.15rem;
+		transition:
+			opacity 0.35s ease,
+			transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	/* Estado padrão (claro): mostra sol, esconde lua girada para trás. */
+	.icon-sun {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+	.icon-moon {
+		opacity: 0;
+		transform: rotate(-90deg) scale(0.6);
+	}
+
+	/* Estado escuro: inverte. */
+	:root[data-theme='dark'] .icon-sun {
+		opacity: 0;
+		transform: rotate(90deg) scale(0.6);
+	}
+	:root[data-theme='dark'] .icon-moon {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.scaffold-theme-toggle .icon {
+			transition: opacity 0.15s linear;
+		}
+		.icon-sun,
+		.icon-moon {
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	function initThemeToggle() {
+		const btn = document.getElementById('scaffold-theme-toggle');
+		if (!btn || btn.dataset.bound) return;
+		btn.dataset.bound = 'true';
+
+		btn.addEventListener('click', () => {
+			const root = document.documentElement;
+			const isDark = root.dataset.theme === 'dark';
+			const next = isDark ? 'light' : 'dark';
+			root.dataset.theme = next;
+			localStorage.setItem('starlight-theme', next);
+			// @ts-ignore — fornecido pelo ThemeProvider nativo do Starlight
+			window.StarlightThemeProvider?.updatePickers?.(next);
+		});
+	}
+
+	initThemeToggle();
+	document.addEventListener('astro:page-load', initThemeToggle);
+</script>

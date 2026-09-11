@@ -1,0 +1,116 @@
+/* ===========================================================
+   ASIDES (:::note :::tip :::caution)
+   Cor + ícone + rótulo em texto, nunca só cor (já é o padrão do
+   Starlight — aqui só troca o matiz para o sistema de tokens).
+   =========================================================== */
+.starlight-aside {
+	border-radius: var(--scaffold-radius);
+	border-inline-start-width: 3px;
+}
+
+.starlight-aside--note {
+	--sl-color-asides-text-accent: var(--scaffold-note);
+	border-color: var(--scaffold-note);
+}
+
+.starlight-aside--tip {
+	--sl-color-asides-text-accent: var(--scaffold-tip);
+	border-color: var(--scaffold-tip);
+}
+
+.starlight-aside--caution,
+.starlight-aside--danger {
+	--sl-color-asides-text-accent: var(--scaffold-caution);
+	border-color: var(--scaffold-caution);
+}
+
+/* ===========================================================
+   SOS NA SIDEBAR
+   O badge "danger" nativo do Starlight usa a paleta de vermelho
+   dele. Este é o único lugar do site com permissão para usar
+   --scaffold-sos — em nenhum outro componente esse vermelho
+   deve aparecer.
+   =========================================================== */
+.sidebar-content .sl-badge.danger {
+	background-color: var(--scaffold-sos);
+	border-color: var(--scaffold-sos);
+	color: var(--scaffold-sos-ink);
+	font-weight: 700;
+}
+
+/* ===========================================================
+   BOTÃO DE CRISE NA HOME
+   Único outro lugar, além do badge da sidebar, com permissão
+   para usar --scaffold-sos.
+   =========================================================== */
+.scaffold-hero-sos {
+	background-color: var(--scaffold-sos) !important;
+	border-color: var(--scaffold-sos) !important;
+	color: var(--scaffold-sos-ink) !important;
+}
+
+/* ===========================================================
+   TABS (usado no Cartão SOS: "Passos para você" / "Se você
+   está ajudando"). Abas com peso igual, sem hierarquia visual
+   entre as duas perspectivas.
+   =========================================================== */
+starlight-tabs [role='tab'] {
+	font-weight: 600;
+}
+
+starlight-tabs [role='tab'][aria-selected='true'] {
+	border-bottom: 2px solid var(--scaffold-accent);
+	color: var(--scaffold-accent);
+}
+
+/* ===========================================================
+   BUSCA E MENU MOBILE
+   Sem blur, sem sombra pesada — hairline no lugar de elevação.
+   =========================================================== */
+dialog#starlight__search,
+.mobile-preferences,
+starlight-menu-button + nav {
+	backdrop-filter: none !important;
+	box-shadow: none !important;
+	border: 1px solid var(--scaffold-border);
+}
+
+/* ===========================================================
+   "NESTA PÁGINA" (TOC da direita)
+   O padrão do Starlight só troca a cor do texto ao rolar por um
+   tópico — mudança sutil demais para servir como indicador de
+   posição. Acrescenta peso, fundo e uma borda de destaque à
+   esquerda, o mesmo motivo visual usado nos títulos h2.
+   =========================================================== */
+starlight-toc a[aria-current='true'] {
+	font-weight: 700;
+	background-color: var(--scaffold-bg-raised);
+	border-inline-start: 2px solid var(--scaffold-accent);
+}
+
+/* ===========================================================
+   PAGINAÇÃO
+   Mantida só dentro do Manual (onde a ordem numérica faz
+   sentido); desligada nas demais seções via frontmatter
+   prev/next: false. Aqui só o acabamento visual: sem cartão
+   elevado, hairline simples.
+   =========================================================== */
+.pagination-links a {
+	border: 1px solid var(--scaffold-border);
+	border-radius: var(--scaffold-radius);
+	box-shadow: none;
+}
+
+/* ===========================================================
+   MOVIMENTO
+   Redundância deliberada com prefers-reduced-motion: garante
+   que nenhuma transição sobreviva mesmo em componentes nativos
+   do Starlight que a gente não escreveu.
+   =========================================================== */
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
