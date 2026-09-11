@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useMemo, useState } from 'react'
+import { DownloadPrint } from '../components/DownloadPrint'
 import { PageHeader } from '../components/PageHeader'
 import { categoriasDopamina } from '../data/dopamineMenu'
 
@@ -46,6 +47,11 @@ export function DopamineMenu() {
 				titulo="Dopamine Menu"
 				categoria="web"
 				descricao="A tela toda de opções recria a mesma paralisia de escolha que o menu tenta resolver. Escolha uma categoria e receba uma sugestão por vez."
+			/>
+
+			<DownloadPrint
+				preview="/print/dopamine-menu/preview.png"
+				arquivos={[{ label: 'Baixar folha pra preencher (PDF)', href: '/print/dopamine-menu/dopamine-menu.pdf' }]}
 			/>
 
 			{!categoria ? (

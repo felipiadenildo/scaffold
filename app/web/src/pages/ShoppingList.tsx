@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useState } from 'react'
+import { DownloadPrint } from '../components/DownloadPrint'
 import { PageHeader } from '../components/PageHeader'
 import { tiposLista } from '../data/listaCompras'
 
@@ -19,6 +20,11 @@ export function ShoppingList() {
 				titulo="Lista de Compras"
 				categoria="web"
 				descricao="Semanal, pontual ou mensal — cada momento pede uma lista diferente, não a mesma lista genérica sempre."
+			/>
+
+			<DownloadPrint
+				preview="/print/shopping-list/preview.png"
+				arquivos={[{ label: 'Baixar folha da semana (PDF)', href: '/print/shopping-list/lista-compras.pdf' }]}
 			/>
 
 			{!tipo ? (

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
+import { DownloadPrint } from '../components/DownloadPrint'
 import { PageHeader } from '../components/PageHeader'
 import { blocosDia, protocoloBaixoEsforco } from '../data/folhaA5'
 
@@ -16,6 +17,14 @@ export function FolhaA5Digital() {
 				titulo="Folha A5 — versão digital"
 				categoria="web"
 				descricao="Inspirada em agendas tipo Google Calendar: blocos coloridos por período, frente e verso. A versão impressa (baixável) segue o mesmo conteúdo em papel."
+			/>
+
+			<DownloadPrint
+				preview="/print/a5-sheet/preview.png"
+				arquivos={[
+					{ label: 'Baixar frente (PDF)', href: '/print/a5-sheet/folha-a5-frente.pdf' },
+					{ label: 'Baixar verso (PDF)', href: '/print/a5-sheet/folha-a5-verso.pdf' },
+				]}
 			/>
 
 			<div className="mb-6 flex gap-2">

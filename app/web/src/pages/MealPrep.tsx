@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { DownloadPrint } from '../components/DownloadPrint'
 import { PageHeader } from '../components/PageHeader'
 
 interface ItemFreezer {
@@ -31,6 +32,11 @@ export function MealPrep() {
 				titulo="Meal Prep"
 				categoria="impresso"
 				descricao="Estoque do freezer: o que tem, desde quando, quantas porções — pra identificar sem abrir cada pote. Guardar na altura dos olhos, não no fundo."
+			/>
+
+			<DownloadPrint
+				preview="/print/meal-prep/preview.png"
+				arquivos={[{ label: 'Baixar folha de estoque (PDF)', href: '/print/meal-prep/meal-prep.pdf' }]}
 			/>
 
 			<div
