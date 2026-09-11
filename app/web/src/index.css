@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+@theme inline {
+	--color-bg: var(--scaffold-bg);
+	--color-bg-raised: var(--scaffold-bg-raised);
+	--color-ink: var(--scaffold-ink);
+	--color-ink-soft: var(--scaffold-ink-soft);
+	--color-border: var(--scaffold-border);
+	--color-accent: var(--scaffold-accent);
+	--color-accent-ink: var(--scaffold-accent-ink);
+	--color-note: var(--scaffold-note);
+	--color-tip: var(--scaffold-tip);
+	--color-caution: var(--scaffold-caution);
+	--color-sos: var(--scaffold-sos);
+	--color-sos-ink: var(--scaffold-sos-ink);
+	--color-cat-print: var(--scaffold-cat-print);
+	--color-cat-utility: var(--scaffold-cat-utility);
+	--color-cat-web: var(--scaffold-cat-web);
+	--radius-scaffold: var(--scaffold-radius);
+	--font-body: var(--scaffold-font-body);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100svh;
+}
+
+#root {
+	min-height: 100svh;
+	display: flex;
+	flex-direction: column;
+}

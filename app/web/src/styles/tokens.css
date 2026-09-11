@@ -1,0 +1,56 @@
+/* Portado de manual/src/styles/tokens.css — mesma identidade visual do manual.
+   Contraste calculado (WCAG), sem cor pura (#000/#fff). */
+@import '@fontsource/atkinson-hyperlegible-next/400.css';
+@import '@fontsource/atkinson-hyperlegible-next/700.css';
+
+:root {
+	--scaffold-bg: #fbfaf7;
+	--scaffold-bg-raised: #f3f1ec;
+	--scaffold-ink: #1a1a18;
+	--scaffold-ink-soft: #55534c;
+	--scaffold-border: #ddd9d0;
+	--scaffold-accent: #3d6b66;
+	--scaffold-accent-ink: #ffffff;
+
+	--scaffold-note: #2f5f8a;
+	--scaffold-tip: #2f7a52;
+	--scaffold-caution: #92621b;
+
+	/* Vermelho reservado só para o sistema de crise/SOS. */
+	--scaffold-sos: #b3261e;
+	--scaffold-sos-ink: #ffffff;
+
+	--scaffold-radius: 0.5rem;
+	--scaffold-font-body: 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
+	--scaffold-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+}
+
+:root[data-theme='dark'] {
+	--scaffold-bg: #18181a;
+	--scaffold-bg-raised: #212124;
+	--scaffold-ink: #e8e6e1;
+	--scaffold-ink-soft: #a8a59c;
+	--scaffold-border: #35343a;
+	--scaffold-accent: #8fcfc7;
+	--scaffold-accent-ink: #0c1f1d;
+
+	--scaffold-note: #8ec2ef;
+	--scaffold-tip: #8fd6ac;
+	--scaffold-caution: #e7b667;
+
+	--scaffold-sos: #ff6f66;
+	--scaffold-sos-ink: #2a0704;
+}
+
+/* Categorias do catálogo — cor de apoio, não decoração solta. */
+:root {
+	--scaffold-cat-print: var(--scaffold-tip);
+	--scaffold-cat-utility: var(--scaffold-note);
+	--scaffold-cat-web: var(--scaffold-accent);
+}
+
+body {
+	background: var(--scaffold-bg);
+	color: var(--scaffold-ink);
+	font-family: var(--scaffold-font-body);
+}
