@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup — Lista de Compras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink:#1b1b1f; --line:#c9c9d0; --green:#157a4a; --green-bg:#e7f7ee; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    background: #e9e9ec;
+    margin: 0;
+    padding: 2rem 1rem 4rem;
+    color: var(--ink);
+  }
+  h1 { max-width: 1000px; margin: 0 auto 0.25rem; }
+  .subtitle { max-width: 1000px; margin: 0 auto 1.5rem; color: #555; }
+  .wrap { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; }
+  .board-card {
+    width: 340px;
+    background: #fffdf5;
+    border: 3px solid #d8c48a;
+    border-radius: 6px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.15);
+    padding: 1.2rem 1.3rem 1.4rem;
+    transform: rotate(-1deg);
+  }
+  .pin {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #c62828; margin: 0 auto 0.5rem;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.4);
+  }
+  .board-card h2 { text-align: center; font-size: 1.1rem; margin: 0 0 1rem; }
+  .item {
+    display: flex; align-items: center; gap: 0.6rem;
+    border-bottom: 1px dashed #c9b98a;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+  .item .box { width: 1em; height: 1em; border: 2px solid var(--ink); flex-shrink: 0; }
+  .qr-area {
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    padding: 0.6rem 0.7rem;
+  }
+  .qr-placeholder {
+    width: 60px; height: 60px;
+    background:
+      repeating-linear-gradient(45deg, #222 0 4px, transparent 4px 8px),
+      repeating-linear-gradient(-45deg, #222 0 4px, transparent 4px 8px);
+    background-blend-mode: multiply;
+    border: 2px solid #222;
+    flex-shrink: 0;
+  }
+  .qr-text { font-size: 0.78rem; color: #444; }
+  .standard-card {
+    width: 340px;
+    background: var(--green-bg);
+    border: 2px solid var(--green);
+    border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+  }
+  .standard-card h2 { color: var(--green); font-size: 1.05rem; margin-top: 0; }
+  .cat { font-size: 0.82rem; font-weight: 700; margin: 0.7rem 0 0.3rem; color: #0d3823; }
+  .cat-items { font-size: 0.88rem; margin: 0; padding-left: 1.1rem; }
+  @media print {
+    body { background: white; padding: 0; }
+    h1, .subtitle { display: none; }
+    .board-card { transform: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+  <h1>🛒 Lista de Compras — mockup visual</h1>
+  <p class="subtitle">A folha do quadro de cortiça e a lista padrão digital. Detalhes em <code>/templates/lista-compras/</code> no site.</p>
+  <div class="wrap">
+    <div class="board-card">
+      <div class="pin"></div>
+      <h2>Lista da Semana</h2>
+      <div class="item"><span class="box"></span> </div>
+      <div class="item"><span class="box"></span> </div>
+      <div class="item"><span class="box"></span> </div>
+      <div class="item"><span class="box"></span> </div>
+      <div class="item"><span class="box"></span> </div>
+      <div class="qr-area">
+        <div class="qr-placeholder" aria-hidden="true"></div>
+        <div class="qr-text">Escaneie se a lista acima estiver vazia → lista padrão</div>
+      </div>
+    </div>
+
+    <div class="standard-card">
+      <h2>Lista Padrão (kit básico)</h2>
+      <div class="cat">Proteína rápida</div>
+      <ul class="cat-items"><li>Ovo</li><li>Iogurte</li><li>Castanha</li></ul>
+      <div class="cat">Carboidrato rápido</div>
+      <ul class="cat-items"><li>Pão</li><li>Fruta fácil</li><li>Barra de cereal</li></ul>
+      <div class="cat">Para o freezer</div>
+      <ul class="cat-items"><li>Proteína para congelar</li><li>Arroz / macarrão</li><li>Vegetal que congela bem</li></ul>
+    </div>
+  </div>
+</body>
+</html>

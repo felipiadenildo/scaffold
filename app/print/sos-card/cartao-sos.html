@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup — Cartão SOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1b1b1f;
+    --paper: #fdfdfb;
+    --blue: #2456c9;
+    --blue-bg: #eaf0ff;
+    --green: #157a4a;
+    --green-bg: #e7f7ee;
+    --orange: #b5620a;
+    --orange-bg: #fff2e2;
+    --red: #b3221e;
+    --red-bg: #fdeceb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+    background: #e9e9ec;
+    margin: 0;
+    padding: 2rem 1rem 4rem;
+    color: var(--ink);
+  }
+  .page-title {
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+  }
+  .page-title h1 { margin-bottom: 0.25rem; }
+  .page-title p { color: #555; margin-top: 0; }
+  .note {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    background: #fffbe0;
+    border-left: 4px solid #c9a227;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+  .deck {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .card {
+    border-radius: 14px;
+    padding: 1.25rem 1.4rem 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+  }
+  .card .icon { font-size: 1.8rem; line-height: 1; }
+  .card h2 {
+    font-size: 1.15rem;
+    margin: 0.4rem 0 0.15rem;
+  }
+  .card .sinal {
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.85;
+    margin-bottom: 0.75rem;
+  }
+  .card ol {
+    margin: 0;
+    padding-left: 1.2rem;
+    flex-grow: 1;
+  }
+  .card ol li { margin-bottom: 0.45rem; font-size: 0.95rem; }
+  .card .evite {
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    border-top: 1px dashed rgba(0,0,0,0.15);
+    padding-top: 0.5rem;
+  }
+  .cat-wall { background: var(--blue-bg); border: 2px solid var(--blue); color: #12244d; }
+  .cat-wall h2 { color: var(--blue); }
+  .cat-rsd { background: var(--green-bg); border: 2px solid var(--green); color: #0d3823; }
+  .cat-rsd h2 { color: var(--green); }
+  .cat-raiva { background: var(--orange-bg); border: 2px solid var(--orange); color: #4a2a03; }
+  .cat-raiva h2 { color: var(--orange); }
+  .cat-sensorial { background: #f1e9ff; border: 2px solid #6a3fc0; color: #2a1650; }
+  .cat-sensorial h2 { color: #6a3fc0; }
+  .cat-baixa { background: var(--red-bg); border: 3px solid var(--red); color: #4d0f0d; }
+  .cat-baixa h2 { color: var(--red); }
+  .cat-baixa { grid-column: span 1; }
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { display: flex; gap: 0.5rem; align-items: flex-start; }
+  .checklist li::before { content: "☐"; font-size: 1.1rem; }
+  .print-note {
+    max-width: 900px;
+    margin: 2.5rem auto 0;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  @media print {
+    body { background: white; padding: 0; }
+    .page-title, .note, .print-note { display: none; }
+    .deck { grid-template-columns: repeat(2, 1fr); gap: 0.6cm; max-width: 100%; }
+    .card { break-inside: avoid; box-shadow: none; min-height: 6.5cm; }
+  }
+</style>
+</head>
+<body>
+  <div class="page-title">
+    <h1>🆘 Cartão SOS — mockup visual</h1>
+    <p>Ilustração de como os 5 cartões podem ficar impressos. Conteúdo final em <code>/templates/cartao-sos/</code> no site.</p>
+  </div>
+  <div class="note">Rascunho de design, não a versão final. Layout pensado para leitura sob estresse: passo numerado, pouco texto, fonte grande, uma cor por cenário.</div>
+
+  <div class="deck">
+    <div class="card cat-wall">
+      <div class="icon">🧱</div>
+      <h2>Não consigo nem começar</h2>
+      <div class="sinal">Sinal: travar olhando para uma tarefa específica.</div>
+      <ol>
+        <li>Nomeie: "isso é Wall of Awful."</li>
+        <li><strong>Escalar:</strong> sente com o desconforto 2 min. <br><strong>Ou abrir uma porta:</strong> caminhada, música, algo engraçado.</li>
+        <li>Reduza ao primeiro passo ridículo. Ex: "só abrir o arquivo."</li>
+      </ol>
+      <div class="evite">Evite: "vai, só começa."</div>
+    </div>
+
+    <div class="card cat-rsd">
+      <div class="icon">💔</div>
+      <h2>Rejeição / crítica dói demais</h2>
+      <div class="sinal">Sinal: dor desproporcional a um feedback.</div>
+      <ol>
+        <li>Nomeie: "isso é RSD."</li>
+        <li>Aterre 60s: 5 coisas que vê, 4 que ouve.</li>
+        <li>Adie a resposta: "respondo em 3h."</li>
+      </ol>
+      <div class="evite">Evite: tentar provar com lógica que não faz sentido.</div>
+    </div>
+
+    <div class="card cat-raiva">
+      <div class="icon">🔥</div>
+      <h2>Raiva súbita</h2>
+      <div class="sinal">Sinal: raiva forte, sem aviso.</div>
+      <ol>
+        <li>Água fria no rosto ou pulsos.</li>
+        <li>20 polichinelos, ou escada.</li>
+        <li>Se afaste até o corpo acalmar.</li>
+      </ol>
+      <div class="evite">Evite: conversar no pico. Espere baixar.</div>
+    </div>
+
+    <div class="card cat-sensorial">
+      <div class="icon">🌪️</div>
+      <h2>Estímulo demais</h2>
+      <div class="sinal">Sinal: som, luz e gente, tudo no talo.</div>
+      <ol>
+        <li>Saia do ambiente, se der.</li>
+        <li>Pressão profunda — abrace os braços.</li>
+        <li>Água fria + respiração lenta.</li>
+      </ol>
+      <div class="evite">Prevenção: chegue/saia fora do pico.</div>
+    </div>
+
+    <div class="card cat-baixa" style="grid-column: span 2;">
+      <div class="icon">🛟</div>
+      <h2>Sem energia pra nada — Protocolo de Baixo Esforço</h2>
+      <div class="sinal">Combinado com antecedência. Cumprir isso é sucesso.</div>
+      <ul class="checklist">
+        <li>Água, ou remédio</li>
+        <li>Comer algo, mesmo pronto</li>
+        <li>Só a tarefa mais importante</li>
+        <li>Resto perdoado</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="print-note">Ctrl/Cmd + P para ver a versão de impressão (2 colunas, sem esta nota).</p>
+</body>
+</html>
