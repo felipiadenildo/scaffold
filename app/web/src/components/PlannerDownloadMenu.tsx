@@ -1,4 +1,4 @@
-import { ChevronDown, Download } from 'lucide-react'
+import { ChevronDown, File, Files, FileDown } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
 // Dropdown de impressão específico do Planner — diferente do DownloadPrint genérico (usado pelos
@@ -20,37 +20,48 @@ export function PlannerDownloadMenu() {
 
 	return (
 		<details ref={detalhesRef} className="group relative shrink-0">
-			<summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-ink-soft transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
-				<Download className="h-3.5 w-3.5" aria-hidden="true" />
-				Imprimir
+			<summary
+				aria-label="Imprimir"
+				title="Imprimir"
+				className="flex cursor-pointer list-none items-center gap-1 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink [&::-webkit-details-marker]:hidden"
+			>
+				<FileDown className="h-3.5 w-3.5" aria-hidden="true" />
 				<ChevronDown className="h-3 w-3 transition-transform group-open:rotate-180" aria-hidden="true" />
 			</summary>
 
-			<div className="absolute right-0 z-20 mt-2 w-72 rounded-scaffold border border-border bg-bg-raised p-3 shadow-raised">
-				<p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">A5 — um planner por folha</p>
+			<div className="absolute right-0 z-20 mt-2 flex w-56 flex-col gap-1 rounded-scaffold border border-border bg-bg-raised p-2 shadow-raised">
+				{/*
+					Cada item é um botão de verdade: borda, fundo no hover e transição.
+					O ícone à esquerda representa o formato da folha (única vs dupla),
+					o rótulo principal fica no meio e o detalhe curto à direita.
+				*/}
 				<a
 					href="/planners/diario/imprimir-a5"
 					target="_blank"
 					rel="noopener"
-					className="mt-1.5 inline-block rounded-scaffold border border-border px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-ink-soft"
+					className="group/item flex items-center gap-2.5 rounded-scaffold border border-border bg-bg px-2.5 py-2 text-xs font-medium text-ink transition-colors hover:border-ink-soft hover:bg-bg-sunken"
 				>
-					Abrir pra baixar o PDF
+					<File
+						className="h-4 w-4 shrink-0 text-ink-soft transition-colors group-hover/item:text-ink"
+						aria-hidden="true"
+					/>
+					<span className="flex-1">A5</span>
+					<span className="text-ink-soft">1 por folha</span>
 				</a>
-				<p className="mt-1 text-[0.7rem] text-ink-soft">
-					Abre numa aba nova com a folha (frente e verso) pronta — o botão "Baixar PDF" lá gera o arquivo na
-					hora, direto do que está na tela.
-				</p>
 
-				<p className="mt-3 text-xs font-semibold uppercase tracking-wide text-ink-soft">A4 — 2 planners por folha</p>
 				<a
 					href="/planners/diario/imprimir-a4"
 					target="_blank"
 					rel="noopener"
-					className="mt-1.5 inline-block rounded-scaffold border border-border px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-ink-soft"
+					className="group/item flex items-center gap-2.5 rounded-scaffold border border-border bg-bg px-2.5 py-2 text-xs font-medium text-ink transition-colors hover:border-ink-soft hover:bg-bg-sunken"
 				>
-					Abrir pra baixar o PDF
+					<Files
+						className="h-4 w-4 shrink-0 text-ink-soft transition-colors group-hover/item:text-ink"
+						aria-hidden="true"
+					/>
+					<span className="flex-1">A4</span>
+					<span className="text-ink-soft">2 por folha</span>
 				</a>
-				<p className="mt-1 text-[0.7rem] text-ink-soft">Folha deitada — corta ao meio e cada lado vira um planner A5 completo.</p>
 			</div>
 		</details>
 	)

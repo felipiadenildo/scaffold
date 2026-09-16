@@ -32,6 +32,11 @@ export function PlannerDiario() {
 	// Largura "normal" (mesma do resto do app) ou ajustada pra usar o espaço disponível na tela —
 	// a proporção A5 nunca muda, só o quanto ela escala.
 	const [expandido, setExpandido] = useState(false)
+	// 'girar' (padrão) é o card que vira; 'nao-girar' mostra as duas faces ao mesmo tempo — o
+	// arranjo dentro dele (lado a lado ou empilhado) não é estado, é derivado em FolhaFlip a
+	// partir de `expandido` e do espaço disponível na tela (ver LARGURA_MIN_LADO_A_LADO lá).
+	// Mora aqui (não em FolhaFlip) pelo mesmo motivo de `rotacao`: sobreviver à troca de dia.
+	const [modoVisualizacao, setModoVisualizacao] = useState<'girar' | 'nao-girar'>('girar')
 	const dataISO = paraISO(dataAtual)
 	const ehPassado = dataISO < paraISO(new Date())
 	const modoEdicao = excecoesModo[dataISO] ?? !ehPassado
@@ -46,6 +51,10 @@ export function PlannerDiario() {
 		setExcecoesModo((prev) => ({ ...prev, [dataISO]: !modoEdicao }))
 	}
 
+	function alternarModoVisualizacao() {
+		setModoVisualizacao((m) => (m === 'girar' ? 'nao-girar' : 'girar'))
+	}
+
 	const { dia, setHumor, setSecaoValor, setSobreDia, setAnotacoes, setHabitos, setProtocolo } = usePlannerDia(dataISO)
 	const { secoes, renomear } = useSecoesTemplate()
 	const { itens: habitos, salvarItens: salvarHabitos } = useListaTemplate('habitos', habitosPadrao)
@@ -53,7 +62,14 @@ export function PlannerDiario() {
 
 	return (
 		<div>
-			<DateNav data={dataAtual} onChange={mudarData} expandido={expandido} onToggleExpandido={() => setExpandido((e) => !e)} />
+			<DateNav
+				data={dataAtual}
+				onChange={mudarData}
+				expandido={expandido}
+				onToggleExpandido={() => setExpandido((e) => !e)}
+				modoVisualizacao={modoVisualizacao}
+				onAlternarModoVisualizacao={alternarModoVisualizacao}
+			/>
 
 			<AnimatePresence mode="wait" custom={direcao} initial={false}>
 				<motion.div
@@ -67,6 +83,7 @@ export function PlannerDiario() {
 				>
 					<FolhaFlip
 						expandido={expandido}
+						modoVisualizacao={modoVisualizacao}
 						lado={lado}
 						onGirar={girar}
 						data={dataAtual}
