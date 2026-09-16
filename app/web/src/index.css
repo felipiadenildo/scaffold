@@ -42,6 +42,8 @@
 	--radius-scaffold-lg: var(--scaffold-radius-lg);
 	--font-body: var(--scaffold-font-body);
 	--font-mono: var(--scaffold-font-mono);
+	/* Named na escala de espaçamento do Tailwind v4 — habilita h-header. */
+	--spacing-header: var(--scaffold-header-h);
 }
 
 * {

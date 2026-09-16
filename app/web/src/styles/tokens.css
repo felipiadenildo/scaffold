@@ -74,6 +74,15 @@
 	--scaffold-radius-lg: 0.9rem;
 	--scaffold-font-body: 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
 	--scaffold-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+
+	/* Altura do cabeçalho do app (só existe fora do modo foco — ver Layout.tsx). Token em vez de
+	   valor mágico pra ficar num lugar só se precisar ajustar depois. */
+	--scaffold-header-h: 4rem;
+
+	/* Largura máxima da folha do Planner quando "ajustar largura" está ativo. min(100%, ...) evita
+	   estourar a tela e mantém um teto sensato em monitor ultra-wide. Um token só, referenciado por
+	   DateNav.tsx e FolhaFlip.tsx, pra não duplicar o número em dois arquivos. */
+	--scaffold-folha-largura-expandida: 1600px;
 }
 
 :root[data-theme='dark'] {
