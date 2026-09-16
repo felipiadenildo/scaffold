@@ -1,9 +1,11 @@
 export type Categoria = 'impresso' | 'notion-sheets' | 'web'
+export type StatusItem = 'pronto' | 'em-teste'
 
 export interface ItemCatalogo {
 	slug: string
 	nome: string
 	categoria: Categoria
+	status: StatusItem
 	resumo: string
 	rota: string
 	acaoPrincipal: string
@@ -25,17 +27,19 @@ export const categoriaCor: Record<Categoria, string> = {
 // não escrever uma página de índice nova. Ver app/ORGANIZACAO.md §6.2.
 export const catalogo: ItemCatalogo[] = [
 	{
-		slug: 'folha-a5',
-		nome: 'Folha A5',
-		categoria: 'impresso',
-		resumo: 'O dia em blocos por período, frente e verso. Uma versão digital também está disponível.',
-		rota: '/folha-a5',
-		acaoPrincipal: 'Ver versão digital',
+		slug: 'planners',
+		nome: 'Planners',
+		categoria: 'web',
+		status: 'pronto',
+		resumo: 'O dia em blocos por período, frente e verso — humor, hábitos e protocolo de dia difícil. Diário pronto; semanal e mensal vêm depois.',
+		rota: '/planners',
+		acaoPrincipal: 'Abrir o Planner',
 	},
 	{
 		slug: 'lista-compras',
 		nome: 'Lista de Compras',
 		categoria: 'web',
+		status: 'em-teste',
 		resumo: 'Semanal, pontual ou mensal — escolha o tipo de lista certo pro momento.',
 		rota: '/lista-compras',
 		acaoPrincipal: 'Escolher lista',
@@ -44,6 +48,7 @@ export const catalogo: ItemCatalogo[] = [
 		slug: 'dopamine-menu',
 		nome: 'Dopamine Menu',
 		categoria: 'web',
+		status: 'em-teste',
 		resumo: 'Uma sugestão por vez, por categoria — não a lista inteira de uma vez.',
 		rota: '/dopamine-menu',
 		acaoPrincipal: 'Escolher categoria',
@@ -52,6 +57,7 @@ export const catalogo: ItemCatalogo[] = [
 		slug: 'meal-prep',
 		nome: 'Meal Prep',
 		categoria: 'impresso',
+		status: 'em-teste',
 		resumo: 'Estoque do freezer: o que tem, desde quando, quantas porções.',
 		rota: '/meal-prep',
 		acaoPrincipal: 'Ver estoque',
@@ -60,6 +66,7 @@ export const catalogo: ItemCatalogo[] = [
 		slug: 'cartao-sos',
 		nome: 'Cartão SOS',
 		categoria: 'web',
+		status: 'em-teste',
 		resumo: 'Em desenvolvimento — design definitivo ainda não iniciado.',
 		rota: '/cartao-sos',
 		acaoPrincipal: 'Em breve',
@@ -68,6 +75,7 @@ export const catalogo: ItemCatalogo[] = [
 		slug: 'financeiro',
 		nome: 'Financeiro',
 		categoria: 'notion-sheets',
+		status: 'em-teste',
 		resumo: 'Estrutura de planilha pra visibilidade de gasto e controle de impulso.',
 		rota: '/financeiro',
 		acaoPrincipal: 'Ver modelo',
@@ -76,6 +84,7 @@ export const catalogo: ItemCatalogo[] = [
 		slug: 'viagem',
 		nome: 'Viagem',
 		categoria: 'notion-sheets',
+		status: 'em-teste',
 		resumo: 'Checklists de ônibus e voo, mais checklist de verificação de IA.',
 		rota: '/viagem',
 		acaoPrincipal: 'Ver modelo',

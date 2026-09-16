@@ -5,7 +5,8 @@ type Theme = 'light' | 'dark'
 function getInitialTheme(): Theme {
 	const stored = localStorage.getItem('scaffold-theme')
 	if (stored === 'light' || stored === 'dark') return stored
-	return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+	// Claro é o padrão do app — não segue a preferência de sistema, só a escolha explícita da pessoa.
+	return 'light'
 }
 
 export function ThemeToggle() {

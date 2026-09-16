@@ -1,45 +1,127 @@
-/* Portado de manual/src/styles/tokens.css — mesma identidade visual do manual.
+/* Portado de manual/src/styles/tokens.css — identidade de origem compartilhada com o manual.
+   Correção de rota: a 1ª tentativa de tema "papel" pintou o app inteiro de amarelo chapado —
+   sem referência real por trás. Pesquisado de novo (GoodNotes, Kindle sepia, elevação em
+   camadas de Josh Comeau): o app-shell fica neutro/claro, e o efeito "papel" (cor mais quente,
+   textura, sombra em camadas) mora só na folha do Planner — ver --scaffold-paper* e .paper-grain.
+   Isso diverge intencionalmente das cores do manual — sincronizar lá é decisão em aberto.
    Contraste calculado (WCAG), sem cor pura (#000/#fff). */
 @import '@fontsource/atkinson-hyperlegible-next/400.css';
 @import '@fontsource/atkinson-hyperlegible-next/700.css';
 
 :root {
-	--scaffold-bg: #fbfaf7;
-	--scaffold-bg-raised: #f3f1ec;
-	--scaffold-ink: #1a1a18;
-	--scaffold-ink-soft: #55534c;
-	--scaffold-border: #ddd9d0;
+	/* Base do app: neutra, só um traço de calidez — o "papel" de verdade fica só na superfície do
+	   Planner (--scaffold-paper, abaixo), não espalhado pelo app inteiro. Ver nota de correção no fim do arquivo. */
+	--scaffold-bg: #faf8f3;
+	--scaffold-bg-raised: #f1ede3;
+	--scaffold-ink: #262019;
+	--scaffold-ink-soft: #6b6255;
+	--scaffold-border: #ddd5c5;
 	--scaffold-accent: #3d6b66;
 	--scaffold-accent-ink: #ffffff;
+
+	/* Superfície de papel — usada só na folha do Planner, não no app inteiro.
+	   Referência: GoodNotes descreve suas páginas como "realistic paper texture on soft cream pages" —
+	   um cream visivelmente mais quente que o chrome do app, não um bloco de cor saturada. */
+	--scaffold-paper: #f2e8d3;
+	--scaffold-paper-ink: #2e2417;
+	--scaffold-paper-ink-soft: #6e5f47;
+	/* Sombra em camadas (técnica de Josh Comeau: várias sombras leves, offset/blur crescentes,
+	   simulando uma fonte de luz única) — dá o "levantado da mesa" que sombra única não dá. */
+	--scaffold-shadow-paper:
+		0 1px 1px hsl(30 30% 15% / 0.09),
+		0 2px 2px hsl(30 30% 15% / 0.09),
+		0 4px 4px hsl(30 30% 15% / 0.08),
+		0 8px 12px hsl(30 30% 15% / 0.07);
+	/* Elevação menor — chips/botões que "levantam" ao passar o mouse ou ao ficar selecionados. */
+	--scaffold-shadow-raised:
+		0 1px 1px hsl(30 20% 20% / 0.16),
+		0 1px 2px hsl(30 20% 20% / 0.1);
 
 	--scaffold-note: #2f5f8a;
 	--scaffold-tip: #2f7a52;
 	--scaffold-caution: #92621b;
+	--scaffold-caution-bg: #f1e4c8;
 
-	/* Vermelho reservado só para o sistema de crise/SOS. */
+	/* Vermelho reservado só para o sistema de crise/SOS — sempre nesse par (traço + fundo suave),
+	   igual ao padrão das seções abaixo, pra qualquer bloco de crise no app usar o mesmo par. */
 	--scaffold-sos: #b3261e;
 	--scaffold-sos-ink: #ffffff;
+	--scaffold-sos-bg: #f4e0dc;
+
+	/* Seções do Planner Diário — tons terrosos/pastéis, cada um com uma versão suave (fundo do cabeçalho) e uma versão de acento (friso + texto de apoio). Fundos ajustados pra se destacar do papel. */
+	--scaffold-manha: #b56b3f;
+	--scaffold-manha-bg: #e9c9a8;
+	--scaffold-almoco: #5f7d54;
+	--scaffold-almoco-bg: #d6e0c6;
+	--scaffold-lanche: #8f6c26;
+	--scaffold-lanche-bg: #ddc079;
+	--scaffold-jantar: #756a99;
+	--scaffold-jantar-bg: #dcd5e6;
+
+	/* Cores de humor — gradiente verde (positivo) a vermelho-terroso (difícil), passando por dourado (neutro). Distinto do vermelho de crise/SOS. */
+	--scaffold-mood-otimo: #4f7a58;
+	--scaffold-mood-bem: #7f9d63;
+	--scaffold-mood-neutro: #ad8b3a;
+	--scaffold-mood-dificil: #b06f42;
+	--scaffold-mood-muito-dificil: #954f45;
+	/* Tinta do ícone sobre um círculo de humor preenchido — muda por tema porque os tons de humor
+	   no escuro são mais claros (pastel), então a tinta de contraste também inverte. */
+	--scaffold-mood-ink: #ffffff;
 
 	--scaffold-radius: 0.5rem;
+	/* Superfícies grandes (a folha do Planner) usam um raio maior — token à parte pra não ter
+	   "rounded-xl solto" competindo com --scaffold-radius em outro canto do app. */
+	--scaffold-radius-lg: 0.9rem;
 	--scaffold-font-body: 'Atkinson Hyperlegible Next', ui-sans-serif, system-ui, sans-serif;
 	--scaffold-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
 }
 
 :root[data-theme='dark'] {
-	--scaffold-bg: #18181a;
-	--scaffold-bg-raised: #212124;
-	--scaffold-ink: #e8e6e1;
-	--scaffold-ink-soft: #a8a59c;
-	--scaffold-border: #35343a;
+	--scaffold-bg: #1c1815;
+	--scaffold-bg-raised: #262019;
+	--scaffold-ink: #ece6d8;
+	--scaffold-ink-soft: #a89f8d;
+	--scaffold-border: #3a332a;
 	--scaffold-accent: #8fcfc7;
 	--scaffold-accent-ink: #0c1f1d;
+
+	--scaffold-paper: #2b2419;
+	--scaffold-paper-ink: #ece2ca;
+	--scaffold-paper-ink-soft: #b3a582;
+	--scaffold-shadow-paper:
+		0 1px 1px hsl(0 0% 0% / 0.25),
+		0 2px 2px hsl(0 0% 0% / 0.22),
+		0 4px 4px hsl(0 0% 0% / 0.2),
+		0 8px 12px hsl(0 0% 0% / 0.18);
+	--scaffold-shadow-raised:
+		0 1px 1px hsl(0 0% 0% / 0.3),
+		0 1px 2px hsl(0 0% 0% / 0.2);
 
 	--scaffold-note: #8ec2ef;
 	--scaffold-tip: #8fd6ac;
 	--scaffold-caution: #e7b667;
+	--scaffold-caution-bg: #362c19;
 
 	--scaffold-sos: #ff6f66;
 	--scaffold-sos-ink: #2a0704;
+	--scaffold-sos-bg: #3a211f;
+
+	--scaffold-mood-ink: #1c1815;
+
+	--scaffold-manha: #e0a06a;
+	--scaffold-manha-bg: #362a20;
+	--scaffold-almoco: #9dbb8e;
+	--scaffold-almoco-bg: #263025;
+	--scaffold-lanche: #d4b06a;
+	--scaffold-lanche-bg: #332c1c;
+	--scaffold-jantar: #b3a6d6;
+	--scaffold-jantar-bg: #292739;
+
+	--scaffold-mood-otimo: #7fae86;
+	--scaffold-mood-bem: #a8c98d;
+	--scaffold-mood-neutro: #d9bc6e;
+	--scaffold-mood-dificil: #d99a6c;
+	--scaffold-mood-muito-dificil: #c1837a;
 }
 
 /* Categorias do catálogo — cor de apoio, não decoração solta. */
@@ -50,7 +132,48 @@
 }
 
 body {
-	background: var(--scaffold-bg);
+	background-color: var(--scaffold-bg);
 	color: var(--scaffold-ink);
 	font-family: var(--scaffold-font-body);
+}
+
+/* Grão de fibra de papel — só pra superfícies que representam papel de verdade (a folha do
+   Planner), não o app inteiro. ~6% de opacidade: visível como textura, não como tingimento. */
+.paper-grain {
+	position: relative;
+}
+.paper-grain::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	border-radius: inherit;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+	mix-blend-mode: multiply;
+}
+
+/* Papel pautado — pra áreas de escrita livre da folha (Anotações e as 4 seções). Linha derivada
+   do próprio tom de tinta do papel, então acompanha claro/escuro automaticamente.
+   background-origin: content-box ancora a grade no mesmo ponto onde o texto começa a ser
+   digitado (depois do padding), não no canto do padding-box. O deslocamento negativo em
+   background-position corrige a distância entre a base da letra (baseline) e o topo da caixa de
+   linha — sem isso a régua cai ~12px abaixo da palavra (meio de uma segunda linha), porque o
+   texto fica centralizado dentro de um line-height bem maior que a fonte. Medido direto no
+   Chromium headless (screenshot + varredura de pixel) pra não ficar no chute.
+   1.625rem (não 1.65rem) é proposital: em 16px de raiz isso dá exatos 26px. 1.65rem = 26.4px,
+   um valor fracionado — cada repetição do gradiente acumula ~0.4px de erro de subpixel (o mesmo
+   problema descrito em "No-Jank CSS Stripes", CSS-Tricks), e depois de 8-10 linhas esse erro vira
+   desalinhamento visível. Confirmado comparando as duas versões lado a lado num teste isolado. */
+.paper-lines {
+	background-image: repeating-linear-gradient(
+		to bottom,
+		transparent,
+		transparent 1.625rem,
+		color-mix(in srgb, var(--color-paper-ink) 18%, transparent) 1.625rem,
+		color-mix(in srgb, var(--color-paper-ink) 18%, transparent) calc(1.625rem + 1px)
+	);
+	background-origin: content-box;
+	background-position: 0 -0.55rem;
+	line-height: 1.625rem;
+	background-attachment: local;
 }

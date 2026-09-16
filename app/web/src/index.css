@@ -12,13 +12,36 @@
 	--color-note: var(--scaffold-note);
 	--color-tip: var(--scaffold-tip);
 	--color-caution: var(--scaffold-caution);
+	--color-caution-bg: var(--scaffold-caution-bg);
 	--color-sos: var(--scaffold-sos);
 	--color-sos-ink: var(--scaffold-sos-ink);
+	--color-sos-bg: var(--scaffold-sos-bg);
+	--color-manha: var(--scaffold-manha);
+	--color-manha-bg: var(--scaffold-manha-bg);
+	--color-almoco: var(--scaffold-almoco);
+	--color-almoco-bg: var(--scaffold-almoco-bg);
+	--color-lanche: var(--scaffold-lanche);
+	--color-lanche-bg: var(--scaffold-lanche-bg);
+	--color-jantar: var(--scaffold-jantar);
+	--color-jantar-bg: var(--scaffold-jantar-bg);
+	--color-mood-otimo: var(--scaffold-mood-otimo);
+	--color-mood-bem: var(--scaffold-mood-bem);
+	--color-mood-neutro: var(--scaffold-mood-neutro);
+	--color-mood-dificil: var(--scaffold-mood-dificil);
+	--color-mood-muito-dificil: var(--scaffold-mood-muito-dificil);
+	--color-mood-ink: var(--scaffold-mood-ink);
 	--color-cat-print: var(--scaffold-cat-print);
 	--color-cat-utility: var(--scaffold-cat-utility);
 	--color-cat-web: var(--scaffold-cat-web);
+	--color-paper: var(--scaffold-paper);
+	--color-paper-ink: var(--scaffold-paper-ink);
+	--color-paper-ink-soft: var(--scaffold-paper-ink-soft);
+	--shadow-paper: var(--scaffold-shadow-paper);
+	--shadow-raised: var(--scaffold-shadow-raised);
 	--radius-scaffold: var(--scaffold-radius);
+	--radius-scaffold-lg: var(--scaffold-radius-lg);
 	--font-body: var(--scaffold-font-body);
+	--font-mono: var(--scaffold-font-mono);
 }
 
 * {
@@ -34,4 +57,12 @@ body {
 	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
+}
+
+/* Indicador de foco único pro app inteiro — outline + offset (não box-shadow: não recorta com
+   overflow, não dispara layout), só pra navegação por teclado via :focus-visible. */
+:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+	border-radius: 2px;
 }
