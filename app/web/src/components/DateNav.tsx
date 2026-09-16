@@ -78,6 +78,9 @@ export function DateNav({
 	onToggleExpandido,
 	modoVisualizacao,
 	onAlternarModoVisualizacao,
+	onBaixarA5,
+	onBaixarA4,
+	baixandoPdf,
 }: {
 	data: Date
 	onChange: (data: Date) => void
@@ -85,6 +88,9 @@ export function DateNav({
 	onToggleExpandido: () => void
 	modoVisualizacao: 'girar' | 'nao-girar'
 	onAlternarModoVisualizacao: () => void
+	onBaixarA5: () => void
+	onBaixarA4: () => void
+	baixandoPdf: boolean
 }) {
 	const { pathname } = useLocation()
 	const ehHoje = ehMesmoDia(data, new Date())
@@ -182,7 +188,7 @@ export function DateNav({
 					<FlipHorizontal2 className="h-3.5 w-3.5" aria-hidden="true" />
 				</button>
 
-				<PlannerDownloadMenu />
+				<PlannerDownloadMenu onBaixarA5={onBaixarA5} onBaixarA4={onBaixarA4} baixando={baixandoPdf} />
 
 				{!ehHoje && (
 					<button

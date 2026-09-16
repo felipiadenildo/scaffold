@@ -12,8 +12,21 @@ const ALTURA_A4_MM = 210
 const MARGEM_MM = 5
 const VAO_CORTE_MM = 8
 
+// Largura maior que qualquer breakpoint `sm:` usado nos cards (640px) — sem isso, o html2canvas
+// clona a página numa janela do tamanho da tela real do dispositivo pra fazer a captura. Num
+// celular (~390px), toda classe `sm:` da árvore (grid do habit tracker, aspect-ratio, padding
+// etc.) fica inativa DENTRO dessa clonagem, mesmo o card tendo largura fixa em px — `sm:` é
+// media query de viewport, não do elemento. O PDF saía sem esses estilos. 1024px força a
+// simulação de uma janela desktop na captura, não na tela real da pessoa.
+const LARGURA_JANELA_CAPTURA = 1024
+
 async function capturarElemento(elemento: HTMLElement) {
-	return html2canvas(elemento, { scale: 2, backgroundColor: null })
+	return html2canvas(elemento, {
+		scale: 2,
+		backgroundColor: null,
+		windowWidth: LARGURA_JANELA_CAPTURA,
+		windowHeight: Math.max(window.innerHeight, elemento.scrollHeight + 200),
+	})
 }
 
 // Ajusta a imagem numa caixa disponível (largura x altura), mantendo proporção, e devolve o

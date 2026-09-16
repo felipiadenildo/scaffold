@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { DateNav } from '../../components/DateNav'
 import { habitosPadrao, protocoloPadrao } from '../../data/planner'
 import { usePlannerDia } from '../../hooks/usePlannerDia'
 import { useListaTemplate, useSecoesTemplate } from '../../hooks/usePlannerTemplates'
 import { paraISO } from '../../lib/formatarData'
+import { CartoesImprimiveis } from '../../pdf/CartoesImprimiveis'
 import { FolhaFlip } from './FolhaFlip'
 
 // Padrão oficial do Framer Motion pra carrossel/paginação direcional: entra do lado de onde
@@ -60,8 +61,44 @@ export function PlannerDiario() {
 	const { itens: habitos, salvarItens: salvarHabitos } = useListaTemplate('habitos', habitosPadrao)
 	const { itens: protocolo, salvarItens: salvarProtocolo } = useListaTemplate('protocolo', protocoloPadrao)
 
+	// Frente/verso "limpos" (sem placeholder) sempre montados fora da tela, prontos pra virar PDF
+	// na hora — sem isso, baixar exigia navegar pra /imprimir-a5 ou /imprimir-a4 e clicar de novo
+	// lá. Mesmo componente que essas páginas usam (CartoesImprimiveis), só que oculto aqui.
+	const [gerandoPdf, setGerandoPdf] = useState(false)
+	const frenteImpressaoRef = useRef<HTMLDivElement>(null)
+	const versoImpressaoRef = useRef<HTMLDivElement>(null)
+
+	async function baixarA5() {
+		if (!frenteImpressaoRef.current || !versoImpressaoRef.current) return
+		setGerandoPdf(true)
+		try {
+			// Import dinâmico: html2canvas-pro + jsPDF só entram no bundle quando alguém realmente
+			// clica em baixar, não sempre que a página do Diário monta (ver App.tsx, mesma lógica
+			// de code-splitting das rotas /imprimir-a5 e /imprimir-a4).
+			const { gerarPdfBlobDeElementos, baixarBlob } = await import('../../pdf/capturarCardComoPdf')
+			const blob = await gerarPdfBlobDeElementos([frenteImpressaoRef.current, versoImpressaoRef.current])
+			baixarBlob(blob, 'scaffold-planner-diario-a5.pdf')
+		} finally {
+			setGerandoPdf(false)
+		}
+	}
+
+	async function baixarA4() {
+		if (!frenteImpressaoRef.current || !versoImpressaoRef.current) return
+		setGerandoPdf(true)
+		try {
+			const { gerarPdfBlobA4DoisPlanners, baixarBlob } = await import('../../pdf/capturarCardComoPdf')
+			const blob = await gerarPdfBlobA4DoisPlanners(frenteImpressaoRef.current, versoImpressaoRef.current)
+			baixarBlob(blob, 'scaffold-planner-diario-a4-2-planners.pdf')
+		} finally {
+			setGerandoPdf(false)
+		}
+	}
+
 	return (
 		<div>
+			<CartoesImprimiveis frenteRef={frenteImpressaoRef} versoRef={versoImpressaoRef} foraDaTela />
+
 			<DateNav
 				data={dataAtual}
 				onChange={mudarData}
@@ -69,6 +106,9 @@ export function PlannerDiario() {
 				onToggleExpandido={() => setExpandido((e) => !e)}
 				modoVisualizacao={modoVisualizacao}
 				onAlternarModoVisualizacao={alternarModoVisualizacao}
+				onBaixarA5={baixarA5}
+				onBaixarA4={baixarA4}
+				baixandoPdf={gerandoPdf}
 			/>
 
 			<AnimatePresence mode="wait" custom={direcao} initial={false}>
