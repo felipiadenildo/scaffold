@@ -11,7 +11,7 @@ export function Catalogo() {
 		<div>
 			<h1 className="text-2xl font-bold">Scaffold</h1>
 			<p className="mt-2 max-w-2xl text-ink-soft">
-				Impresso, planilha, Notion ou app — não importa o formato por trás. Escolha uma ferramenta abaixo.
+				Ferramentas para organizar o dia, o dinheiro e a rotina. Escolha por onde começar.
 			</p>
 
 			<div className="mt-8 flex flex-col gap-4">
@@ -22,7 +22,7 @@ export function Catalogo() {
 							className="paper-grain block rounded-scaffold-lg border border-border bg-paper p-6 text-paper-ink shadow-paper transition-shadow hover:shadow-lg"
 						>
 							<div className="flex flex-wrap items-center gap-2">
-								<span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-accent-ink">Pronto pra usar</span>
+								<span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-accent-ink">Pronto para usar</span>
 								<CategoriaBadge categoria={item.categoria} />
 							</div>
 							<h2 className="mt-3 text-xl font-bold">{item.nome}</h2>
@@ -33,9 +33,9 @@ export function Catalogo() {
 				))}
 			</div>
 
-			<h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">Em desenvolvimento e testes</h2>
+			<h2 className="mt-10 text-sm font-semibold uppercase tracking-wide text-ink-soft">Em desenvolvimento</h2>
 			<p className="mt-1 max-w-2xl text-sm text-ink-soft">
-				Protótipos de trabalho — funcionam, mas o design e o conteúdo ainda vão mudar.
+				Já dá pra usar, mas o design e o conteúdo ainda podem mudar.
 			</p>
 			<div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
 				{emTeste.map((item, i) => (

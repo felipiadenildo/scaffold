@@ -25,13 +25,17 @@ export const categoriaCor: Record<Categoria, string> = {
 
 // Fonte única da vitrine: adicionar uma solução nova é adicionar uma entrada aqui,
 // não escrever uma página de índice nova. Ver app/ORGANIZACAO.md §6.2.
+//
+// Convenção de `acaoPrincipal`: sempre "verbo + objeto concreto", descrevendo o que
+// o clique faz. Evitar estados ("Em breve") misturados com ações, e evitar repetir
+// o mesmo verbo genérico em itens diferentes quando o destino é outro.
 export const catalogo: ItemCatalogo[] = [
 	{
 		slug: 'planners',
 		nome: 'Planners',
 		categoria: 'web',
 		status: 'pronto',
-		resumo: 'O dia em blocos por período, frente e verso — humor, hábitos e protocolo de dia difícil. Diário pronto; semanal e mensal vêm depois.',
+		resumo: 'O dia em blocos por período, frente e verso. Tem humor, hábitos e protocolo de dia difícil. O diário já está pronto, e semanal e mensal vêm depois.',
 		rota: '/planners',
 		acaoPrincipal: 'Abrir o Planner',
 	},
@@ -40,7 +44,7 @@ export const catalogo: ItemCatalogo[] = [
 		nome: 'Lista de Compras',
 		categoria: 'web',
 		status: 'em-teste',
-		resumo: 'Semanal, pontual ou mensal — escolha o tipo de lista certo pro momento.',
+		resumo: 'Semanal, pontual ou mensal. Escolha o tipo de lista certo pro momento.',
 		rota: '/lista-compras',
 		acaoPrincipal: 'Escolher lista',
 	},
@@ -49,7 +53,7 @@ export const catalogo: ItemCatalogo[] = [
 		nome: 'Dopamine Menu',
 		categoria: 'web',
 		status: 'em-teste',
-		resumo: 'Uma sugestão por vez, por categoria — não a lista inteira de uma vez.',
+		resumo: 'Uma sugestão por vez, por categoria, em vez da lista inteira de uma vez.',
 		rota: '/dopamine-menu',
 		acaoPrincipal: 'Escolher categoria',
 	},
@@ -58,7 +62,7 @@ export const catalogo: ItemCatalogo[] = [
 		nome: 'Meal Prep',
 		categoria: 'impresso',
 		status: 'em-teste',
-		resumo: 'Estoque do freezer: o que tem, desde quando, quantas porções.',
+		resumo: 'Estoque do freezer: o que tem, desde quando e quantas porções.',
 		rota: '/meal-prep',
 		acaoPrincipal: 'Ver estoque',
 	},
@@ -67,26 +71,29 @@ export const catalogo: ItemCatalogo[] = [
 		nome: 'Cartão SOS',
 		categoria: 'web',
 		status: 'em-teste',
-		resumo: 'Em desenvolvimento — design definitivo ainda não iniciado.',
+		resumo: 'Um cartão pra consultar em momentos difíceis, com o que ajuda a atravessar sem decidir no escuro. Ainda em desenvolvimento, o design definitivo não começou.',
 		rota: '/cartao-sos',
-		acaoPrincipal: 'Em breve',
+		// "Em breve" misturava estado com ação. Aqui o clique leva pra uma tela do cartão,
+		// então o texto descreve essa ação.
+		acaoPrincipal: 'Conhecer o cartão',
 	},
 	{
 		slug: 'financeiro',
 		nome: 'Financeiro',
 		categoria: 'notion-sheets',
 		status: 'em-teste',
-		resumo: 'Estrutura de planilha pra visibilidade de gasto e controle de impulso.',
+		resumo: 'Estrutura de planilha pra dar visibilidade ao gasto e ajudar no controle de impulso.',
 		rota: '/financeiro',
-		acaoPrincipal: 'Ver modelo',
+		// Antes repetia "Ver modelo" com o item de baixo. Agora diz o que o clique abre.
+		acaoPrincipal: 'Abrir planilha',
 	},
 	{
 		slug: 'viagem',
 		nome: 'Viagem',
 		categoria: 'notion-sheets',
 		status: 'em-teste',
-		resumo: 'Checklists de ônibus e voo, mais checklist de verificação de IA.',
+		resumo: 'Checklists de ônibus e voo, mais um checklist de verificação de IA.',
 		rota: '/viagem',
-		acaoPrincipal: 'Ver modelo',
+		acaoPrincipal: 'Abrir checklist',
 	},
 ]

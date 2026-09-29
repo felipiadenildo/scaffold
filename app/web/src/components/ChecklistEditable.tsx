@@ -27,6 +27,8 @@ export function ChecklistEditable({
 
 	function adicionar() {
 		const label = novoItem.trim()
+		// Ignora vazio e duplicado. O key da lista depende de label único, então essa
+		// checagem também protege a renderização do <motion.li>.
 		if (!label || itens.includes(label)) return
 		onItensChange([...itens, label])
 		setNovoItem('')
@@ -34,8 +36,10 @@ export function ChecklistEditable({
 
 	function remover(label: string) {
 		onItensChange(itens.filter((item) => item !== label))
+		// Limpa a marcação órfã sem criar variável morta no destructuring.
 		if (label in marcados) {
-			const { [label]: _removido, ...resto } = marcados
+			const resto = { ...marcados }
+			delete resto[label]
 			onMarcadosChange(resto)
 		}
 	}
@@ -71,6 +75,7 @@ export function ChecklistEditable({
 									onChange={() => alternarMarcado(label)}
 									style={{ accentColor: cor }}
 									className="h-4 w-4 shrink-0"
+									// Não há <label> associado, então o aria-label carrega o nome acessível.
 									aria-label={label}
 								/>
 								<span className="relative flex-1 py-0.5">
@@ -88,7 +93,8 @@ export function ChecklistEditable({
 										type="button"
 										onClick={() => remover(label)}
 										aria-label={`Remover "${label}"`}
-										className="shrink-0 rounded-scaffold p-0.5 text-ink-soft opacity-0 transition-opacity hover:text-ink group-hover:opacity-100 focus-visible:opacity-100"
+										// Sempre visível no mobile (sem hover); só esconde no desktop até o hover/foco.
+										className="shrink-0 rounded-scaffold p-0.5 text-ink-soft opacity-100 transition-opacity hover:text-ink focus-visible:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
 									>
 										<X className="h-3.5 w-3.5" />
 									</button>
@@ -112,13 +118,15 @@ export function ChecklistEditable({
 						}}
 						placeholder="Adicionar item…"
 						aria-label={`Adicionar item em ${titulo}`}
+						autoComplete="off"
 						className="min-w-0 flex-1 rounded-scaffold border border-border bg-transparent px-2 py-1 text-sm outline-none placeholder:text-ink-soft"
 					/>
 					<button
 						type="button"
 						onClick={adicionar}
+						disabled={!novoItem.trim()}
 						aria-label="Adicionar"
-						className="shrink-0 rounded-scaffold border border-border p-1.5 text-ink-soft transition-[color,box-shadow] hover:text-ink hover:shadow-raised"
+						className="shrink-0 rounded-scaffold border border-border p-1.5 text-ink-soft transition-[color,box-shadow] hover:text-ink hover:shadow-raised disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<Plus className="h-3.5 w-3.5" />
 					</button>

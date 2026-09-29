@@ -37,7 +37,7 @@ export function FrenteDiario({
 }) {
 	return (
 		<div className="flex h-full flex-col">
-			<div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 border-b-2 border-paper-ink pb-3">
+			<div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 ">
 				{modoImpressao ? (
 					<div className="flex min-w-0 flex-1 items-baseline gap-3">
 						<span className="shrink-0 text-lg font-bold">Scaffold</span>

@@ -20,6 +20,16 @@ const ImprimirDiarioA4 = lazy(() =>
 	import('./pages/planners/print/ImprimirDiarioA4').then((m) => ({ default: m.ImprimirDiarioA4 })),
 )
 
+// Fallback das rotas de impressão. Sem isso, a aba nova abre em branco enquanto o
+// chunk do gerador de PDF carrega, e o usuário acha que quebrou.
+function CarregandoImpressao() {
+	return (
+		<div className="flex min-h-svh items-center justify-center p-8 text-sm text-ink-soft">
+			Carregando editor de impressão…
+		</div>
+	)
+}
+
 function App() {
 	return (
 		<Routes>
@@ -27,7 +37,7 @@ function App() {
 			<Route
 				path="planners/diario/imprimir-a5"
 				element={
-					<Suspense fallback={null}>
+					<Suspense fallback={<CarregandoImpressao />}>
 						<ImprimirDiarioA5 />
 					</Suspense>
 				}
@@ -35,7 +45,7 @@ function App() {
 			<Route
 				path="planners/diario/imprimir-a4"
 				element={
-					<Suspense fallback={null}>
+					<Suspense fallback={<CarregandoImpressao />}>
 						<ImprimirDiarioA4 />
 					</Suspense>
 				}
@@ -53,6 +63,12 @@ function App() {
 				<Route path="cartao-sos" element={<CartaoSos />} />
 				<Route path="financeiro" element={<Financeiro />} />
 				<Route path="viagem" element={<Viagem />} />
+
+				{/*
+					URL inválida volta pro catálogo em vez de renderizar <Outlet /> vazio.
+					Se um dia houver 404 dedicado, trocar por <Route path="*" element={<NaoEncontrado />} />.
+				*/}
+				<Route path="*" element={<Navigate to="/" replace />} />
 			</Route>
 		</Routes>
 	)
