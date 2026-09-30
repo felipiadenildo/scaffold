@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Plus, X, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
 import type { ItemLista } from '../data/planner/tipos'
+import { useIdioma } from '../i18n/useIdioma'
 
 // Lista com checkbox. Marcar/desmarcar é sempre por dia; adicionar/remover item só aparece quando
 // `onAdicionar`/`onRemover` vêm preenchidos — quem decide se a lista pode ser editada naquele dia
@@ -29,6 +30,7 @@ export function ChecklistEditable({
 	corFundo?: string
 	somenteLeitura?: boolean
 }) {
+	const { t } = useIdioma()
 	const [novoItem, setNovoItem] = useState('')
 	const podeAdicionar = !somenteLeitura && !!onAdicionar
 	const podeRemover = !somenteLeitura && !!onRemover
@@ -91,7 +93,7 @@ export function ChecklistEditable({
 									<button
 										type="button"
 										onClick={() => onRemover?.(item.id)}
-										aria-label={`Remover "${item.texto}"`}
+										aria-label={t.planner.removerItem(item.texto)}
 										// Sempre visível no mobile (sem hover); só esconde no desktop até o hover/foco.
 										className="shrink-0 rounded-scaffold p-0.5 text-ink-soft opacity-100 transition-opacity hover:text-ink focus-visible:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
 									>
@@ -115,8 +117,8 @@ export function ChecklistEditable({
 								adicionar()
 							}
 						}}
-						placeholder="Adicionar item…"
-						aria-label={`Adicionar item em ${titulo}`}
+						placeholder={t.planner.adicionarItemPlaceholder}
+						aria-label={t.planner.adicionarItemEm(titulo)}
 						autoComplete="off"
 						className="min-w-0 flex-1 rounded-scaffold border border-border bg-transparent px-2 py-1 text-sm outline-none placeholder:text-ink-soft"
 					/>
@@ -124,7 +126,7 @@ export function ChecklistEditable({
 						type="button"
 						onClick={adicionar}
 						disabled={!novoItem.trim()}
-						aria-label="Adicionar"
+						aria-label={t.planner.adicionar}
 						className="shrink-0 rounded-scaffold border border-border p-1.5 text-ink-soft transition-[color,box-shadow] hover:text-ink hover:shadow-raised disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						<Plus className="h-3.5 w-3.5" />

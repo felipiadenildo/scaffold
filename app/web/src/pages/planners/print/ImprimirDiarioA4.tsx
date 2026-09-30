@@ -3,11 +3,13 @@ import { baixarBlob, gerarPdfBlobA4DoisPlanners, registrarGanchoDeTeste } from '
 import { paraISO } from '../../../lib/formatarData'
 import { CartoesImprimiveis } from '../../../pdf/CartoesImprimiveis'
 import { useConteudoImpressao } from '../../../pdf/useConteudoImpressao'
+import { useIdioma } from '../../../i18n/useIdioma'
 import './imprimir.css'
 
 // Página de fallback (link direto): imprime a folha em branco com a estrutura de hoje.
 export function ImprimirDiarioA4() {
 	const conteudo = useConteudoImpressao(paraISO(new Date()))
+	const { t } = useIdioma()
 	const [gerando, setGerando] = useState(false)
 
 	const frenteRef = useRef<HTMLDivElement>(null)
@@ -34,12 +36,9 @@ export function ImprimirDiarioA4() {
 	return (
 		<div className="pagina-preview">
 			<button type="button" onClick={baixarPdf} disabled={gerando} className="botao-baixar no-print">
-				{gerando ? 'Gerando…' : 'Baixar PDF (A4, 2 planners)'}
+				{gerando ? t.impressao.gerando : t.impressao.baixarPdfA4}
 			</button>
-			<p className="no-print aviso-a4">
-				A folha sai deitada: a página 1 tem as duas frentes lado a lado, a página 2 os dois versos — corte ao
-				meio e cada metade vira um planner A5 completo.
-			</p>
+			<p className="no-print aviso-a4">{t.impressao.avisoA4}</p>
 
 			<CartoesImprimiveis conteudo={conteudo} frenteRef={frenteRef} versoRef={versoRef} />
 		</div>

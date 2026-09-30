@@ -2,6 +2,7 @@ import { Pencil } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
 import type { BlocoVisual } from '../data/planner/cores'
 import type { ConteudoBloco } from '../data/planner/tipos'
+import { useIdioma } from '../i18n/useIdioma'
 import { LinhasImpressao } from './LinhasImpressao'
 
 export type ValorSecao = ConteudoBloco
@@ -21,6 +22,7 @@ export function SecaoDia({
 	somenteLeitura?: boolean
 	modoImpressao?: boolean
 }) {
+	const { t } = useIdioma()
 	const [editandoNome, setEditandoNome] = useState(false)
 	const [rascunhoNome, setRascunhoNome] = useState(secao.nome)
 
@@ -77,7 +79,7 @@ export function SecaoDia({
 						value={valor.tituloExtra}
 						onChange={(e) => onChange({ ...valor, tituloExtra: e.target.value })}
 						disabled={somenteLeitura}
-						placeholder="+ adicionar título (evento, dia especial…)"
+						placeholder={t.planner.tituloExtraPlaceholder}
 						className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink-soft/70 disabled:placeholder:text-ink-soft/40"
 					/>
 				)}
@@ -89,7 +91,7 @@ export function SecaoDia({
 					value={valor.texto}
 					onChange={(e) => onChange({ ...valor, texto: e.target.value })}
 					disabled={somenteLeitura}
-					placeholder="Escreva aqui…"
+					placeholder={t.planner.escrevaAqui}
 					className="paper-lines block min-h-24 w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft"
 				/>
 			)}

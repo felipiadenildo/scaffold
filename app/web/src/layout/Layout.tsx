@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useIdioma } from '../i18n/useIdioma'
 import { HeaderSlotContext } from './headerSlot'
+import { SeletorIdioma } from './SeletorIdioma'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Layout() {
 	const [headerExtra, setHeaderExtra] = useState<ReactNode>(null)
 	const { pathname } = useLocation()
+	const { t } = useIdioma()
 
 	// "Modo foco": mais espaço, menos ruído visual, pra quando a pessoa está dentro de uma
 	// solução (não navegando o catálogo). Derivado da rota, não de estado — sem isso, tem que
@@ -23,12 +26,12 @@ export function Layout() {
 				{!emFoco && (
 					<header className="border-b border-border">
 						{/*
-							Três zonas: logo (fixo) | slot (flexível, truncável) | toggle (fixo).
+							Três zonas: logo (fixo) | slot (flexível, truncável) | ações (fixo: idioma, tema).
 							`min-w-0` no slot é o que permite `truncate` funcionar dentro de flex;
-							sem ele, o conteúdo do slot estoura e empurra o toggle.
+							sem ele, o conteúdo do slot estoura e empurra as ações.
 						*/}
 						<div className="mx-auto flex h-header max-w-4xl items-center gap-4 px-4">
-							<nav aria-label="Navegação principal" className="shrink-0">
+							<nav aria-label={t.app.navegacaoPrincipal} className="shrink-0">
 								<Link to="/" className="rounded text-lg font-bold tracking-tight">
 									Scaffold <span className="text-accent">app</span>
 								</Link>
@@ -42,7 +45,8 @@ export function Layout() {
 							*/}
 							<div className="min-w-0 flex-1 truncate">{headerExtra}</div>
 
-							<div className="shrink-0">
+							<div className="flex shrink-0 items-center gap-2">
+								<SeletorIdioma />
 								<ThemeToggle />
 							</div>
 						</div>
@@ -63,12 +67,12 @@ export function Layout() {
 				{!emFoco && (
 					<footer className="border-t border-border">
 						<div className="mx-auto max-w-4xl px-4 py-6 text-sm text-ink-soft">
-							Versão em construção. Consulte o{' '}
+							{t.app.rodapeAviso}{' '}
 							<a
 								href="https://felipiadenildo.github.io/scaffold/"
 								className="rounded underline decoration-border underline-offset-2 hover:text-ink"
 							>
-								manual completo
+								{t.app.rodapeManual}
 							</a>
 							.
 						</div>

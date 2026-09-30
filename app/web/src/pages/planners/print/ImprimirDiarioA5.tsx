@@ -3,11 +3,13 @@ import { baixarBlob, gerarPdfBlobDeElementos, registrarGanchoDeTeste } from '../
 import { paraISO } from '../../../lib/formatarData'
 import { CartoesImprimiveis } from '../../../pdf/CartoesImprimiveis'
 import { useConteudoImpressao } from '../../../pdf/useConteudoImpressao'
+import { useIdioma } from '../../../i18n/useIdioma'
 import './imprimir.css'
 
 // Página de fallback (link direto): imprime a folha em branco com a estrutura de hoje.
 export function ImprimirDiarioA5() {
 	const conteudo = useConteudoImpressao(paraISO(new Date()))
+	const { t } = useIdioma()
 	const [gerando, setGerando] = useState(false)
 
 	const frenteRef = useRef<HTMLDivElement>(null)
@@ -35,7 +37,7 @@ export function ImprimirDiarioA5() {
 	return (
 		<div className="pagina-preview">
 			<button type="button" onClick={baixarPdf} disabled={gerando} className="botao-baixar no-print">
-				{gerando ? 'Gerando…' : 'Baixar PDF'}
+				{gerando ? t.impressao.gerando : t.impressao.baixarPdf}
 			</button>
 
 			<CartoesImprimiveis conteudo={conteudo} frenteRef={frenteRef} versoRef={versoRef} />

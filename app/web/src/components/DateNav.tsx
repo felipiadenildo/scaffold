@@ -1,6 +1,7 @@
 import { Calendar, ChevronDown, FlipHorizontal2, Maximize2, Minimize2 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useMenuSuspenso } from '../hooks/useMenuSuspenso'
+import { useIdioma } from '../i18n/useIdioma'
 import { PlannerDownloadMenu } from './PlannerDownloadMenu'
 import { ehMesmoDia, paraISO } from '../lib/formatarData'
 
@@ -9,10 +10,10 @@ import { ehMesmoDia, paraISO } from '../lib/formatarData'
 // Movido de PlannersHub.tsx: a navegação contextual subiu do header pro conteúdo porque o modo
 // foco (Layout.tsx) faz o header sumir por completo em /planners/*.
 const visoes = [
-	{ slug: 'diario', nome: 'Diário', pronta: true },
-	{ slug: 'semanal', nome: 'Semanal', pronta: false },
-	{ slug: 'mensal', nome: 'Mensal', pronta: false },
-]
+	{ slug: 'diario', pronta: true },
+	{ slug: 'semanal', pronta: false },
+	{ slug: 'mensal', pronta: false },
+] as const
 
 // Classe de largura compartilhada com FolhaFlip.tsx — mesmo token (--scaffold-folha-largura-
 // -expandida em tokens.css), pra barra e folha crescerem juntas sem duplicar o número em dois
@@ -25,22 +26,13 @@ export const CLASSE_LARGURA_EXPANDIDA = 'max-w-[min(100%,var(--scaffold-folha-la
 // PlannerDownloadMenu. Sem "em breve" no hover (D7): toque não tem hover confiável, então a
 // indisponibilidade é só a cor cinza e o cursor default.
 function SeletorVisaoMobile({ visaoAtual }: { visaoAtual: (typeof visoes)[number] }) {
-	const detalhesRef = useRef<HTMLDetailsElement>(null)
-
-	useEffect(() => {
-		function aoClicarFora(evento: MouseEvent) {
-			if (detalhesRef.current && !detalhesRef.current.contains(evento.target as Node)) {
-				detalhesRef.current.open = false
-			}
-		}
-		document.addEventListener('mousedown', aoClicarFora)
-		return () => document.removeEventListener('mousedown', aoClicarFora)
-	}, [])
+	const { ref: detalhesRef, fechar } = useMenuSuspenso()
+	const { t } = useIdioma()
 
 	return (
 		<details ref={detalhesRef} className="group relative shrink-0">
 			<summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-ink [&::-webkit-details-marker]:hidden">
-				{visaoAtual.nome}
+				{t.planner.visoes[visaoAtual.slug]}
 				<ChevronDown className="h-3 w-3 transition-transform group-open:rotate-180" aria-hidden="true" />
 			</summary>
 
@@ -50,19 +42,17 @@ function SeletorVisaoMobile({ visaoAtual }: { visaoAtual: (typeof visoes)[number
 						<Link
 							key={v.slug}
 							to={`/planners/${v.slug}`}
-							onClick={() => {
-								if (detalhesRef.current) detalhesRef.current.open = false
-							}}
+							onClick={fechar}
 							className={
 								'rounded-scaffold px-2.5 py-1.5 text-sm font-medium transition-colors ' +
 								(v.slug === visaoAtual.slug ? 'bg-accent text-accent-ink' : 'text-ink hover:bg-bg')
 							}
 						>
-							{v.nome}
+							{t.planner.visoes[v.slug]}
 						</Link>
 					) : (
 						<span key={v.slug} className="cursor-default rounded-scaffold px-2.5 py-1.5 text-sm text-ink-soft/50">
-							{v.nome}
+							{t.planner.visoes[v.slug]}
 						</span>
 					),
 				)}
@@ -93,6 +83,7 @@ export function DateNav({
 	baixandoPdf: boolean
 }) {
 	const { pathname } = useLocation()
+	const { t } = useIdioma()
 	const ehHoje = ehMesmoDia(data, new Date())
 	const IconeAlternarLargura = expandido ? Minimize2 : Maximize2
 	const emNaoGirar = modoVisualizacao === 'nao-girar'
@@ -121,7 +112,7 @@ export function DateNav({
 							|
 						</span>
 						<Link to="/" className="text-ink-soft transition-colors hover:text-ink">
-							Catálogo
+							{t.catalogo.inicio}
 						</Link>
 					</div>
 
@@ -136,15 +127,15 @@ export function DateNav({
 										(isActive ? 'bg-accent text-accent-ink' : 'text-ink-soft hover:text-ink')
 									}
 								>
-									{v.nome}
+									{t.planner.visoes[v.slug]}
 								</NavLink>
 							) : (
 								<span
 									key={v.slug}
-									title="Em breve"
+									title={t.planner.emBreve}
 									className="cursor-default rounded-full px-2.5 py-1.5 text-sm text-ink-soft/50"
 								>
-									{v.nome}
+									{t.planner.visoes[v.slug]}
 								</span>
 							),
 						)}
@@ -167,8 +158,8 @@ export function DateNav({
 					type="button"
 					onClick={onToggleExpandido}
 					aria-pressed={expandido}
-					aria-label="Ajustar largura"
-					title="Ajustar largura"
+					aria-label={t.planner.ajustarLargura}
+					title={t.planner.ajustarLargura}
 					className="shrink-0 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink"
 				>
 					<IconeAlternarLargura className="h-3.5 w-3.5" aria-hidden="true" />
@@ -178,8 +169,8 @@ export function DateNav({
 					type="button"
 					onClick={onAlternarModoVisualizacao}
 					aria-pressed={emNaoGirar}
-					aria-label="Modo de visualização"
-					title="Modo de visualização"
+					aria-label={t.planner.modoVisualizacao}
+					title={t.planner.modoVisualizacao}
 					className={
 						'shrink-0 rounded-full border p-1.5 transition-colors ' +
 						(emNaoGirar ? 'border-accent bg-accent text-accent-ink' : 'border-border text-ink-soft hover:text-ink')
@@ -196,7 +187,7 @@ export function DateNav({
 						onClick={() => onChange(new Date())}
 						className="shrink-0 rounded-full border border-border px-2.5 py-1 text-xs text-ink-soft transition-colors hover:text-ink"
 					>
-						Hoje
+						{t.planner.hoje}
 					</button>
 				)}
 
@@ -215,8 +206,8 @@ export function DateNav({
 							const [ano, mes, dia] = e.target.value.split('-').map(Number)
 							onChange(new Date(ano, mes - 1, dia))
 						}}
-						aria-label="Calendário"
-						title="Calendário"
+						aria-label={t.planner.calendario}
+						title={t.planner.calendario}
 						className="peer absolute inset-0 h-full w-full cursor-pointer rounded-full opacity-0 focus-visible:opacity-100"
 					/>
 					<div

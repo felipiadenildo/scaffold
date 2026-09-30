@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CategoriaBadge } from './CategoriaBadge'
 import type { Categoria } from '../data/catalogo'
+import { useIdioma } from '../i18n/useIdioma'
 
 export function PageHeader({
 	titulo,
@@ -15,6 +16,8 @@ export function PageHeader({
 	// Ação opcional alinhada à direita do título. Se não vier, nada é renderizado.
 	acao?: ReactNode
 }) {
+	const { t } = useIdioma()
+
 	return (
 		// <header> é o cabeçalho da página. mb-10 dá respiro maior do que o mb-8 anterior
 		// pra separar visualmente a barra superior do conteúdo.
@@ -23,12 +26,12 @@ export function PageHeader({
 				Breadcrumb: a página atual não é link (é onde o usuário já está).
 				O separador é aria-hidden pra não ser lido como "barra".
 			*/}
-			<nav aria-label="Trilha de navegação" className="flex items-center gap-1.5 text-xs">
+			<nav aria-label={t.catalogo.trilha} className="flex items-center gap-1.5 text-xs">
 				<Link
 					to="/"
 					className="rounded text-ink-soft transition-colors hover:text-ink focus-visible:text-ink"
 				>
-					Catálogo
+					{t.catalogo.inicio}
 				</Link>
 				<span aria-hidden="true" className="text-ink-soft/60">
 					/

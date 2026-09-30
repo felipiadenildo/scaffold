@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { CLASSE_LARGURA_EXPANDIDA, CLASSE_LARGURA_NORMAL } from '../../components/DateNav'
 import { DiaStepper } from '../../components/DiaStepper'
+import { useIdioma } from '../../i18n/useIdioma'
 import { FrenteDiario, type PropsFrenteDiario } from './FrenteDiario'
 import { VersoDiario, type PropsVersoDiario } from './VersoDiario'
 
@@ -35,6 +36,7 @@ export function FolhaFlip({
 	verso: PropsVersoDiario
 }) {
 	const { somenteLeitura } = frente
+	const { t } = useIdioma()
 	const emGirar = modoVisualizacao === 'girar'
 	// Ângulo continua sendo derivado de `lado` fora daqui (em Diario.tsx) — precisa sobreviver à
 	// troca de dia, então não pode reiniciar sempre que este componente remonta.
@@ -139,7 +141,7 @@ export function FolhaFlip({
 						className="absolute -top-3 right-4 z-10 flex items-center gap-1.5 rounded-full border border-border bg-bg-raised px-3 py-1.5 text-xs font-medium text-ink-soft shadow-raised transition-colors hover:text-ink"
 					>
 						<FlipHorizontal2 className="h-3.5 w-3.5" aria-hidden="true" />
-						Ver {lado === 'frente' ? 'verso' : 'frente'}
+						{lado === 'frente' ? t.planner.verVerso : t.planner.verFrente}
 					</motion.button>
 				)}
 			</AnimatePresence>
@@ -174,7 +176,7 @@ export function FolhaFlip({
 				<button
 					type="button"
 					onClick={() => onGirar(-1)}
-					aria-label="Virar página pra esquerda"
+					aria-label={t.planner.virarEsquerda}
 					className="absolute left-0 top-0 z-10 flex h-full w-5 items-center justify-start rounded-l-xl bg-linear-to-r from-paper-ink/10 to-transparent opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 sm:w-7"
 				>
 					<ChevronLeft className="h-4 w-4 text-paper-ink/70" aria-hidden="true" />
@@ -184,7 +186,7 @@ export function FolhaFlip({
 				<button
 					type="button"
 					onClick={() => onGirar(1)}
-					aria-label="Virar página pra direita"
+					aria-label={t.planner.virarDireita}
 					className="absolute right-0 top-0 z-10 flex h-full w-5 items-center justify-end rounded-r-xl bg-linear-to-l from-paper-ink/10 to-transparent opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 sm:w-7"
 				>
 					<ChevronRight className="h-4 w-4 text-paper-ink/70" aria-hidden="true" />

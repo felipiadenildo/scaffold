@@ -2,6 +2,7 @@ import { Anchor, ListChecks, NotebookPen } from 'lucide-react'
 import { ChecklistEditable } from '../../components/ChecklistEditable'
 import { LinhasImpressao } from '../../components/LinhasImpressao'
 import type { ItemLista } from '../../data/planner/tipos'
+import { useIdioma } from '../../i18n/useIdioma'
 
 // Uma lista do verso (hábitos ou "não pode deixar de fazer"). `onAdicionar`/`onRemover` ausentes =
 // lista travada naquele dia (dias passados), só marcar/desmarcar.
@@ -31,6 +32,7 @@ export function VersoDiario({
 	somenteLeitura,
 	modoImpressao,
 }: PropsVersoDiario) {
+	const { t } = useIdioma()
 	const duasListas = habitos.mostrar && importantes.mostrar
 
 	return (
@@ -38,7 +40,7 @@ export function VersoDiario({
 			<div className="flex flex-1 flex-col rounded-scaffold border border-border p-4">
 				<h3 className="flex items-center gap-1.5 text-sm font-semibold text-paper-ink-soft">
 					<NotebookPen className="h-4 w-4" aria-hidden="true" />
-					Anotações
+					{t.planner.anotacoes}
 				</h3>
 				{modoImpressao ? (
 					<LinhasImpressao className="mt-2 min-h-24 px-0.5" />
@@ -47,7 +49,7 @@ export function VersoDiario({
 						value={anotacoes}
 						onChange={(e) => onAnotacoesChange(e.target.value)}
 						disabled={somenteLeitura}
-						placeholder="Qualquer pensamento que atravessar o dia, anota aqui."
+						placeholder={t.planner.anotacoesPlaceholder}
 						className="paper-lines mt-2 min-h-24 w-full flex-1 resize-none bg-transparent px-0.5 text-sm outline-none placeholder:text-ink-soft"
 					/>
 				)}
@@ -57,7 +59,7 @@ export function VersoDiario({
 				<div className={'mt-4 grid grid-cols-1 gap-3' + (duasListas ? ' sm:grid-cols-2' : '')}>
 					{habitos.mostrar && (
 						<ChecklistEditable
-							titulo="Habit tracker"
+							titulo={t.planner.habitos}
 							icone={ListChecks}
 							itens={habitos.itens}
 							marcados={habitos.marcados}
@@ -70,7 +72,7 @@ export function VersoDiario({
 					)}
 					{importantes.mostrar && (
 						<ChecklistEditable
-							titulo="Não pode deixar de fazer:"
+							titulo={t.planner.importantes}
 							icone={Anchor}
 							itens={importantes.itens}
 							marcados={importantes.marcados}

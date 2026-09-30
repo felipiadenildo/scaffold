@@ -1,5 +1,6 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { useIdioma } from './i18n/useIdioma'
 import { Layout } from './layout/Layout'
 import { Catalogo } from './pages/Catalogo'
 import { CartaoSos } from './pages/CartaoSos'
@@ -23,14 +24,22 @@ const ImprimirDiarioA4 = lazy(() =>
 // Fallback das rotas de impressão. Sem isso, a aba nova abre em branco enquanto o
 // chunk do gerador de PDF carrega, e o usuário acha que quebrou.
 function CarregandoImpressao() {
+	const { t } = useIdioma()
 	return (
 		<div className="flex min-h-svh items-center justify-center p-8 text-sm text-ink-soft">
-			Carregando editor de impressão…
+			{t.app.carregandoImpressao}
 		</div>
 	)
 }
 
 function App() {
+	const { locale } = useIdioma()
+
+	// Leitor de tela e hifenização do navegador seguem o idioma escolhido.
+	useEffect(() => {
+		document.documentElement.lang = locale
+	}, [locale])
+
 	return (
 		<Routes>
 			{/* Fora do Layout de propósito — é uma folha pra imprimir, sem cabeçalho/rodapé do app. */}

@@ -1,5 +1,6 @@
 import { ChevronDown, File, Files, FileDown } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useMenuSuspenso } from '../hooks/useMenuSuspenso'
+import { useIdioma } from '../i18n/useIdioma'
 
 // Dropdown de impressão específico do Planner — diferente do DownloadPrint genérico (usado pelos
 // itens "em desenvolvimento e testes"), porque aqui as opções são formato (A5 solo / A4 com 2
@@ -15,29 +16,20 @@ export function PlannerDownloadMenu({
 	onBaixarA4: () => void
 	baixando: boolean
 }) {
-	const detalhesRef = useRef<HTMLDetailsElement>(null)
+	const { ref: detalhesRef, fechar } = useMenuSuspenso()
+	const { t } = useIdioma()
+	const rotulo = baixando ? t.impressao.gerandoPdf : t.impressao.imprimir
 
 	function fecharEBaixar(baixar: () => void) {
-		if (detalhesRef.current) detalhesRef.current.open = false
+		fechar()
 		baixar()
 	}
-
-	useEffect(() => {
-		// <details> nativo não fecha sozinho ao clicar fora — só ao clicar de novo no <summary>.
-		function aoClicarFora(evento: MouseEvent) {
-			if (detalhesRef.current && !detalhesRef.current.contains(evento.target as Node)) {
-				detalhesRef.current.open = false
-			}
-		}
-		document.addEventListener('mousedown', aoClicarFora)
-		return () => document.removeEventListener('mousedown', aoClicarFora)
-	}, [])
 
 	return (
 		<details ref={detalhesRef} className="group relative shrink-0">
 			<summary
-				aria-label={baixando ? 'Gerando PDF…' : 'Imprimir'}
-				title={baixando ? 'Gerando PDF…' : 'Imprimir'}
+				aria-label={rotulo}
+				title={rotulo}
 				className="flex cursor-pointer list-none items-center gap-1 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink [&::-webkit-details-marker]:hidden aria-disabled:cursor-wait aria-disabled:opacity-60"
 				aria-disabled={baixando}
 			>
@@ -63,7 +55,7 @@ export function PlannerDownloadMenu({
 						aria-hidden="true"
 					/>
 					<span className="flex-1 text-left">A5</span>
-					<span className="text-ink-soft">1 por folha</span>
+					<span className="text-ink-soft">{t.impressao.umPorFolha}</span>
 				</button>
 
 				<button
@@ -77,7 +69,7 @@ export function PlannerDownloadMenu({
 						aria-hidden="true"
 					/>
 					<span className="flex-1 text-left">A4</span>
-					<span className="text-ink-soft">2 por folha</span>
+					<span className="text-ink-soft">{t.impressao.doisPorFolha}</span>
 				</button>
 			</div>
 		</details>

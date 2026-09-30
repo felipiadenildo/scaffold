@@ -4,6 +4,7 @@ import { MoodPicker } from '../../components/MoodPicker'
 import { SecaoDia, type ValorSecao } from '../../components/SecaoDia'
 import type { BlocoVisual } from '../../data/planner/cores'
 import type { Humor } from '../../data/planner/humor'
+import { useIdioma } from '../../i18n/useIdioma'
 
 export interface PropsFrenteDiario {
 	data: Date
@@ -43,6 +44,8 @@ export function FrenteDiario({
 	somenteLeitura,
 	modoImpressao,
 }: PropsFrenteDiario) {
+	const { t } = useIdioma()
+
 	return (
 		<div className="flex h-full flex-col">
 			<div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 ">
@@ -84,7 +87,7 @@ export function FrenteDiario({
 
 			{mostrarSobreDia && (
 				<div className="mt-4 flex shrink-0 items-center gap-2 border-t border-border pt-3">
-					<span className="text-sm font-medium text-paper-ink-soft">Sobre o dia:</span>
+					<span className="text-sm font-medium text-paper-ink-soft">{t.planner.sobreODia}</span>
 					{modoImpressao ? (
 						<div className="flex-1 border-b border-dotted border-paper-ink/40" />
 					) : (
@@ -92,7 +95,7 @@ export function FrenteDiario({
 							value={sobreDia}
 							onChange={(e) => onSobreDiaChange(e.target.value)}
 							disabled={somenteLeitura}
-							placeholder="Um resumo geral, uma vitória, o que quiser guardar…"
+							placeholder={t.planner.sobreODiaPlaceholder}
 							className="min-w-0 flex-1 border-b border-dashed border-border bg-transparent px-1 text-sm outline-none transition-colors placeholder:text-ink-soft focus:border-accent focus:border-solid"
 						/>
 					)}
