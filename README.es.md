@@ -24,6 +24,9 @@ Un manual de referencia y una app que lleva el manual a la práctica, para quien
 
 </div>
 
+> [!WARNING]
+> **Prototipo de concepto, proyecto en pausa.** La app es una prueba de concepto, no ha sido validada y no es para uso real. El desarrollo está en pausa y el proyecto quizá vuelva en el futuro con una versión mejor y más adecuada. El manual sigue disponible como material de referencia.
+
 ## Índice
 
 - [Acerca de](#acerca-de)

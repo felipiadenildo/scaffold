@@ -6,6 +6,10 @@ export const pt = {
 		rodapeAviso: 'Versão em construção. Consulte o',
 		rodapeManual: 'manual completo',
 		rodapeCodigo: 'Código-fonte',
+		prototipo: {
+			titulo: 'Protótipo de conceito, não é para uso.',
+			texto: 'Este app não foi validado: não guarde nada importante aqui. O projeto está pausado e talvez volte no futuro, numa versão melhor e mais adequada.',
+		},
 		carregandoImpressao: 'Carregando editor de impressão…',
 		fecharAviso: 'Fechar aviso',
 		desfazer: 'Desfazer',

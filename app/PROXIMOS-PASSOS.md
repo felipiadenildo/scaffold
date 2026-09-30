@@ -10,6 +10,19 @@ justificativa e referência.
 
 ---
 
+## Projeto pausado (30/09/2026)
+
+- O app está publicado como **protótipo de conceito**: uma faixa fixa no topo de todas as telas
+  (`src/components/AvisoPrototipo.tsx`, textos em `app.prototipo` nos três idiomas) avisa que ele
+  não foi validado e não é para uso real. Os READMEs têm o mesmo aviso.
+- **Ao retomar:** ler [`ESTUDO-UX.md`](ESTUDO-UX.md) (engajamento, notificações, visões semanal e
+  mensal, primeiro acesso, com a proposta de etapas A a E e as decisões pendentes). Quando houver
+  uma versão para uso, remover `<AvisoPrototipo />` de `App.tsx` e o aviso dos READMEs.
+- Os "Próximos passos" abaixo continuam válidos; o estudo detalha o item de primeiro acesso e
+  acrescenta os demais.
+
+---
+
 ## Estado atual
 
 - **Fase 0 concluída** e publicada: mesclada na `main` (PR #1) com a tag **`v0.1.0`**.
@@ -49,13 +62,8 @@ justificativa e referência.
 
 ## Próximos passos (nesta ordem)
 
-### 1. Correções no celular
-- **Janelas transbordando:** a prévia da impressão (2 páginas de 170px + respiro) passa da largura
-  do celular. Ajustar a prévia à largura disponível e conferir todas as janelas em 360 e 390px.
-- **Deslizar pra trocar de dia:** hoje gestos que começam em campo de texto são ignorados — e a
-  folha é quase toda campo de texto. Permitir deslizar sobre o texto quando o campo não está em
-  edição (teclado fechado), a folha acompanhar o dedo e voltar/avançar ao soltar (carrossel), e
-  uma dica no primeiro acesso.
+### 1. Correções no celular (feito em 30/09/2026)
+- Prévia da impressão cabe em 360px; deslizar sobre o texto como carrossel; dica no primeiro acesso.
 
 ### 2. Primeiro acesso: explicar os elementos
 - Evitar tour longo no começo (afasta, especialmente com TDAH). Proposta a estudar: dicas no próprio
@@ -63,6 +71,9 @@ justificativa e referência.
   fazer", imprimir, deslizar…), uma de cada vez; um "?" discreto por seção com a explicação e o
   link pro capítulo do manual; textos baseados no manual e nos estudos, nos 3 idiomas.
 - Incorporar o retorno dos testadores sobre o que confunde.
+
+### 3. Engajamento, notificações e visões semanal e mensal
+- Ver [`ESTUDO-UX.md`](ESTUDO-UX.md), seções 7 (etapas) e 8 (decisões pendentes).
 
 ### Depois
 - Fase de login (Supabase + Google, opcional; ver memória do projeto e `PLANO-FASE-0.md`).
