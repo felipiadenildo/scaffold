@@ -8,7 +8,7 @@
 
 Un manual de referencia y una app que lleva el manual a la práctica, para quienes tienen el diagnóstico y para quienes los acompañan.
 
-[**Abrir la app**](https://scaffold-app.scaffold-app.workers.dev) · [**Leer el manual**](https://felipiadenildo.github.io/scaffold/) (en portugués) · [Enviar sugerencias](#contacto)
+[**Abrir la app**](https://app.myscaffold.workers.dev) · [**Leer el manual**](https://felipiadenildo.github.io/scaffold/) (en portugués) · [Enviar sugerencias](#contacto)
 
 [English](README.md) · [Português](README.pt-BR.md) · **Español**
 
@@ -48,7 +48,7 @@ Son dos partes que se complementan:
 | | Qué es | Dónde está |
 |---|---|---|
 | **Manual** | Explica el porqué y cómo pensar cada solución, con fuentes verificadas | [felipiadenildo.github.io/scaffold](https://felipiadenildo.github.io/scaffold/) |
-| **App** | Pone las soluciones en uso, en el móvil, en el ordenador o impresas | [scaffold-app.scaffold-app.workers.dev](https://scaffold-app.scaffold-app.workers.dev) |
+| **App** | Pone las soluciones en uso, en el móvil, en el ordenador o impresas | [app.myscaffold.workers.dev](https://app.myscaffold.workers.dev) |
 
 Las capturas muestran la app en portugués. La app también está disponible en español e inglés.
 
@@ -105,15 +105,18 @@ Doce capítulos sobre rutina y entorno, escritos en portugués, con plantillas y
 
 <table>
   <tr>
-    <td width="33%" align="center"><img src="docs/screenshots/celular.webp" alt="Planificador en el móvil" /><br /><sub>En el móvil</sub></td>
-    <td width="67%" align="center"><img src="docs/screenshots/planner-escuro.webp" alt="Planificador en tema oscuro" /><br /><sub>Tema oscuro</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="docs/screenshots/modelos.webp" alt="Elección de plantilla en el primer uso" /><br /><sub>Elección de plantilla</sub></td>
-    <td align="center"><img src="docs/screenshots/impressao.webp" alt="Ventana de impresión con vista previa" /><br /><sub>Impresión con vista previa</sub></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><img src="docs/screenshots/catalogo.webp" alt="Catálogo de herramientas" width="720" /><br /><sub>Catálogo de herramientas</sub></td>
+    <td width="22%" align="center" valign="middle">
+      <img src="docs/screenshots/celular.webp" alt="Planificador en el móvil" width="160" /><br />
+      <sub>En el móvil</sub>
+    </td>
+    <td width="39%" align="center" valign="middle">
+      <img src="docs/screenshots/planner-escuro.webp" alt="Planificador en tema oscuro" width="360" /><br />
+      <sub>Tema oscuro</sub>
+    </td>
+    <td width="39%" align="center" valign="middle">
+      <img src="docs/screenshots/impressao.webp" alt="Ventana de impresión con vista previa" width="360" /><br />
+      <sub>Impresión con vista previa</sub>
+    </td>
   </tr>
 </table>
 

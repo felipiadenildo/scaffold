@@ -8,7 +8,7 @@
 
 A reference manual and an app that puts the manual into practice, for people with ADHD and the people who support them.
 
-[**Open the app**](https://scaffold-app.scaffold-app.workers.dev) · [**Read the manual**](https://felipiadenildo.github.io/scaffold/) (Portuguese) · [Send feedback](#contact)
+[**Open the app**](https://app.myscaffold.workers.dev) · [**Read the manual**](https://felipiadenildo.github.io/scaffold/) (Portuguese) · [Send feedback](#contact)
 
 **English** · [Português](README.pt-BR.md) · [Español](README.es.md)
 
@@ -48,7 +48,7 @@ There are two parts that work together:
 | | What it is | Where |
 |---|---|---|
 | **Manual** | Explains the why and the how to think behind each solution, with checked sources | [felipiadenildo.github.io/scaffold](https://felipiadenildo.github.io/scaffold/) |
-| **App** | Puts the solutions to use, on a phone, on a computer or printed | [scaffold-app.scaffold-app.workers.dev](https://scaffold-app.scaffold-app.workers.dev) |
+| **App** | Puts the solutions to use, on a phone, on a computer or printed | [app.myscaffold.workers.dev](https://app.myscaffold.workers.dev) |
 
 The screenshots below show the app in Portuguese. The app itself is also available in English and Spanish.
 
