@@ -1,11 +1,13 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useRef, useState } from 'react'
 import { DateNav } from '../../components/DateNav'
-import { habitosPadrao, protocoloPadrao } from '../../data/planner'
-import { usePlannerDia } from '../../hooks/usePlannerDia'
-import { useListaTemplate, useSecoesTemplate } from '../../hooks/usePlannerTemplates'
+import { blocosVisuais } from '../../data/planner/cores'
+import type { TipoLista } from '../../data/planner/tipos'
+import { useDia, useListaDoDia } from '../../hooks/usePlanner'
 import { paraISO } from '../../lib/formatarData'
 import { CartoesImprimiveis } from '../../pdf/CartoesImprimiveis'
+import { useConteudoImpressao } from '../../pdf/useConteudoImpressao'
+import type { PropsListaVerso } from './VersoDiario'
 import { FolhaFlip } from './FolhaFlip'
 
 // Padrão oficial do Framer Motion pra carrossel/paginação direcional: entra do lado de onde
@@ -56,10 +58,22 @@ export function PlannerDiario() {
 		setModoVisualizacao((m) => (m === 'girar' ? 'nao-girar' : 'girar'))
 	}
 
-	const { dia, setHumor, setSecaoValor, setSobreDia, setAnotacoes, setHabitos, setProtocolo } = usePlannerDia(dataISO)
-	const { secoes, renomear } = useSecoesTemplate()
-	const { itens: habitos, salvarItens: salvarHabitos } = useListaTemplate('habitos', habitosPadrao)
-	const { itens: protocolo, salvarItens: salvarProtocolo } = useListaTemplate('protocolo', protocoloPadrao)
+	const { dia, estrutura, atualizar } = useDia(dataISO)
+	const habitos = useListaDoDia('habitos', dataISO)
+	const importantes = useListaDoDia('importantes', dataISO)
+	const conteudoImpressao = useConteudoImpressao(dataISO)
+
+	function propsLista(tipo: TipoLista, lista: typeof habitos, mostrar: boolean): PropsListaVerso {
+		return {
+			mostrar,
+			itens: lista.itens,
+			marcados: dia?.marcados[tipo] ?? {},
+			onMarcadosChange: (marcados) => atualizar((d) => ({ ...d, marcados: { ...d.marcados, [tipo]: marcados } })),
+			// Lista travada em dias passados: só marcar/desmarcar (ver useListaDoDia).
+			onAdicionar: lista.editavel ? lista.adicionar : undefined,
+			onRemover: lista.editavel ? lista.remover : undefined,
+		}
+	}
 
 	// Frente/verso "limpos" (sem placeholder) sempre montados fora da tela, prontos pra virar PDF
 	// na hora — sem isso, baixar exigia navegar pra /imprimir-a5 ou /imprimir-a4 e clicar de novo
@@ -97,7 +111,12 @@ export function PlannerDiario() {
 
 	return (
 		<div>
-			<CartoesImprimiveis frenteRef={frenteImpressaoRef} versoRef={versoImpressaoRef} foraDaTela />
+			<CartoesImprimiveis
+				conteudo={conteudoImpressao}
+				frenteRef={frenteImpressaoRef}
+				versoRef={versoImpressaoRef}
+				foraDaTela
+			/>
 
 			<DateNav
 				data={dataAtual}
@@ -126,29 +145,38 @@ export function PlannerDiario() {
 						modoVisualizacao={modoVisualizacao}
 						lado={lado}
 						onGirar={girar}
-						data={dataAtual}
-						onDataChange={mudarData}
-						modoEdicao={modoEdicao}
-						onToggleModo={alternarModo}
-						humor={dia.humor}
-						onHumorChange={setHumor}
-						secoesTemplate={secoes}
-						onRenomearSecao={renomear}
-						valoresSecoes={dia.secoes}
-						onValorSecaoChange={setSecaoValor}
-						sobreDia={dia.sobreDia}
-						onSobreDiaChange={setSobreDia}
-						anotacoes={dia.anotacoes}
-						onAnotacoesChange={setAnotacoes}
-						habitos={habitos}
-						onHabitosChange={salvarHabitos}
-						habitosMarcados={dia.habitos}
-						onHabitosMarcadosChange={setHabitos}
-						protocolo={protocolo}
-						onProtocoloChange={salvarProtocolo}
-						protocoloMarcados={dia.protocolo}
-						onProtocoloMarcadosChange={setProtocolo}
-						somenteLeitura={somenteLeitura}
+						frente={{
+							data: dataAtual,
+							onDataChange: mudarData,
+							modoEdicao,
+							onToggleModo: alternarModo,
+							mostrarHumor: estrutura.humor,
+							humor: dia?.humor ?? null,
+							onHumorChange: (humor) => atualizar((d) => ({ ...d, humor })),
+							blocos: blocosVisuais(estrutura.blocos),
+							// Renomear um bloco aqui vale só pra este dia — cada dia tem a própria estrutura.
+							onRenomearBloco: (id, nome) =>
+								atualizar((d) => ({
+									...d,
+									estrutura: {
+										...d.estrutura,
+										blocos: d.estrutura.blocos.map((b) => (b.id === id ? { ...b, nome, nomeEditado: true } : b)),
+									},
+								})),
+							valoresBlocos: dia?.blocos ?? {},
+							onValorBlocoChange: (id, valor) => atualizar((d) => ({ ...d, blocos: { ...d.blocos, [id]: valor } })),
+							mostrarSobreDia: estrutura.sobreDia,
+							sobreDia: dia?.sobreDia ?? '',
+							onSobreDiaChange: (sobreDia) => atualizar((d) => ({ ...d, sobreDia })),
+							somenteLeitura,
+						}}
+						verso={{
+							anotacoes: dia?.anotacoes ?? '',
+							onAnotacoesChange: (anotacoes) => atualizar((d) => ({ ...d, anotacoes })),
+							habitos: propsLista('habitos', habitos, estrutura.habitos),
+							importantes: propsLista('importantes', importantes, estrutura.importantes),
+							somenteLeitura,
+						}}
 					/>
 				</motion.div>
 			</AnimatePresence>

@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { baixarBlob, gerarPdfBlobA4DoisPlanners, registrarGanchoDeTeste } from '../../../pdf/capturarCardComoPdf'
+import { paraISO } from '../../../lib/formatarData'
 import { CartoesImprimiveis } from '../../../pdf/CartoesImprimiveis'
+import { useConteudoImpressao } from '../../../pdf/useConteudoImpressao'
 import './imprimir.css'
 
+// Página de fallback (link direto): imprime a folha em branco com a estrutura de hoje.
 export function ImprimirDiarioA4() {
+	const conteudo = useConteudoImpressao(paraISO(new Date()))
 	const [gerando, setGerando] = useState(false)
 
 	const frenteRef = useRef<HTMLDivElement>(null)
@@ -37,7 +41,7 @@ export function ImprimirDiarioA4() {
 				meio e cada metade vira um planner A5 completo.
 			</p>
 
-			<CartoesImprimiveis frenteRef={frenteRef} versoRef={versoRef} />
+			<CartoesImprimiveis conteudo={conteudo} frenteRef={frenteRef} versoRef={versoRef} />
 		</div>
 	)
 }

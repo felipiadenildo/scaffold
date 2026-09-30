@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { coresPorHumor, humores, type NivelHumor } from '../data/planner'
+import { coresPorHumor, humores, type NivelHumor } from '../data/planner/humor'
 import { MoodIcon } from './MoodIcon'
 
 export function MoodPicker({

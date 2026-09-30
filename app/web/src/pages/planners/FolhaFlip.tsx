@@ -4,10 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { CLASSE_LARGURA_EXPANDIDA, CLASSE_LARGURA_NORMAL } from '../../components/DateNav'
 import { DiaStepper } from '../../components/DiaStepper'
-import type { ValorSecao } from '../../components/SecaoDia'
-import type { NivelHumor, SecaoDia as SecaoDiaTipo } from '../../data/planner'
-import { FrenteDiario } from './FrenteDiario'
-import { VersoDiario } from './VersoDiario'
+import { FrenteDiario, type PropsFrenteDiario } from './FrenteDiario'
+import { VersoDiario, type PropsVersoDiario } from './VersoDiario'
 
 // Base comum às duas faces. Grain/borda/sombra são por face mesmo quando elas aparecem lado a
 // lado (R3) — cada uma continua parecendo uma folha de papel própria, não a metade de uma só.
@@ -26,58 +24,17 @@ export function FolhaFlip({
 	modoVisualizacao,
 	lado,
 	onGirar,
-	data,
-	onDataChange,
-	modoEdicao,
-	onToggleModo,
-	humor,
-	onHumorChange,
-	secoesTemplate,
-	onRenomearSecao,
-	valoresSecoes,
-	onValorSecaoChange,
-	sobreDia,
-	onSobreDiaChange,
-	anotacoes,
-	onAnotacoesChange,
-	habitos,
-	onHabitosChange,
-	habitosMarcados,
-	onHabitosMarcadosChange,
-	protocolo,
-	onProtocoloChange,
-	protocoloMarcados,
-	onProtocoloMarcadosChange,
-	somenteLeitura,
+	frente,
+	verso,
 }: {
 	expandido: boolean
 	modoVisualizacao: 'girar' | 'nao-girar'
 	lado: 'frente' | 'verso'
 	onGirar: (direcao: 1 | -1) => void
-	data: Date
-	onDataChange: (data: Date) => void
-	modoEdicao: boolean
-	onToggleModo: () => void
-	humor: NivelHumor['slug'] | null
-	onHumorChange: (humor: NivelHumor['slug']) => void
-	secoesTemplate: SecaoDiaTipo[]
-	onRenomearSecao: (slug: string, nome: string) => void
-	valoresSecoes: Record<string, ValorSecao>
-	onValorSecaoChange: (slug: string, valor: ValorSecao) => void
-	sobreDia: string
-	onSobreDiaChange: (v: string) => void
-	anotacoes: string
-	onAnotacoesChange: (v: string) => void
-	habitos: string[]
-	onHabitosChange: (v: string[]) => void
-	habitosMarcados: Record<string, boolean>
-	onHabitosMarcadosChange: (v: Record<string, boolean>) => void
-	protocolo: string[]
-	onProtocoloChange: (v: string[]) => void
-	protocoloMarcados: Record<string, boolean>
-	onProtocoloMarcadosChange: (v: Record<string, boolean>) => void
-	somenteLeitura?: boolean
+	frente: PropsFrenteDiario
+	verso: PropsVersoDiario
 }) {
+	const { somenteLeitura } = frente
 	const emGirar = modoVisualizacao === 'girar'
 	// Ângulo continua sendo derivado de `lado` fora daqui (em Diario.tsx) — precisa sobreviver à
 	// troca de dia, então não pode reiniciar sempre que este componente remonta.
@@ -128,35 +85,6 @@ export function FolhaFlip({
 		: expandido
 			? 'grid w-full grid-cols-1 gap-4 min-[1180px]:grid-cols-2 min-[1180px]:gap-6'
 			: 'grid w-full grid-cols-1 gap-4'
-
-	const propsFrente = {
-		data,
-		onDataChange,
-		modoEdicao,
-		onToggleModo,
-		humor,
-		onHumorChange,
-		secoesTemplate,
-		onRenomearSecao,
-		valoresSecoes,
-		onValorSecaoChange,
-		sobreDia,
-		onSobreDiaChange,
-		somenteLeitura,
-	}
-	const propsVerso = {
-		anotacoes,
-		onAnotacoesChange,
-		habitos,
-		onHabitosChange,
-		habitosMarcados,
-		onHabitosMarcadosChange,
-		protocolo,
-		onProtocoloChange,
-		protocoloMarcados,
-		onProtocoloMarcadosChange,
-		somenteLeitura,
-	}
 
 	const frenteEscondida = emGirar && lado !== 'frente'
 	const versoEscondido = emGirar && lado !== 'verso'
@@ -226,7 +154,13 @@ export function FolhaFlip({
 						transition={{ duration: 0.25 }}
 						className="absolute -top-3 left-4 z-10"
 					>
-						<DiaStepper data={data} onChange={onDataChange} modoEdicao={modoEdicao} onToggleModo={onToggleModo} tamanho="pequeno" />
+						<DiaStepper
+							data={frente.data}
+							onChange={frente.onDataChange}
+							modoEdicao={frente.modoEdicao}
+							onToggleModo={frente.onToggleModo}
+							tamanho="pequeno"
+						/>
 					</motion.div>
 				)}
 			</AnimatePresence>
@@ -283,7 +217,7 @@ export function FolhaFlip({
 					className={faceClasse + (emGirar ? ' [backface-visibility:hidden]' : '')}
 					inert={frenteEscondida}
 				>
-					<FrenteDiario {...propsFrente} />
+					<FrenteDiario {...frente} />
 				</motion.div>
 				<motion.div
 					layout
@@ -298,7 +232,7 @@ export function FolhaFlip({
 					className={faceClasse + (emGirar ? ' [backface-visibility:hidden]' : '')}
 					inert={versoEscondido}
 				>
-					<VersoDiario {...propsVerso} />
+					<VersoDiario {...verso} />
 				</motion.div>
 			</motion.div>
 		</motion.div>

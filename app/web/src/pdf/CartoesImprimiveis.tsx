@@ -1,7 +1,7 @@
 import type { RefObject } from 'react'
 import { FrenteDiario } from '../pages/planners/FrenteDiario'
 import { VersoDiario } from '../pages/planners/VersoDiario'
-import { semAcaoImpressao, useConteudoImpressao } from './useConteudoImpressao'
+import { semAcaoImpressao, type ConteudoImpressao } from './useConteudoImpressao'
 
 // Mesma classe do card usado na tela (ver faceClasseBase em FolhaFlip.tsx) — o PDF é uma captura
 // desse elemento exatamente como ele aparece (cantos, sombra, textura), só sem placeholder.
@@ -14,15 +14,17 @@ const CLASSE_CARD =
 // não serve aqui: o html2canvas precisa de um elemento com layout real (tamanho, texto
 // posicionado) pra capturar; por isso "fora da tela" via position:fixed, não display:none.
 export function CartoesImprimiveis({
+	conteudo,
 	frenteRef,
 	versoRef,
 	foraDaTela = false,
 }: {
+	conteudo: ConteudoImpressao
 	frenteRef: RefObject<HTMLDivElement | null>
 	versoRef: RefObject<HTMLDivElement | null>
 	foraDaTela?: boolean
 }) {
-	const { secoes, habitos, protocolo, valoresSecoesVazios, humorVazio } = useConteudoImpressao()
+	const { estrutura, blocos, habitos, importantes } = conteudo
 
 	return (
 		<div aria-hidden={foraDaTela} style={foraDaTela ? { position: 'fixed', top: 0, left: '-9999px', zIndex: -1 } : undefined}>
@@ -33,12 +35,13 @@ export function CartoesImprimiveis({
 					onDataChange={semAcaoImpressao}
 					modoEdicao={false}
 					onToggleModo={semAcaoImpressao}
-					humor={humorVazio}
+					mostrarHumor={estrutura.humor}
+					humor={null}
 					onHumorChange={semAcaoImpressao}
-					secoesTemplate={secoes}
-					onRenomearSecao={semAcaoImpressao}
-					valoresSecoes={valoresSecoesVazios}
-					onValorSecaoChange={semAcaoImpressao}
+					blocos={blocos}
+					valoresBlocos={{}}
+					onValorBlocoChange={semAcaoImpressao}
+					mostrarSobreDia={estrutura.sobreDia}
 					sobreDia=""
 					onSobreDiaChange={semAcaoImpressao}
 					somenteLeitura
@@ -50,14 +53,13 @@ export function CartoesImprimiveis({
 					modoImpressao
 					anotacoes=""
 					onAnotacoesChange={semAcaoImpressao}
-					habitos={habitos}
-					onHabitosChange={semAcaoImpressao}
-					habitosMarcados={{}}
-					onHabitosMarcadosChange={semAcaoImpressao}
-					protocolo={protocolo}
-					onProtocoloChange={semAcaoImpressao}
-					protocoloMarcados={{}}
-					onProtocoloMarcadosChange={semAcaoImpressao}
+					habitos={{ mostrar: estrutura.habitos, itens: habitos, marcados: {}, onMarcadosChange: semAcaoImpressao }}
+					importantes={{
+						mostrar: estrutura.importantes,
+						itens: importantes,
+						marcados: {},
+						onMarcadosChange: semAcaoImpressao,
+					}}
 					somenteLeitura
 				/>
 			</div>

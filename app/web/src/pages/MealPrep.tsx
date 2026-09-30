@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { DownloadPrint } from '../components/DownloadPrint'
 import { PageHeader } from '../components/PageHeader'
+import { gerarId } from '../lib/gerarId'
 
 interface ItemFreezer {
 	id: string
@@ -9,7 +10,7 @@ interface ItemFreezer {
 	porcoes: string
 }
 
-const itensIniciais: ItemFreezer[] = [{ id: crypto.randomUUID(), prato: '', data: '', porcoes: '' }]
+const itensIniciais: ItemFreezer[] = [{ id: gerarId(), prato: '', data: '', porcoes: '' }]
 
 export function MealPrep() {
 	const [itens, setItens] = useState<ItemFreezer[]>(itensIniciais)
@@ -19,7 +20,7 @@ export function MealPrep() {
 	}
 
 	function adicionarLinha() {
-		setItens((prev) => [...prev, { id: crypto.randomUUID(), prato: '', data: '', porcoes: '' }])
+		setItens((prev) => [...prev, { id: gerarId(), prato: '', data: '', porcoes: '' }])
 	}
 
 	function removerLinha(id: string) {

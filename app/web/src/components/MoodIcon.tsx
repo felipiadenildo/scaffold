@@ -1,4 +1,4 @@
-import type { NivelHumor } from '../data/planner'
+import type { NivelHumor } from '../data/planner/humor'
 
 // Curvatura da boca: quanto maior o valor, mais funda a curva (sorriso); quanto menor, mais arqueada pra cima (triste).
 const curvaturaPorHumor: Record<NivelHumor['slug'], number> = {

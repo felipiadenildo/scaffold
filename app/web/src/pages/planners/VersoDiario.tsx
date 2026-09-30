@@ -1,34 +1,38 @@
 import { Anchor, ListChecks, NotebookPen } from 'lucide-react'
 import { ChecklistEditable } from '../../components/ChecklistEditable'
 import { LinhasImpressao } from '../../components/LinhasImpressao'
+import type { ItemLista } from '../../data/planner/tipos'
+
+// Uma lista do verso (hábitos ou "não pode deixar de fazer"). `onAdicionar`/`onRemover` ausentes =
+// lista travada naquele dia (dias passados), só marcar/desmarcar.
+export interface PropsListaVerso {
+	mostrar: boolean
+	itens: ItemLista[]
+	marcados: Record<string, boolean>
+	onMarcadosChange: (v: Record<string, boolean>) => void
+	onAdicionar?: (texto: string) => void
+	onRemover?: (id: string) => void
+}
+
+export interface PropsVersoDiario {
+	anotacoes: string
+	onAnotacoesChange: (v: string) => void
+	habitos: PropsListaVerso
+	importantes: PropsListaVerso
+	somenteLeitura?: boolean
+	modoImpressao?: boolean
+}
 
 export function VersoDiario({
 	anotacoes,
 	onAnotacoesChange,
 	habitos,
-	onHabitosChange,
-	habitosMarcados,
-	onHabitosMarcadosChange,
-	protocolo,
-	onProtocoloChange,
-	protocoloMarcados,
-	onProtocoloMarcadosChange,
+	importantes,
 	somenteLeitura,
 	modoImpressao,
-}: {
-	anotacoes: string
-	onAnotacoesChange: (v: string) => void
-	habitos: string[]
-	onHabitosChange: (v: string[]) => void
-	habitosMarcados: Record<string, boolean>
-	onHabitosMarcadosChange: (v: Record<string, boolean>) => void
-	protocolo: string[]
-	onProtocoloChange: (v: string[]) => void
-	protocoloMarcados: Record<string, boolean>
-	onProtocoloMarcadosChange: (v: Record<string, boolean>) => void
-	somenteLeitura?: boolean
-	modoImpressao?: boolean
-}) {
+}: PropsVersoDiario) {
+	const duasListas = habitos.mostrar && importantes.mostrar
+
 	return (
 		<div className="flex h-full flex-col">
 			<div className="flex flex-1 flex-col rounded-scaffold border border-border p-4">
@@ -49,29 +53,37 @@ export function VersoDiario({
 				)}
 			</div>
 
-			<div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-				<ChecklistEditable
-					titulo="Habit tracker"
-					icone={ListChecks}
-					itens={habitos}
-					onItensChange={onHabitosChange}
-					marcados={habitosMarcados}
-					onMarcadosChange={onHabitosMarcadosChange}
-					cor="var(--color-accent)"
-					somenteLeitura={somenteLeitura}
-				/>
-				<ChecklistEditable
-					titulo="Não pode deixar de fazer:"
-					icone={Anchor}
-					itens={protocolo}
-					onItensChange={onProtocoloChange}
-					marcados={protocoloMarcados}
-					onMarcadosChange={onProtocoloMarcadosChange}
-					cor="var(--color-caution)"
-					corFundo="var(--color-caution-bg)"
-					somenteLeitura={somenteLeitura}
-				/>
-			</div>
+			{(habitos.mostrar || importantes.mostrar) && (
+				<div className={'mt-4 grid grid-cols-1 gap-3' + (duasListas ? ' sm:grid-cols-2' : '')}>
+					{habitos.mostrar && (
+						<ChecklistEditable
+							titulo="Habit tracker"
+							icone={ListChecks}
+							itens={habitos.itens}
+							marcados={habitos.marcados}
+							onMarcadosChange={habitos.onMarcadosChange}
+							onAdicionar={habitos.onAdicionar}
+							onRemover={habitos.onRemover}
+							cor="var(--color-accent)"
+							somenteLeitura={somenteLeitura}
+						/>
+					)}
+					{importantes.mostrar && (
+						<ChecklistEditable
+							titulo="Não pode deixar de fazer:"
+							icone={Anchor}
+							itens={importantes.itens}
+							marcados={importantes.marcados}
+							onMarcadosChange={importantes.onMarcadosChange}
+							onAdicionar={importantes.onAdicionar}
+							onRemover={importantes.onRemover}
+							cor="var(--color-caution)"
+							corFundo="var(--color-caution-bg)"
+							somenteLeitura={somenteLeitura}
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	)
 }

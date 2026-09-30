@@ -1,51 +1,50 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { Plus, X, type LucideIcon } from 'lucide-react'
 import { useState } from 'react'
+import type { ItemLista } from '../data/planner/tipos'
 
+// Lista com checkbox. Marcar/desmarcar é sempre por dia; adicionar/remover item só aparece quando
+// `onAdicionar`/`onRemover` vêm preenchidos — quem decide se a lista pode ser editada naquele dia
+// (ex.: não pode em dias passados) é quem usa o componente.
 export function ChecklistEditable({
 	titulo,
 	icone: Icone,
 	itens,
-	onItensChange,
 	marcados,
 	onMarcadosChange,
+	onAdicionar,
+	onRemover,
 	cor = 'var(--color-accent)',
 	corFundo,
 	somenteLeitura,
 }: {
 	titulo: string
 	icone: LucideIcon
-	itens: string[]
-	onItensChange: (itens: string[]) => void
+	itens: ItemLista[]
 	marcados: Record<string, boolean>
 	onMarcadosChange: (marcados: Record<string, boolean>) => void
+	onAdicionar?: (texto: string) => void
+	onRemover?: (id: string) => void
 	cor?: string
 	corFundo?: string
 	somenteLeitura?: boolean
 }) {
 	const [novoItem, setNovoItem] = useState('')
+	const podeAdicionar = !somenteLeitura && !!onAdicionar
+	const podeRemover = !somenteLeitura && !!onRemover
 
 	function adicionar() {
-		const label = novoItem.trim()
-		// Ignora vazio e duplicado. O key da lista depende de label único, então essa
-		// checagem também protege a renderização do <motion.li>.
-		if (!label || itens.includes(label)) return
-		onItensChange([...itens, label])
+		const texto = novoItem.trim()
+		// Duplicado (mesmo texto, sem diferenciar maiúsculas) é ignorado — a lista também se protege
+		// disso (listas.ts), aqui só evita limpar o campo como se tivesse adicionado.
+		if (!texto || !onAdicionar) return
+		if (itens.some((i) => i.texto.toLocaleLowerCase() === texto.toLocaleLowerCase())) return
+		onAdicionar(texto)
 		setNovoItem('')
 	}
 
-	function remover(label: string) {
-		onItensChange(itens.filter((item) => item !== label))
-		// Limpa a marcação órfã sem criar variável morta no destructuring.
-		if (label in marcados) {
-			const resto = { ...marcados }
-			delete resto[label]
-			onMarcadosChange(resto)
-		}
-	}
-
-	function alternarMarcado(label: string) {
-		onMarcadosChange({ ...marcados, [label]: !marcados[label] })
+	function alternarMarcado(id: string) {
+		onMarcadosChange({ ...marcados, [id]: !marcados[id] })
 	}
 
 	return (
@@ -57,11 +56,11 @@ export function ChecklistEditable({
 
 			<ul className="mt-3 space-y-1.5">
 				<AnimatePresence initial={false}>
-					{itens.map((label) => {
-						const marcado = !!marcados[label]
+					{itens.map((item) => {
+						const marcado = !!marcados[item.id]
 						return (
 							<motion.li
-								key={label}
+								key={item.id}
 								initial={{ opacity: 0, height: 0 }}
 								animate={{ opacity: 1, height: 'auto' }}
 								exit={{ opacity: 0, height: 0 }}
@@ -72,14 +71,14 @@ export function ChecklistEditable({
 									type="checkbox"
 									checked={marcado}
 									disabled={somenteLeitura}
-									onChange={() => alternarMarcado(label)}
+									onChange={() => alternarMarcado(item.id)}
 									style={{ accentColor: cor }}
 									className="h-4 w-4 shrink-0"
 									// Não há <label> associado, então o aria-label carrega o nome acessível.
-									aria-label={label}
+									aria-label={item.texto}
 								/>
 								<span className="relative flex-1 py-0.5">
-									<span className={marcado ? 'text-ink-soft' : undefined}>{label}</span>
+									<span className={marcado ? 'text-ink-soft' : undefined}>{item.texto}</span>
 									<motion.span
 										aria-hidden="true"
 										initial={false}
@@ -88,11 +87,11 @@ export function ChecklistEditable({
 										className="absolute left-0 top-1/2 h-px w-full origin-left bg-current"
 									/>
 								</span>
-								{!somenteLeitura && (
+								{podeRemover && (
 									<button
 										type="button"
-										onClick={() => remover(label)}
-										aria-label={`Remover "${label}"`}
+										onClick={() => onRemover?.(item.id)}
+										aria-label={`Remover "${item.texto}"`}
 										// Sempre visível no mobile (sem hover); só esconde no desktop até o hover/foco.
 										className="shrink-0 rounded-scaffold p-0.5 text-ink-soft opacity-100 transition-opacity hover:text-ink focus-visible:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
 									>
@@ -105,7 +104,7 @@ export function ChecklistEditable({
 				</AnimatePresence>
 			</ul>
 
-			{!somenteLeitura && (
+			{podeAdicionar && (
 				<div className="mt-3 flex items-center gap-2">
 					<input
 						value={novoItem}

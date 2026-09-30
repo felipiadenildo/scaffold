@@ -1,12 +1,10 @@
 import { Pencil } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
-import type { SecaoDia as SecaoDiaTipo } from '../data/planner'
+import type { BlocoVisual } from '../data/planner/cores'
+import type { ConteudoBloco } from '../data/planner/tipos'
 import { LinhasImpressao } from './LinhasImpressao'
 
-export interface ValorSecao {
-	tituloExtra: string
-	texto: string
-}
+export type ValorSecao = ConteudoBloco
 
 export function SecaoDia({
 	secao,
@@ -16,7 +14,7 @@ export function SecaoDia({
 	somenteLeitura,
 	modoImpressao,
 }: {
-	secao: SecaoDiaTipo
+	secao: BlocoVisual
 	valor: ValorSecao
 	onChange: (valor: ValorSecao) => void
 	onRenomear?: (nome: string) => void

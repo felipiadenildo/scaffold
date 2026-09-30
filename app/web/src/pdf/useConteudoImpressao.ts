@@ -1,17 +1,21 @@
-import { habitosPadrao, protocoloPadrao, type NivelHumor, type SecaoDia as SecaoDiaTipo } from '../data/planner'
-import { useListaTemplate, useSecoesTemplate } from '../hooks/usePlannerTemplates'
+import { blocosVisuais, type BlocoVisual } from '../data/planner/cores'
+import type { Estrutura, ItemLista } from '../data/planner/tipos'
+import { useDia, useListaDoDia } from '../hooks/usePlanner'
 
 export const semAcaoImpressao = () => {}
 
-// Dados compartilhados pelas páginas de impressão (A5 e A4) — os mesmos templates editáveis do
-// Planner (nomes de seção, hábitos, protocolo), sempre em branco (sem valores digitados).
-export function useConteudoImpressao() {
-	const { secoes } = useSecoesTemplate()
-	const { itens: habitos } = useListaTemplate('habitos', habitosPadrao)
-	const { itens: protocolo } = useListaTemplate('protocolo', protocoloPadrao)
+export interface ConteudoImpressao {
+	estrutura: Estrutura
+	blocos: BlocoVisual[]
+	habitos: ItemLista[]
+	importantes: ItemLista[]
+}
 
-	const valoresSecoesVazios = Object.fromEntries(secoes.map((s: SecaoDiaTipo) => [s.slug, { tituloExtra: '', texto: '' }]))
-	const humorVazio: NivelHumor['slug'] | null = null
-
-	return { secoes, habitos, protocolo, valoresSecoesVazios, humorVazio }
+// Estrutura e listas de um dia, pra imprimir a folha em branco daquele dia. Lido do mesmo
+// armazenamento reativo que a folha usa, então o PDF nunca sai com uma lista desatualizada.
+export function useConteudoImpressao(dataISO: string): ConteudoImpressao {
+	const { estrutura } = useDia(dataISO)
+	const { itens: habitos } = useListaDoDia('habitos', dataISO)
+	const { itens: importantes } = useListaDoDia('importantes', dataISO)
+	return { estrutura, blocos: blocosVisuais(estrutura.blocos), habitos, importantes }
 }
