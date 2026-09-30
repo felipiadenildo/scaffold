@@ -1,9 +1,11 @@
 import { Calendar, Check, Ellipsis, FileDown, LayoutTemplate, Moon, Rotate3d, Rows2, Sun, Trash2 } from 'lucide-react'
+import { useRef } from 'react'
 import { useMenuSuspenso } from '../hooks/useMenuSuspenso'
 import { useIdioma } from '../i18n/useIdioma'
 import { useTema } from '../layout/useTema'
 import { deISO, paraISO } from '../lib/formatarData'
 import { classeBotaoFlutuante, classeIconeItemMenu, classeItemMenu, classePainelMenu } from './estilosMenu'
+import { ItensPerfil } from './MenuPerfil'
 
 // Abaixo de sm, as ações da barra do Planner não cabem lado a lado: viram este único ⋯, na linha
 // de controles do celular (ControlesCelular). Mesmo painel e itens dos outros menus da barra.
@@ -31,6 +33,19 @@ export function MenuAcoesCompacto({
 	const { t } = useIdioma()
 	const { tema, alternar } = useTema()
 	const IconeTema = tema === 'light' ? Moon : Sun
+
+	const dataRef = useRef<HTMLInputElement>(null)
+	function abrirCalendario() {
+		const campo = dataRef.current
+		if (!campo) return
+		try {
+			campo.showPicker()
+		} catch {
+			// Navegador sem showPicker: foco + clique no campo abrem o seletor na maioria deles.
+			campo.focus()
+			campo.click()
+		}
+	}
 
 	function executar(acao: () => void) {
 		fechar()
@@ -79,22 +94,26 @@ export function MenuAcoesCompacto({
 					</button>
 				)}
 
-				{/* Mesmo truque do calendário da barra: o <input type="date"> real cobre o item, invisível,
-				    e é ele que recebe o toque — assim abre o seletor nativo do celular. */}
-				<label className={classeItemMenu + ' cursor-pointer'}>
+				{/* Botão que abre o seletor de data nativo com showPicker() — o jeito feito pra isso
+				    (Chrome/Android, Safari/iOS 16.4+). Antes era um <input type="date"> invisível por cima do
+				    item, e em alguns celulares o toque não chegava nele. O campo fica no DOM (fora da vista,
+				    não display:none, que impede abrir o seletor). */}
+				<button type="button" onClick={abrirCalendario} className={classeItemMenu}>
 					<Calendar className={classeIconeItemMenu} aria-hidden="true" />
 					<span className="flex-1">{t.planner.escolherData}</span>
-					<input
-						type="date"
-						value={paraISO(data)}
-						onChange={(e) => {
-							if (!e.target.value) return
-							executar(() => onDataChange(deISO(e.target.value)))
-						}}
-						aria-label={t.planner.escolherData}
-						className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-					/>
-				</label>
+				</button>
+				<input
+					ref={dataRef}
+					type="date"
+					tabIndex={-1}
+					aria-hidden="true"
+					value={paraISO(data)}
+					onChange={(e) => {
+						if (!e.target.value) return
+						executar(() => onDataChange(deISO(e.target.value)))
+					}}
+					className="sr-only"
+				/>
 
 				<div className="my-0.5 border-t border-border" aria-hidden="true" />
 
@@ -102,6 +121,7 @@ export function MenuAcoesCompacto({
 					<IconeTema className={classeIconeItemMenu} aria-hidden="true" />
 					<span className="flex-1">{tema === 'light' ? t.tema.escuro : t.tema.claro}</span>
 				</button>
+				<ItensPerfil aoEscolher={fechar} />
 
 				{onExcluirDia && (
 					<>

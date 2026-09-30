@@ -14,7 +14,7 @@ export function Avisos() {
 	const [pausado, setPausado] = useState(false)
 
 	useEffect(() => {
-		if (!aviso || pausado) return
+		if (!aviso || pausado || aviso.persistente) return
 		const temporizador = setTimeout(() => fecharAviso(aviso.id), DURACAO_MS)
 		return () => clearTimeout(temporizador)
 	}, [aviso, pausado])

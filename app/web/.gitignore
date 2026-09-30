@@ -2,3 +2,6 @@ node_modules/
 dist/
 *.local
 .wrangler/
+
+# Token do Cloudflare (CLOUDFLARE_API_TOKEN) pro deploy — nunca versionar.
+.env

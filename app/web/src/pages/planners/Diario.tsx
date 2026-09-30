@@ -169,6 +169,10 @@ export function PlannerDiario() {
 		if (primeiraVez) {
 			const lista = prontos.map((p) => p.modelo)
 			iniciarPlanner(montadoPelaPessoa ? [modelo, ...lista] : lista, modelo, listasSugeridas(t), dataISO)
+			// A partir de agora há dados de verdade: pede ao navegador pra não apagá-los quando faltar
+			// espaço (o Safari chega a limpar sites não abertos por 7 dias). Sem resposta visível: o
+			// navegador decide sozinho, e app instalado costuma ganhar.
+			void navigator.storage?.persist?.()
 		} else {
 			if (montadoPelaPessoa) operacoesModelos.adicionar(modelo)
 			criar(modelo)

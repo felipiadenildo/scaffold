@@ -30,7 +30,8 @@ export function FolhaImpressao({
 	const { estrutura, blocos, habitos, importantes } = conteudo
 	const classe =
 		'folha-impressao paper-grain rounded-scaffold-lg border border-border/60 bg-paper p-8 text-paper-ink' +
-		(opcoes.economizarTinta ? ' tinta-economica' : '')
+		(opcoes.economizarTinta ? ' tinta-economica' : '') +
+		(opcoes.linhasDeCaderno ? '' : ' sem-linhas')
 
 	return (
 		<div ref={ref} data-theme="light" className={classe} style={ESTILO_FOLHA}>

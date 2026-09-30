@@ -137,3 +137,7 @@ body {
 .folha-impressao.tinta-economica [data-fundo] {
 	background-color: transparent !important;
 }
+/* Impressão sem linhas de caderno (blocos e anotações): o espaço fica, só a pauta some. */
+.folha-impressao.sem-linhas [data-linha] {
+	border-color: transparent;
+}

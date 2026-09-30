@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useIdioma } from '../i18n/useIdioma'
 import { HeaderSlotContext } from './headerSlot'
+import { MenuPerfil } from '../components/MenuPerfil'
 import { SeletorIdioma } from './SeletorIdioma'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -27,7 +28,7 @@ export function Layout() {
 					// Com o app ocupando a tela toda (viewport-fit=cover), o cabeçalho desce da área do relógio.
 					<header className="border-b border-border pt-[env(safe-area-inset-top)]">
 						{/*
-							Três zonas: logo (fixo) | slot (flexível, truncável) | ações (fixo: idioma, tema).
+							Três zonas: logo (fixo) | slot (flexível, truncável) | ações (fixo: idioma, tema, perfil).
 							`min-w-0` no slot é o que permite `truncate` funcionar dentro de flex;
 							sem ele, o conteúdo do slot estoura e empurra as ações.
 						*/}
@@ -49,6 +50,7 @@ export function Layout() {
 							<div className="flex shrink-0 items-center gap-2">
 								<SeletorIdioma />
 								<ThemeToggle />
+								<MenuPerfil local="cabecalho" />
 							</div>
 						</div>
 					</header>

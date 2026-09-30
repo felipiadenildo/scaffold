@@ -115,6 +115,15 @@ export function DialogoImpressao({
 							{textos.pretoEBranco}
 						</label>
 
+						<label className={classeOpcao}>
+							<input
+								type="checkbox"
+								checked={opcoesImpressao.linhasDeCaderno}
+								onChange={() => onMudarOpcoes({ linhasDeCaderno: !opcoesImpressao.linhasDeCaderno })}
+								className="h-4 w-4 shrink-0 accent-accent"
+							/>
+							{textos.linhasDeCaderno}
+						</label>
 						{/* Uma escolha só pras duas listas; desativada se o modelo não tem listas. */}
 						<label className={classeOpcao + (temListas ? '' : ' cursor-not-allowed opacity-50')}>
 							<input

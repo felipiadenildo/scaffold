@@ -110,9 +110,10 @@ export function SecaoDia({
 					onChange={(e) => onChange({ ...valor, texto: e.target.value })}
 					disabled={somenteLeitura}
 					placeholder={t.planner.escrevaAqui}
-					// sm:min-h-12: no PC a folha tem altura fixa (proporção A5) e os blocos esticam pra ocupar tudo;
-					// o mínimo menor só evita a rolagem com 5–6 blocos (Detalhado). No celular a folha cresce.
-					className="paper-lines campo-cresce block min-h-24 w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft sm:min-h-12"
+					// Celular: começa com espaço pra 2 linhas (4.5rem = 2 × 26px + o respiro de cima e de baixo) e
+					// cresce com o texto (campo-cresce). PC (sm:): a folha tem altura fixa (proporção A5) e os
+					// blocos esticam pra ocupá-la; o mínimo de 2 linhas só evita rolagem com 5–6 blocos.
+					className="paper-lines campo-cresce block min-h-[4.5rem] w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft sm:min-h-12"
 				/>
 			)}
 		</div>

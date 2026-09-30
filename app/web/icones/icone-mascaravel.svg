@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+	<!-- Versão "maskable" (o Android recorta em círculo/gota/quadrado) e do iPhone: o fundo do botão até
+	     a borda e o calendário menor, dentro da zona segura (círculo de 80% no centro). -->
+	<rect width="512" height="512" fill="#f1ede3" />
+	<g
+		transform="translate(160 164) scale(8)"
+		fill="none"
+		stroke="#3d6b66"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+	>
+		<path d="M11 13h1v4" />
+		<path d="M16 2v3" />
+		<path d="M3 9h18" />
+		<path d="M8 2v3" />
+		<rect x="3" y="3" width="18" height="18" rx="2" />
+	</g>
+</svg>

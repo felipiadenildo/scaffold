@@ -21,7 +21,8 @@ export function LinhasImpressao({ className = '' }: { className?: string }) {
 	return (
 		<div ref={containerRef} className={'flex flex-1 flex-col ' + className}>
 			{quantidade !== null &&
-				Array.from({ length: quantidade }).map((_, i) => <div key={i} className="flex-1 border-b border-paper-ink/20" />)}
+				// data-linha: some com "sem linhas" na impressão (index.css) — o espaço continua o mesmo.
+				Array.from({ length: quantidade }).map((_, i) => <div key={i} data-linha className="flex-1 border-b border-paper-ink/20" />)}
 		</div>
 	)
 }

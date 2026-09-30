@@ -63,7 +63,13 @@ export function VersoDiario({
 			</div>
 
 			{(habitos.mostrar || importantes.mostrar) && (
-				<div className={'mt-4 grid grid-cols-1 gap-3' + (duasListas ? ' sm:grid-cols-2' : '')}>
+				// Impressão: lado a lado sempre (a folha tem largura fixa), também quando gerada no celular.
+				<div
+					className={
+						'mt-4 grid gap-3 ' +
+						(duasListas && modoImpressao ? 'grid-cols-2' : 'grid-cols-1' + (duasListas ? ' sm:grid-cols-2' : ''))
+					}
+				>
 					{habitos.mostrar && (
 						<ChecklistEditable
 							titulo={t.planner.habitos}
@@ -74,6 +80,7 @@ export function VersoDiario({
 							onAdicionar={habitos.onAdicionar}
 							onRemover={habitos.onRemover}
 							linhasEmBranco={habitos.linhasEmBranco}
+							modoImpressao={modoImpressao}
 							cor="var(--color-accent)"
 							somenteLeitura={somenteLeitura}
 						/>
@@ -88,6 +95,7 @@ export function VersoDiario({
 							onAdicionar={importantes.onAdicionar}
 							onRemover={importantes.onRemover}
 							linhasEmBranco={importantes.linhasEmBranco}
+							modoImpressao={modoImpressao}
 							cor="var(--color-caution)"
 							corFundo="var(--color-caution-bg)"
 							somenteLeitura={somenteLeitura}

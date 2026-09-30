@@ -8,6 +8,8 @@ export interface Aviso {
 	id: number
 	texto: string
 	acao?: { rotulo: string; executar: () => void }
+	// Fica na tela até a pessoa agir (ex.: "Nova versão disponível · Atualizar"), sem sumir sozinho.
+	persistente?: boolean
 }
 
 let atual: Aviso | null = null

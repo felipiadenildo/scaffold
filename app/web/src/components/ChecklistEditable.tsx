@@ -19,6 +19,7 @@ export function ChecklistEditable({
 	corFundo,
 	somenteLeitura,
 	linhasEmBranco,
+	modoImpressao = false,
 }: {
 	titulo: string
 	icone: LucideIcon
@@ -32,6 +33,9 @@ export function ChecklistEditable({
 	somenteLeitura?: boolean
 	// Impressão: em vez dos itens, linhas em branco (caixinha + linha) pra escrever à mão.
 	linhasEmBranco?: number
+	// Folha de impressão: sem os ajustes de toque (faixas, caixinha maior) — o PDF sai igual em
+	// qualquer aparelho.
+	modoImpressao?: boolean
 }) {
 	const { t } = useIdioma()
 	const [novoItem, setNovoItem] = useState('')
@@ -87,13 +91,19 @@ export function ChecklistEditable({
 									transition={{ duration: 0.18 }}
 									// Onde a linha começa e termina: fundo suave na cor da lista ao passar o mouse; no
 									// toque (sem hover), uma faixa leve sempre à vista, que escurece ao tocar.
-									className="group -mx-1.5 flex items-center gap-2 rounded-scaffold px-1.5 text-sm transition-colors hover:bg-[color-mix(in_srgb,var(--cor-lista)_10%,transparent)] pointer-coarse:bg-[color-mix(in_srgb,var(--cor-lista)_7%,transparent)] pointer-coarse:active:bg-[color-mix(in_srgb,var(--cor-lista)_16%,transparent)]"
+									className={
+										'group -mx-1.5 flex items-center gap-2 rounded-scaffold px-1.5 text-sm ' +
+										(modoImpressao
+											? ''
+											: 'transition-colors hover:bg-[color-mix(in_srgb,var(--cor-lista)_10%,transparent)] pointer-coarse:bg-[color-mix(in_srgb,var(--cor-lista)_7%,transparent)] pointer-coarse:active:bg-[color-mix(in_srgb,var(--cor-lista)_16%,transparent)]')
+									}
 								>
 									{/* A linha inteira (caixinha + texto) marca e desmarca: alvo de toque grande no
 									    celular, sem aumentar a caixinha. O texto do <label> é o nome acessível. */}
 									<label
 										className={
-											'flex min-w-0 flex-1 items-center gap-2 pointer-coarse:py-1.5 ' +
+											'flex min-w-0 flex-1 items-center gap-2 ' +
+											(modoImpressao ? '' : 'pointer-coarse:py-1.5 ') +
 											(somenteLeitura ? 'cursor-default' : 'cursor-pointer')
 										}
 									>
@@ -103,7 +113,7 @@ export function ChecklistEditable({
 											disabled={somenteLeitura}
 											onChange={() => alternarMarcado(item.id)}
 											style={{ accentColor: cor }}
-											className="h-4 w-4 shrink-0 pointer-coarse:h-5 pointer-coarse:w-5"
+											className={'h-4 w-4 shrink-0' + (modoImpressao ? '' : ' pointer-coarse:h-5 pointer-coarse:w-5')}
 										/>
 										<span className="relative flex-1 py-0.5">
 											<span className={marcado ? 'text-ink-soft' : undefined}>{item.texto}</span>

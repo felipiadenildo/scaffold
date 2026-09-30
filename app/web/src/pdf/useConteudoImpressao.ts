@@ -20,10 +20,12 @@ export interface OpcoesImpressao {
 	pretoEBranco: boolean
 	// As duas listas saem com os itens de hoje ou com linhas em branco pra escrever à mão.
 	listas: 'itens' | 'linhas'
+	// Linhas de caderno nos blocos e nas anotações (sem elas: espaço livre, pra escrever solto ou desenhar).
+	linhasDeCaderno: boolean
 }
 
 const CHAVE_OPCOES_IMPRESSAO = `${PREFIXO_LOCAL}impressao`
-const OPCOES_PADRAO: OpcoesImpressao = { economizarTinta: false, pretoEBranco: false, listas: 'itens' }
+const OPCOES_PADRAO: OpcoesImpressao = { economizarTinta: false, pretoEBranco: false, listas: 'itens', linhasDeCaderno: true }
 
 export function useOpcoesImpressao() {
 	// Mescla com o padrão: opções salvas por uma versão anterior (sem algum campo) continuam válidas.

@@ -55,7 +55,7 @@ export function FrenteDiario({
 		<div className={'@container flex flex-col ' + (modoImpressao ? 'min-h-full' : 'h-full')}>
 			{/* Data e humor sempre na mesma linha, humor à direita: a data encurta conforme a largura
 			    da folha, e no celular os rostinhos ficam menores. */}
-			<div className="mb-4 flex shrink-0 items-center justify-between gap-3 max-sm:gap-2">
+			<div className={'mb-4 flex shrink-0 items-center justify-between gap-3' + (modoImpressao ? '' : ' max-sm:gap-2')}>
 				{modoImpressao ? (
 					<div className="flex min-w-0 flex-1 items-baseline gap-3">
 						<span className="shrink-0 text-lg font-bold">Scaffold</span>
@@ -69,6 +69,7 @@ export function FrenteDiario({
 						valor={humor}
 						onChange={onHumorChange}
 						somenteLeitura={somenteLeitura || modoImpressao}
+						tamanhoFixo={modoImpressao}
 					/>
 				)}
 			</div>

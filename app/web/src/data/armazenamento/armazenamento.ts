@@ -63,6 +63,18 @@ export function salvar<T>(chave: string, dados: T, agora: Date = new Date()): vo
 	notificar(chave)
 }
 
+// Grava um documento como veio (com o `atualizadoEm` original) — pra importar um backup sem
+// "rejuvenescer" os dados: a data da última alteração de verdade é o que decide o "Juntar".
+export function salvarDocumento<T>(chave: string, documento: Documento<T>): void {
+	cache.set(chave, documento)
+	try {
+		localStorage.setItem(chave, JSON.stringify(documento))
+	} catch {
+		// idem salvar()
+	}
+	notificar(chave)
+}
+
 export function remover(chave: string): void {
 	cache.set(chave, null)
 	try {
