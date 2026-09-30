@@ -6,6 +6,10 @@ export const es: Dicionario = {
 		rodapeAviso: 'Versión en construcción. Consulta el',
 		rodapeManual: 'manual completo (en portugués)',
 		rodapeCodigo: 'Código fuente',
+		prototipo: {
+			titulo: 'Prototipo de concepto, no es para usar.',
+			texto: 'Esta app no ha sido validada: no guardes aquí nada importante. El proyecto está en pausa y quizá vuelva en el futuro con una versión mejor y más adecuada.',
+		},
 		carregandoImpressao: 'Cargando editor de impresión…',
 		fecharAviso: 'Cerrar aviso',
 		desfazer: 'Deshacer',

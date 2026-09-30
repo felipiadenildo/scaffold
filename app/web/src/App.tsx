@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AtualizacaoApp } from './components/AtualizacaoApp'
+import { AvisoPrototipo } from './components/AvisoPrototipo'
 import { Avisos } from './components/Avisos'
 import { JanelasGlobais } from './components/JanelasGlobais'
 import { LimiteDeErro } from './components/LimiteDeErro'
@@ -46,6 +47,7 @@ function App() {
 
 	return (
 		<>
+			<AvisoPrototipo />
 			{/* Erro de renderização em qualquer tela: TelaDeErro no lugar da página em branco. */}
 			<LimiteDeErro>
 				<Routes>

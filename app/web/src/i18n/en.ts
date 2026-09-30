@@ -6,6 +6,10 @@ export const en: Dicionario = {
 		rodapeAviso: 'Work in progress. See the',
 		rodapeManual: 'full manual (in Portuguese)',
 		rodapeCodigo: 'Source code',
+		prototipo: {
+			titulo: 'Concept prototype, not for real use.',
+			texto: "This app has not been validated: don't keep anything important here. The project is paused and may come back in the future with a better, more suitable version.",
+		},
 		carregandoImpressao: 'Loading print editor…',
 		fecharAviso: 'Dismiss',
 		desfazer: 'Undo',

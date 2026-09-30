@@ -24,6 +24,9 @@ A reference manual and an app that puts the manual into practice, for people wit
 
 </div>
 
+> [!WARNING]
+> **Concept prototype, paused.** The app is a proof of concept that has not been validated, and it is not meant for real use. Development is paused; the project may come back in the future with a better, more suitable version. The manual remains available as reference material.
+
 ## Contents
 
 - [About](#about)
