@@ -8,7 +8,7 @@
 
 Um manual de referência e um app que colocam o manual em prática, para quem tem o diagnóstico e para quem apoia.
 
-[**Abrir o app**](https://app.myscaffold.workers.dev) · [**Ler o manual**](https://felipiadenildo.github.io/scaffold/) · [Enviar sugestão](#contato)
+[**Abrir o app**](https://app.myscaffold.workers.dev) · [**Ler o manual**](https://felipiadenildo.github.io/scaffold/) · [Contato](#contato)
 
 [English](README.md) · **Português** · [Español](README.es.md)
 
@@ -38,7 +38,6 @@ Um manual de referência e um app que colocam o manual em prática, para quem te
 - [Estrutura do repositório](#estrutura-do-repositório)
 - [Rodando localmente](#rodando-localmente)
 - [Próximos passos](#próximos-passos)
-- [Como contribuir](#como-contribuir)
 - [Licença](#licença)
 - [Contato](#contato)
 
@@ -185,14 +184,6 @@ npm run dev        # http://localhost:4321/scaffold
 - [ ] Login opcional para sincronizar entre aparelhos
 - [ ] PDF vetorial, com texto nítido e arquivo menor
 
-## Como contribuir
-
-Sugestões, relatos de uso e correções são muito bem-vindos, principalmente de quem vive com TDAH ou apoia alguém que vive.
-
-- **Encontrou um problema ou tem uma ideia?** Abra uma [issue](https://github.com/felipiadenildo/scaffold/issues).
-- **Quer mexer no código?** Faça um fork, crie uma branch e abra um pull request explicando o que mudou e por quê. Antes de enviar, rode `npm test`, `npm run lint` e `npm run build` em `app/web`.
-- **Quer corrigir o manual?** Cada página do manual tem um link "Editar página" que abre o arquivo aqui no GitHub.
-
 ## Licença
 
 - **Código** (app e site do manual): [GNU Affero General Public License v3.0](LICENSE). Você pode usar, estudar, modificar e redistribuir. Se publicar uma versão modificada, inclusive como serviço na internet, precisa disponibilizar o código-fonte dela sob a mesma licença.
@@ -202,8 +193,4 @@ Copyright © 2026 Felipi Adenildo.
 
 ## Contato
 
-Tem uma sugestão, uma crítica ou uma história de como o Scaffold ajudou (ou não ajudou)? Todo retorno ajuda o projeto a melhorar.
-
-- **Formulário de contato:** [felipiadenildo.github.io/scaffold/contato](https://felipiadenildo.github.io/scaffold/contato/)
-- **Issues no GitHub:** [github.com/felipiadenildo/scaffold/issues](https://github.com/felipiadenildo/scaffold/issues)
-- **GitHub:** [@felipiadenildo](https://github.com/felipiadenildo)
+Para falar comigo, use os contatos do meu perfil no GitHub: [@felipiadenildo](https://github.com/felipiadenildo).

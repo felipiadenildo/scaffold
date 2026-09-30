@@ -11,6 +11,7 @@ manual's own [changelog page](https://felipiadenildo.github.io/scaffold/changelo
 
 - Permanent banner on every screen marking the app as a concept prototype that is not meant for
   real use. The project is paused.
+- The catalog badge now reads "Prototype" instead of "Ready to use".
 
 ### Changed
 

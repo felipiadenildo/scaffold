@@ -69,7 +69,7 @@ export const es: Dicionario = {
 		trilha: 'Ruta de navegación',
 		inicio: 'Catálogo',
 		descricao: 'Herramientas para organizar el día, el dinero y la rutina. Elige por dónde empezar.',
-		prontoParaUsar: 'Listo para usar',
+		prontoParaUsar: 'Prototipo',
 		emDesenvolvimento: 'En desarrollo',
 		emDesenvolvimentoDescricao: 'Ya se puede usar, pero el diseño y el contenido todavía pueden cambiar.',
 		soEmPortugues: 'Por ahora solo disponible en portugués.',

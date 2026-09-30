@@ -69,7 +69,7 @@ export const en: Dicionario = {
 		trilha: 'Breadcrumb',
 		inicio: 'Catalog',
 		descricao: 'Tools to organize your day, your money and your routine. Pick where to start.',
-		prontoParaUsar: 'Ready to use',
+		prontoParaUsar: 'Prototype',
 		emDesenvolvimento: 'In development',
 		emDesenvolvimentoDescricao: 'Already usable, but design and content may still change.',
 		soEmPortugues: 'Only available in Portuguese for now.',
