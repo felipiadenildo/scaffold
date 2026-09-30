@@ -24,6 +24,10 @@
 	--color-lanche-bg: var(--scaffold-lanche-bg);
 	--color-jantar: var(--scaffold-jantar);
 	--color-jantar-bg: var(--scaffold-jantar-bg);
+	--color-bloco5: var(--scaffold-bloco5);
+	--color-bloco5-bg: var(--scaffold-bloco5-bg);
+	--color-bloco6: var(--scaffold-bloco6);
+	--color-bloco6-bg: var(--scaffold-bloco6-bg);
 	--color-mood-otimo: var(--scaffold-mood-otimo);
 	--color-mood-bem: var(--scaffold-mood-bem);
 	--color-mood-neutro: var(--scaffold-mood-neutro);

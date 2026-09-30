@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { Plus } from 'lucide-react'
+import { Pencil, Plus } from 'lucide-react'
 import { CLASSE_LARGURA_EXPANDIDA, CLASSE_LARGURA_NORMAL } from '../../components/DateNav'
 import { DiaStepper } from '../../components/DiaStepper'
 import type { Modelo } from '../../data/planner/tipos'
@@ -24,6 +24,8 @@ export function FolhaInexistente({
 	opcoes,
 	destaqueId,
 	onEscolher,
+	onEditar,
+	onCriarModelo,
 }: {
 	data: Date
 	onDataChange: (data: Date) => void
@@ -33,6 +35,9 @@ export function FolhaInexistente({
 	// Modelo em destaque: o recomendado na primeira vez, o do dia da semana nas outras.
 	destaqueId: string | null
 	onEscolher: (modelo: Modelo) => void
+	// ✎ em cada card. Ausente na primeira vez (os prontos ainda não são da pessoa pra editar).
+	onEditar?: (modelo: Modelo) => void
+	onCriarModelo: () => void
 }) {
 	const { t } = useIdioma()
 	const textos = t.planner.folhaInexistente
@@ -72,12 +77,14 @@ export function FolhaInexistente({
 									initial={{ opacity: 0, y: 8 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: i * 0.05, duration: 0.25 }}
+									className="relative"
 								>
 									<button
 										type="button"
 										onClick={() => onEscolher(modelo)}
 										className={
 											'flex h-full w-full items-center gap-3 rounded-scaffold border px-3 py-2.5 text-left transition-[border-color,box-shadow] hover:shadow-raised sm:flex-col sm:items-center sm:gap-2.5 sm:px-4 sm:pb-4 sm:pt-5 sm:text-center ' +
+											(onEditar ? 'pr-11 sm:pr-4 ' : '') +
 											(destaque
 												? 'border-accent bg-accent text-accent-ink'
 												: 'border-border bg-bg-raised text-ink hover:border-ink-soft')
@@ -103,11 +110,27 @@ export function FolhaInexistente({
 											</span>
 										)}
 									</button>
+									{/* Irmão do card (não dentro: botão dentro de botão não é permitido). Celular: à
+									    direita, no meio da linha; tela larga: no canto de cima. */}
+									{onEditar && (
+										<button
+											type="button"
+											onClick={() => onEditar(modelo)}
+											aria-label={t.planner.editorModelo.editar(modelo.nome)}
+											title={t.planner.editorModelo.editar(modelo.nome)}
+											className={
+												'absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1.5 transition-colors sm:top-2 sm:translate-y-0 ' +
+												(destaque ? 'text-accent-ink/80 hover:bg-black/10 hover:text-accent-ink' : 'text-ink-soft hover:bg-bg hover:text-ink')
+											}
+										>
+											<Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+										</button>
+									)}
 								</motion.li>
 							)
 						})}
 
-						{/* Última opção sempre: montar o próprio. Desativada até existir o editor (etapa 0-D). */}
+						{/* Última opção sempre: montar o próprio (abre a janela de modelo). */}
 						<motion.li
 							initial={{ opacity: 0, y: 8 }}
 							animate={{ opacity: 1, y: 0 }}
@@ -115,17 +138,13 @@ export function FolhaInexistente({
 						>
 							<button
 								type="button"
-								disabled
-								title={t.planner.emBreve}
-								className="flex h-full w-full cursor-not-allowed items-center gap-3 rounded-scaffold border border-dashed border-border px-3 py-2.5 text-left text-ink-soft opacity-70 sm:flex-col sm:justify-center sm:gap-2.5 sm:px-4 sm:pb-4 sm:pt-5 sm:text-center"
+								onClick={onCriarModelo}
+								className="flex h-full w-full items-center gap-3 rounded-scaffold border border-dashed border-border px-3 py-2.5 text-left text-ink-soft transition-colors hover:border-ink-soft hover:text-ink sm:flex-col sm:justify-center sm:gap-2.5 sm:px-4 sm:pb-4 sm:pt-5 sm:text-center"
 							>
 								<span className="flex h-10 w-[3.75rem] shrink-0 items-center justify-center rounded-[3px] border border-dashed border-ink-soft/50 sm:h-[5.75rem] sm:w-[8.375rem] sm:rounded-[5px]">
 									<Plus className="h-3.5 w-3.5 sm:h-5 sm:w-5" aria-hidden="true" />
 								</span>
-								<span className="min-w-0 flex-1">
-									<span className="block text-sm font-semibold">{textos.criarProprio}</span>
-									<span className="mt-0.5 block text-xs">{t.planner.emBreve}</span>
-								</span>
+								<span className="min-w-0 flex-1 text-sm font-semibold">{textos.criarProprio}</span>
 							</button>
 						</motion.li>
 					</ul>

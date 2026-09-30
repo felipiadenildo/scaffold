@@ -32,9 +32,7 @@ justificativa e referência.
 - **Primeira vez no Planner:** mensagem de boas-vindas + modelos prontos como botões (Padrão em
   destaque) + "Montar o meu". Os modelos prontos são copiados para a lista da pessoa, no idioma
   atual, e passam a ser dela.
-- **Modelos prontos:** Padrão (4 blocos, seg–sex), Fim de semana (1 bloco "Meu dia", sáb–dom),
-  Dia difícil (mínimo, com destaque para "Não pode deixar de fazer"), Trabalho/estudo (Manhã, Tarde,
-  Noite).
+- **Modelos prontos:** ver "Editor de modelos" abaixo (Leve, Padrão, Detalhado).
 - **Nomes sugeridos por número de blocos:** 1 Meu dia · 2 Café da manhã, Almoço · 3 + Jantar ·
   4 + Lanche da tarde · 5 + Antes de dormir · 6 Ao acordar + os 5. Só são aplicados a blocos cujo
   nome ainda não foi editado.
@@ -60,11 +58,14 @@ justificativa e referência.
   ✎ editar (abre o editor na data atual) e 👤 perfil ao lado do calendário. Em tela estreita, as
   ações se agrupam num botão ⋯ ("Hoje" fica fora). No modo foco, o menu de perfil tem só o
   essencial (tema; conta na fase de login).
-- **Editor ("Montar meu planner"):** fundo de **tapete de corte** (quadriculado + réguas), folha com
-  borda tracejada de recorte, faixa "✂ Editando: <nome>" + Concluir. Desktop: folha no centro,
-  modelos à esquerda, propriedades à direita. Celular: barra de ícones fixa embaixo
-  (Modelos · Frente · Verso · Concluir), cada um abre um painel que sobe de baixo. Modo **guiado**
-  na primeira montagem, modo **livre** nas seguintes.
+- **Editor de modelos = uma janela (modal), não uma página** (decisão de 30/09/2026, pra reduzir
+  complexidade): nome, prévia ao vivo (miniatura de frente e verso), blocos (− N +, nomes
+  editáveis), humor, "Sobre o dia", hábitos, "não pode deixar de fazer" e dias da semana. A mesma
+  janela cria modelo, edita modelo (✎ em cada card da folha pontilhada) e edita o formato de um dia
+  (botão na barra; vale só pro dia, com atalhos "Usar o formato de" e aviso de pra onde vai o texto).
+  Página de editor completa (tapete de corte, arrastar blocos) fica como evolução possível.
+- **Modelos prontos sempre presentes:** Leve (1 bloco, sáb–dom), Padrão (4, seg–sex) e Detalhado (6).
+  Podem ser editados, não excluídos.
 
 ### Fica para depois da Fase 0
 Horários nos blocos e itens · arrastar para reordenar · editor de texto visual (Tiptap) · resetar
@@ -129,7 +130,7 @@ interface Dia {
 | **0-A · Base de dados** | Vitest · camada de armazenamento + store reativo · modelo de dados e funções puras · migração formato 1→2 · Planner atual passa a usar a camada nova (sem mudança visual) · correção do PDF desatualizado | Nenhum visual; PDF passa a refletir a lista na hora |
 | **0-B · Casca do app** | i18n pt/en/es · cabeçalho com 🌐 · ☾ · 👤 · script anti-flash de tema no `index.html` (citado no `ThemeToggle` mas ausente) · início com Planner em destaque + "Em teste" com aviso de idioma · componente de menu suspenso reaproveitável (extraído do padrão `<details>` atual) | App navegável nos 3 idiomas |
 | **0-C · Planner com modelos** | Mensagem de boas-vindas (primeira vez) · folha pontilhada para dia inexistente com modelos em botões e "Criar o seu próprio modelo" (desativado até a 0-D) · modelos prontos copiados no idioma atual · 👤 na barra + agrupamento ⋯ em tela estreita | Planner funcionando com modelos, sem editor |
-| **0-D · Editor** | ✎ na barra do Planner · rota do editor · tapete de corte · layout desktop (painéis) e celular (barra + painel de baixo) · blocos (−/+, ✕, + entre blocos, nomes sugeridos) · seções liga/desliga · itens das listas · gerenciar modelos (ordem, dias da semana, duplicar, excluir) · editar um dia / trocar modelo com rearranjo · modo guiado | Montar e editar modelos e dias |
+| **0-D · Janela de modelo** | Criar/editar modelo e editar o formato do dia numa janela · prontos Leve/Padrão/Detalhado sempre presentes · 6 cores de bloco · excluir modelo com "Desfazer" | Montar e editar modelos e dias |
 | **0-E · Uso no celular** | Campos que crescem com o texto · área de toque maior · desfazer ao remover item · atalhos de lista (`- `, `1. `) · preferências salvas (largura, modo de visualização) | Uso diário confortável no celular |
 | **0-F · Impressão** | Painel de impressão: este dia ou um modelo, A5/A4, itens incluídos, itens ou linhas em branco, prévia, aviso de "não cabe" · impressão no idioma atual | PDF fiel à estrutura escolhida |
 | **0-G · Segurança** | PWA (manifest, ícones, offline, aviso de nova versão, instalar no Android e guia no iPhone, `storage.persist`) · exportar/importar JSON (substituir ou juntar) · tela de erro amigável | Pronto para a fase de login |

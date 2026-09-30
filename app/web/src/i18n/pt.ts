@@ -137,20 +137,22 @@ export const pt = {
 			criarProprio: 'Criar o seu próprio modelo',
 			recomendado: 'Recomendado',
 		},
-		// Modelos prontos: copiados pra pessoa no idioma do momento da escolha e, dali em diante, dela.
+		// Nomes sugeridos pros blocos, pela quantidade (índice 0 = 1 bloco … índice 5 = 6 blocos). Blocos
+		// são marcos do dia; as refeições são o marco padrão. Usado pelos modelos prontos e ao mudar o
+		// número de blocos no editor (só nos blocos que a pessoa não renomeou).
+		sugestoesBlocos: [
+			['Meu dia'],
+			['Café da manhã', 'Almoço'],
+			['Café da manhã', 'Almoço', 'Jantar'],
+			['Café da manhã', 'Almoço', 'Lanche da tarde', 'Jantar'],
+			['Café da manhã', 'Almoço', 'Lanche da tarde', 'Jantar', 'Antes de dormir'],
+			['Ao acordar', 'Café da manhã', 'Almoço', 'Lanche da tarde', 'Jantar', 'Antes de dormir'],
+		],
+		// Modelos prontos: copiados pra pessoa no idioma do momento e, dali em diante, dela.
 		prontos: {
-			padrao: {
-				nome: 'Padrão',
-				descricao: 'O dia dividido pelas refeições, com hábitos e o essencial.',
-				blocos: ['Café da manhã', 'Almoço', 'Lanche da tarde', 'Jantar'],
-			},
-			fimDeSemana: { nome: 'Fim de semana', descricao: 'Um bloco só, pra um dia mais solto.', blocos: ['Meu dia'] },
-			diaDificil: { nome: 'Dia difícil', descricao: 'O mínimo: humor e o que não pode faltar.', blocos: ['Meu dia'] },
-			trabalhoEstudo: {
-				nome: 'Trabalho/estudo',
-				descricao: 'Manhã, tarde e noite, com hábitos e o essencial.',
-				blocos: ['Manhã', 'Tarde', 'Noite'],
-			},
+			leve: { nome: 'Leve', descricao: 'Um bloco só, pro fim de semana ou pra um dia difícil.' },
+			padrao: { nome: 'Padrão', descricao: 'O dia dividido pelas refeições, com hábitos e o essencial.' },
+			detalhado: { nome: 'Detalhado', descricao: 'O dia bem dividido, do acordar ao dormir.' },
 		},
 		itensSugeridos: {
 			habitos: ['Água', 'Remédio', 'Movimento', 'Higiene', 'Refeição regular'],
@@ -160,6 +162,33 @@ export const pt = {
 				'Só a tarefa principal da manhã',
 				'Aceitar o descanso sem se punir',
 			],
+		},
+		editorModelo: {
+			novo: 'Novo modelo',
+			editarModelo: 'Editar modelo',
+			editarDia: 'Editar formato do dia',
+			editar: (nome: string) => `Editar "${nome}"`,
+			nome: 'Nome do modelo',
+			nomePlaceholder: 'Ex.: Dia de consulta',
+			frente: 'Frente',
+			verso: 'Verso',
+			blocos: 'Blocos',
+			menosBloco: 'Um bloco a menos',
+			maisBloco: 'Um bloco a mais',
+			nomeBloco: (n: number) => `Nome do bloco ${n}`,
+			humor: 'Humor',
+			sobreODia: 'Sobre o dia',
+			habitos: 'Habit tracker',
+			importantes: 'Não pode deixar de fazer',
+			avisoItens: 'Os itens das listas se editam na própria folha e valem de hoje em diante.',
+			diasSemana: 'Vem pré-selecionado em:',
+			avisoModelo: 'Vale pros dias criados daqui em diante. Dias que já existem não mudam.',
+			avisoDia: 'Vale só pra este dia.',
+			usarFormatoDe: 'Usar o formato de:',
+			textoVaiPara: (de: string, para: string) => `O texto de "${de}" vai para "${para}".`,
+			salvar: 'Salvar',
+			excluir: 'Excluir modelo',
+			modeloExcluido: 'Modelo excluído.',
 		},
 	},
 	impressao: {

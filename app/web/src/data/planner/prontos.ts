@@ -3,9 +3,10 @@ import { criarLista } from './listas'
 import { criarModelo } from './modelos'
 import type { ListaVersionada, Modelo } from './tipos'
 
-// Modelos oferecidos na primeira vez (PLANO-FASE-0.md §1). Os textos vêm do dicionário do idioma
-// atual; escolhido um, os quatro são copiados pra pessoa e passam a ser dela — trocar de idioma
-// depois não traduz o que já foi copiado.
+// Modelos oferecidos desde a primeira vez (PLANO-FASE-0.md §1) e sempre presentes na lista da
+// pessoa: podem ser editados, não excluídos. Os textos vêm do dicionário do idioma atual; copiados,
+// passam a ser dela — trocar de idioma depois não traduz o que já foi copiado.
+// Em ordem de quantidade de blocos: 1, 4, 6.
 export type ChaveModeloPronto = keyof Dicionario['planner']['prontos']
 
 export interface ModeloPronto {
@@ -18,26 +19,18 @@ const SEG_A_SEX = [1, 2, 3, 4, 5]
 const SAB_E_DOM = [0, 6]
 
 export function criarModelosProntos(t: Dicionario): ModeloPronto[] {
-	const { padrao, fimDeSemana, diaDificil, trabalhoEstudo } = t.planner.prontos
-	return [
-		{ chave: 'padrao', descricao: padrao.descricao, modelo: criarModelo(padrao.nome, padrao.blocos, SEG_A_SEX) },
-		{
-			chave: 'fimDeSemana',
-			descricao: fimDeSemana.descricao,
-			modelo: criarModelo(fimDeSemana.nome, fimDeSemana.blocos, SAB_E_DOM, { importantes: false }),
-		},
-		{
-			chave: 'diaDificil',
-			descricao: diaDificil.descricao,
-			// Dia ruim pede menos: nada de hábitos pra cobrar nem resumo pra escrever, só o essencial.
-			modelo: criarModelo(diaDificil.nome, diaDificil.blocos, [], { sobreDia: false, habitos: false }),
-		},
-		{
-			chave: 'trabalhoEstudo',
-			descricao: trabalhoEstudo.descricao,
-			modelo: criarModelo(trabalhoEstudo.nome, trabalhoEstudo.blocos, []),
-		},
-	]
+	const { prontos, sugestoesBlocos } = t.planner
+	const pronto = (chave: ChaveModeloPronto, blocos: number, diasSemana: number[]): ModeloPronto => ({
+		chave,
+		descricao: prontos[chave].descricao,
+		modelo: { ...criarModelo(prontos[chave].nome, sugestoesBlocos[blocos - 1], diasSemana), pronto: true },
+	})
+	return [pronto('leve', 1, SAB_E_DOM), pronto('padrao', 4, SEG_A_SEX), pronto('detalhado', 6, [])]
+}
+
+// O recomendado na primeira vez e o que se imprime antes de haver qualquer modelo.
+export function prontoPadrao(prontos: ModeloPronto[]): ModeloPronto {
+	return prontos.find((p) => p.chave === 'padrao') ?? prontos[0]
 }
 
 export function listasSugeridas(t: Dicionario): { habitos: ListaVersionada; importantes: ListaVersionada } {

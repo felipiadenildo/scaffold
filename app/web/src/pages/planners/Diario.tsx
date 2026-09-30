@@ -5,20 +5,23 @@ import { mostrarAviso } from '../../components/avisos'
 import { DateNav } from '../../components/DateNav'
 import { PREFIXO_LOCAL, salvar } from '../../data/armazenamento/armazenamento'
 import { blocosVisuais } from '../../data/planner/cores'
+import { aplicarEstrutura } from '../../data/planner/dias'
 import { modeloSugerido } from '../../data/planner/modelos'
-import { criarModelosProntos, listasSugeridas } from '../../data/planner/prontos'
-import { iniciarPlanner, repositorioPlanner } from '../../data/planner/repositorio'
+import { criarModelosProntos, listasSugeridas, prontoPadrao } from '../../data/planner/prontos'
+import { iniciarPlanner, operacoesModelos, repositorioPlanner } from '../../data/planner/repositorio'
 import type { Modelo, TipoLista } from '../../data/planner/tipos'
 import { useArmazenado } from '../../hooks/useArmazenado'
 import { useDeslizarHorizontal } from '../../hooks/useDeslizarHorizontal'
 import { useDia, useListaDoDia, useModelos } from '../../hooks/usePlanner'
 import { useIdioma } from '../../i18n/useIdioma'
+import { gerarId } from '../../lib/gerarId'
 import { deISO, paraISO, somarDias } from '../../lib/formatarData'
 import { CartoesImprimiveis } from '../../pdf/CartoesImprimiveis'
 import { useConteudoImpressao } from '../../pdf/useConteudoImpressao'
 import { BoasVindasPlanner } from './BoasVindasPlanner'
 import { ConfirmarExclusaoDia } from './ConfirmarExclusaoDia'
 import { DialogoImpressao } from './DialogoImpressao'
+import { DialogoModelo, type AlvoEdicao, type ResultadoEdicao } from './DialogoModelo'
 import { FolhaFlip } from './FolhaFlip'
 import { FolhaInexistente, type OpcaoModelo } from './FolhaInexistente'
 import type { PropsListaVerso } from './VersoDiario'
@@ -144,13 +147,48 @@ export function PlannerDiario() {
 	const opcoes: OpcaoModelo[] = primeiraVez
 		? prontos.map((p) => ({ modelo: p.modelo, descricao: p.descricao, recomendado: p.chave === 'padrao' }))
 		: modelos.map((modelo) => ({ modelo }))
-	const destaqueId = primeiraVez ? prontos[0].modelo.id : (modeloSugerido(modelos, dataISO)?.id ?? null)
+	const destaqueId = primeiraVez ? prontoPadrao(prontos).modelo.id : (modeloSugerido(modelos, dataISO)?.id ?? null)
 
-	function escolherModelo(modelo: Modelo) {
-		if (primeiraVez) iniciarPlanner(prontos.map((p) => p.modelo), modelo, listasSugeridas(t), dataISO)
-		else criar(modelo)
+	// Cria o dia com o modelo. Na primeira vez, antes grava a lista de modelos da pessoa: os prontos
+	// sempre entram, e um modelo montado por ela (se for o caso) vem na frente.
+	function escolherModelo(modelo: Modelo, montadoPelaPessoa = false) {
+		if (primeiraVez) {
+			const lista = prontos.map((p) => p.modelo)
+			iniciarPlanner(montadoPelaPessoa ? [modelo, ...lista] : lista, modelo, listasSugeridas(t), dataISO)
+		} else {
+			if (montadoPelaPessoa) operacoesModelos.adicionar(modelo)
+			criar(modelo)
+		}
 		// Criar um dia no passado é querer escrever nele: já abre em modo edição.
 		if (ehPassado) setExcecoesModo((prev) => ({ ...prev, [dataISO]: true }))
+	}
+
+	// Janela de modelo (DialogoModelo): criar um modelo, editar um modelo ou editar o formato do dia.
+	const [editando, setEditando] = useState<AlvoEdicao | null>(null)
+
+	function salvarEdicao({ nome, estrutura, diasSemana, modeloId }: ResultadoEdicao) {
+		if (!editando) return
+		if (editando.tipo === 'novo') {
+			// Criado a partir da folha pontilhada: já cria o dia com ele.
+			escolherModelo({ id: gerarId(), nome, estrutura, diasSemana }, true)
+		} else if (editando.tipo === 'modelo') {
+			operacoesModelos.atualizar({ ...editando.modelo, nome, estrutura, diasSemana })
+		} else {
+			// Só este dia; texto de bloco removido vai pro vizinho (aplicarEstrutura).
+			atualizar((d) => ({ ...aplicarEstrutura(d, estrutura), modeloId }))
+		}
+		setEditando(null)
+	}
+
+	function excluirModelo() {
+		if (editando?.tipo !== 'modelo') return
+		const removido = operacoesModelos.remover(editando.modelo.id)
+		setEditando(null)
+		if (!removido) return
+		mostrarAviso({
+			texto: t.planner.editorModelo.modeloExcluido,
+			acao: { rotulo: t.app.desfazer, executar: () => operacoesModelos.restaurar(removido) },
+		})
 	}
 
 	// Excluir o dia: confirmação antes, "Desfazer" depois (restaura o dia exatamente como estava).
@@ -239,6 +277,7 @@ export function PlannerDiario() {
 				onAlternarModoVisualizacao={alternarModoVisualizacao}
 				onImprimir={abrirImpressao}
 				baixandoPdf={gerandoPdf}
+				onEditarDia={dia ? () => setEditando({ tipo: 'dia', dia }) : undefined}
 				onExcluirDia={dia ? () => setConfirmandoExclusao(true) : undefined}
 			/>
 
@@ -300,13 +339,26 @@ export function PlannerDiario() {
 								primeiraVez={primeiraVez}
 								opcoes={opcoes}
 								destaqueId={destaqueId}
-								onEscolher={escolherModelo}
+								onEscolher={(modelo) => escolherModelo(modelo)}
+								onEditar={primeiraVez ? undefined : (modelo) => setEditando({ tipo: 'modelo', modelo })}
+								onCriarModelo={() => setEditando({ tipo: 'novo' })}
 							/>
 						)}
 					</motion.div>
 				</AnimatePresence>
 			</div>
 
+			{editando && (
+				<DialogoModelo
+					alvo={editando}
+					modelos={modelos}
+					// Prontos ficam sempre (podem ser editados, não excluídos); e nunca o último modelo.
+					podeExcluir={editando.tipo === 'modelo' && !editando.modelo.pronto && modelos.length > 1}
+					onSalvar={salvarEdicao}
+					onExcluir={excluirModelo}
+					onFechar={() => setEditando(null)}
+				/>
+			)}
 			{imprimindo && (
 				<DialogoImpressao
 					opcoes={opcoes}

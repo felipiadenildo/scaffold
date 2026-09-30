@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { blocosVisuais, type BlocoVisual } from '../data/planner/cores'
 import { resolverLista } from '../data/planner/listas'
-import { criarModelosProntos, listasSugeridas } from '../data/planner/prontos'
+import { criarModelosProntos, listasSugeridas, prontoPadrao } from '../data/planner/prontos'
 import type { Estrutura, ItemLista } from '../data/planner/tipos'
 import { useListaDoDia, useModelos } from '../hooks/usePlanner'
 import { useIdioma } from '../i18n/useIdioma'
@@ -32,7 +32,7 @@ export function useConteudoImpressao(estrutura: Estrutura | null): ConteudoImpre
 	const sugerido = useMemo(() => {
 		const listas = listasSugeridas(t)
 		return {
-			estrutura: criarModelosProntos(t)[0].modelo.estrutura,
+			estrutura: prontoPadrao(criarModelosProntos(t)).modelo.estrutura,
 			habitos: resolverLista(listas.habitos, hoje),
 			importantes: resolverLista(listas.importantes, hoje),
 		}

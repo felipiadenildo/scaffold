@@ -44,7 +44,8 @@ export function Dialogo({
 				initial={{ opacity: 0, y: 12, scale: 0.98 }}
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				transition={{ duration: 0.25, ease: 'easeOut' }}
-				className="paper-grain rounded-scaffold-lg border border-border/60 bg-paper p-6 text-paper-ink shadow-paper sm:p-8"
+				// Rola por dentro quando não cabe (celular em pé, janelas longas como a de modelo).
+				className="paper-grain max-h-[calc(100svh-2rem)] overflow-y-auto rounded-scaffold-lg border border-border/60 bg-paper p-6 text-paper-ink shadow-paper sm:p-8"
 			>
 				{children}
 			</motion.div>

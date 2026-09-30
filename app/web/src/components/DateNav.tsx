@@ -1,4 +1,4 @@
-import { Calendar, ChevronDown, FileDown, FlipHorizontal2, Maximize2, Minimize2, Trash2 } from 'lucide-react'
+import { Calendar, ChevronDown, FileDown, FlipHorizontal2, LayoutTemplate, Maximize2, Minimize2, Trash2 } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useMenuSuspenso } from '../hooks/useMenuSuspenso'
 import { useIdioma } from '../i18n/useIdioma'
@@ -71,6 +71,7 @@ export function DateNav({
 	onAlternarModoVisualizacao,
 	onImprimir,
 	baixandoPdf,
+	onEditarDia,
 	onExcluirDia,
 }: {
 	data: Date
@@ -82,7 +83,8 @@ export function DateNav({
 	// Abre a janela de impressão (escolha do modelo e do formato — DialogoImpressao).
 	onImprimir: () => void
 	baixandoPdf: boolean
-	// Só vem quando o dia existe (não há o que excluir numa folha pontilhada).
+	// Os dois só vêm quando o dia existe (não há o que editar/excluir numa folha pontilhada).
+	onEditarDia?: () => void
 	onExcluirDia?: () => void
 }) {
 	const { pathname } = useLocation()
@@ -154,7 +156,8 @@ export function DateNav({
 				</div>
 			</div>
 
-			{/* Ações da folha — à direita: largura, modo de visualização, impressão, excluir, hoje, calendário, perfil.
+			{/* Ações da folha — à direita: largura, modo de visualização, impressão, formato do dia, excluir, hoje,
+			    calendário, perfil.
 			    Só ícone + tooltip (Bloco 6), exceto "Hoje": texto curto, ação contextual clara.
 			    Abaixo de sm não cabem lado a lado: tudo menos "Hoje" vai pro menu ⋯ (MenuAcoesCompacto). */}
 			<div className="flex shrink-0 items-center gap-2">
@@ -193,6 +196,18 @@ export function DateNav({
 					>
 						<FileDown className={'h-3.5 w-3.5' + (baixandoPdf ? ' animate-pulse' : '')} aria-hidden="true" />
 					</button>
+
+					{onEditarDia && (
+						<button
+							type="button"
+							onClick={onEditarDia}
+							aria-label={t.planner.editorModelo.editarDia}
+							title={t.planner.editorModelo.editarDia}
+							className="shrink-0 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink"
+						>
+							<LayoutTemplate className="h-3.5 w-3.5" aria-hidden="true" />
+						</button>
+					)}
 
 					{onExcluirDia && (
 						<button
@@ -252,6 +267,7 @@ export function DateNav({
 						modoVisualizacao={modoVisualizacao}
 						onAlternarModoVisualizacao={onAlternarModoVisualizacao}
 						onImprimir={onImprimir}
+						onEditarDia={onEditarDia}
 						onExcluirDia={onExcluirDia}
 					/>
 				</div>

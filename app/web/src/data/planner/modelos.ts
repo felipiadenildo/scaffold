@@ -1,5 +1,5 @@
 import { gerarId } from '../../lib/gerarId'
-import type { Estrutura, Modelo } from './tipos'
+import type { Bloco, Estrutura, Modelo } from './tipos'
 
 type OpcoesEstrutura = Partial<Omit<Estrutura, 'blocos'>>
 
@@ -28,4 +28,21 @@ function diaDaSemana(dataISO: string): number {
 export function modeloSugerido(modelos: Modelo[], dataISO: string): Modelo | null {
 	const semana = diaDaSemana(dataISO)
 	return modelos.find((m) => m.diasSemana.includes(semana)) ?? modelos[0] ?? null
+}
+
+export const MIN_BLOCOS = 1
+export const MAX_BLOCOS = 6
+
+// Muda a quantidade de blocos pelo fim da lista (tirar remove o último; pôr acrescenta no fim) e
+// renomeia pelos nomes sugeridos pra nova quantidade — só os blocos que a pessoa não renomeou.
+// `sugestoes[n - 1]` = nomes pra n blocos (t.planner.sugestoesBlocos).
+export function ajustarQuantidadeBlocos(blocos: Bloco[], quantidade: number, sugestoes: string[][]): Bloco[] {
+	const n = Math.min(MAX_BLOCOS, Math.max(MIN_BLOCOS, quantidade))
+	const nomes = sugestoes[n - 1] ?? []
+	return Array.from({ length: n }, (_, i) => {
+		const existente = blocos[i]
+		const sugerido = nomes[i] ?? ''
+		if (!existente) return { id: gerarId(), nome: sugerido, nomeEditado: false }
+		return existente.nomeEditado ? existente : { ...existente, nome: sugerido }
+	})
 }

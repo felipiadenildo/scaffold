@@ -24,9 +24,33 @@ export const repositorioPlanner = {
 	removerDia: (dataISO: string) => remover(chavesPlanner.dia(dataISO)),
 }
 
-// Primeira vez: a pessoa escolheu um dos modelos prontos. Todos viram dela (na ordem oferecida),
-// as listas ganham os itens sugeridos — só se ainda estiverem vazias, pra nunca sobrescrever — e o
-// dia é criado com o escolhido.
+// Operações sobre a lista de modelos (a ordem da lista é a ordem mostrada).
+export const operacoesModelos = {
+	adicionar(modelo: Modelo): void {
+		repositorioPlanner.salvarModelos([...repositorioPlanner.modelos(), modelo])
+	},
+	atualizar(modelo: Modelo): void {
+		repositorioPlanner.salvarModelos(repositorioPlanner.modelos().map((m) => (m.id === modelo.id ? modelo : m)))
+	},
+	// Devolve o que foi removido e onde estava, pra "Desfazer" pôr de volta no mesmo lugar. Dias já
+	// criados com o modelo não mudam (cada um tem a própria cópia da estrutura).
+	remover(id: string): { modelo: Modelo; indice: number } | null {
+		const modelos = repositorioPlanner.modelos()
+		const indice = modelos.findIndex((m) => m.id === id)
+		if (indice === -1) return null
+		repositorioPlanner.salvarModelos(modelos.filter((m) => m.id !== id))
+		return { modelo: modelos[indice], indice }
+	},
+	restaurar({ modelo, indice }: { modelo: Modelo; indice: number }): void {
+		const modelos = repositorioPlanner.modelos().filter((m) => m.id !== modelo.id)
+		modelos.splice(indice, 0, modelo)
+		repositorioPlanner.salvarModelos(modelos)
+	},
+}
+
+// Primeira vez: a pessoa escolheu um modelo pronto (ou montou o dela). `modelos` vira a lista dela
+// — os prontos sempre entram —, as listas ganham os itens sugeridos (só se ainda estiverem vazias,
+// pra nunca sobrescrever) e o dia é criado com o escolhido.
 export function iniciarPlanner(
 	modelos: Modelo[],
 	escolhido: Modelo,

@@ -29,6 +29,8 @@ export interface Modelo {
 	estrutura: Estrutura
 	// Dias da semana em que este modelo vem pré-selecionado. 0 = domingo (mesma convenção de Date.getDay()).
 	diasSemana: number[]
+	// Veio dos modelos prontos: sempre presente (pode ser editado, não excluído).
+	pronto?: boolean
 }
 
 export type TipoLista = 'habitos' | 'importantes'

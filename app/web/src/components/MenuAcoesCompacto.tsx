@@ -1,4 +1,4 @@
-import { Calendar, Check, Ellipsis, FileDown, FlipHorizontal2, Moon, Sun, Trash2 } from 'lucide-react'
+import { Calendar, Check, Ellipsis, FileDown, FlipHorizontal2, LayoutTemplate, Moon, Sun, Trash2 } from 'lucide-react'
 import { useMenuSuspenso } from '../hooks/useMenuSuspenso'
 import { useIdioma } from '../i18n/useIdioma'
 import { useTema } from '../layout/useTema'
@@ -14,6 +14,7 @@ export function MenuAcoesCompacto({
 	modoVisualizacao,
 	onAlternarModoVisualizacao,
 	onImprimir,
+	onEditarDia,
 	onExcluirDia,
 }: {
 	data: Date
@@ -21,6 +22,7 @@ export function MenuAcoesCompacto({
 	modoVisualizacao: 'girar' | 'nao-girar'
 	onAlternarModoVisualizacao: () => void
 	onImprimir: () => void
+	onEditarDia?: () => void
 	onExcluirDia?: () => void
 }) {
 	const { ref, fechar } = useMenuSuspenso()
@@ -55,6 +57,13 @@ export function MenuAcoesCompacto({
 					<FileDown className={classeIconeItemMenu} aria-hidden="true" />
 					<span className="flex-1">{t.impressao.imprimir}</span>
 				</button>
+
+				{onEditarDia && (
+					<button type="button" onClick={() => executar(onEditarDia)} className={classeItemMenu}>
+						<LayoutTemplate className={classeIconeItemMenu} aria-hidden="true" />
+						<span className="flex-1">{t.planner.editorModelo.editarDia}</span>
+					</button>
+				)}
 
 				{/* Mesmo truque do calendário da barra: o <input type="date"> real cobre o item, invisível,
 				    e é ele que recebe o toque — assim abre o seletor nativo do celular. */}

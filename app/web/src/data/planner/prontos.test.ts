@@ -11,21 +11,27 @@ describe('modelos prontos', () => {
 		['es', es],
 	])('mesma forma em %s, com os textos do idioma', (_, t) => {
 		const prontos = criarModelosProntos(t)
-		expect(prontos.map((p) => p.chave)).toEqual(['padrao', 'fimDeSemana', 'diaDificil', 'trabalhoEstudo'])
-		expect(prontos.map((p) => p.modelo.estrutura.blocos.length)).toEqual([4, 1, 1, 3])
-		expect(prontos[0].modelo.nome).toBe(t.planner.prontos.padrao.nome)
-		expect(prontos[0].modelo.estrutura.blocos.map((b) => b.nome)).toEqual(t.planner.prontos.padrao.blocos)
+		expect(prontos.map((p) => p.chave)).toEqual(['leve', 'padrao', 'detalhado'])
+		expect(prontos.map((p) => p.modelo.estrutura.blocos.length)).toEqual([1, 4, 6])
+		expect(prontos[1].modelo.nome).toBe(t.planner.prontos.padrao.nome)
+		expect(prontos[1].modelo.estrutura.blocos.map((b) => b.nome)).toEqual(t.planner.sugestoesBlocos[3])
 	})
 
-	it('padrão nos dias úteis, fim de semana no sábado e domingo', () => {
-		const [padrao, fimDeSemana, diaDificil] = criarModelosProntos(pt).map((p) => p.modelo)
+	it('leve no fim de semana, padrão nos dias úteis', () => {
+		const [leve, padrao, detalhado] = criarModelosProntos(pt).map((p) => p.modelo)
+		expect(leve.diasSemana).toEqual([0, 6])
 		expect(padrao.diasSemana).toEqual([1, 2, 3, 4, 5])
-		expect(fimDeSemana.diasSemana).toEqual([0, 6])
-		expect(diaDificil.diasSemana).toEqual([])
+		expect(detalhado.diasSemana).toEqual([])
 	})
 
-	it('dia difícil só com humor e o que não pode faltar', () => {
-		const { estrutura } = criarModelosProntos(pt)[2].modelo
-		expect(estrutura).toMatchObject({ humor: true, sobreDia: false, habitos: false, importantes: true })
+	it('todos marcados como prontos, com as seções ligadas', () => {
+		for (const { modelo } of criarModelosProntos(pt)) {
+			expect(modelo.pronto).toBe(true)
+			expect(modelo.estrutura).toMatchObject({ humor: true, sobreDia: true, habitos: true, importantes: true })
+		}
+	})
+
+	it('a tabela de nomes tem de 1 a 6 blocos em todos os idiomas', () => {
+		for (const t of [pt, en, es]) expect(t.planner.sugestoesBlocos.map((l) => l.length)).toEqual([1, 2, 3, 4, 5, 6])
 	})
 })

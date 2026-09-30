@@ -57,6 +57,12 @@
 	--scaffold-lanche-bg: #ddc079;
 	--scaffold-jantar: #756a99;
 	--scaffold-jantar-bg: #dcd5e6;
+	/* 5º e 6º blocos (modelos com mais divisões) — mesma família terrosa/pastel: azul de ardósia e
+	   rosa-ameixa, distantes das 4 primeiras e do vermelho de crise. */
+	--scaffold-bloco5: #4f7390;
+	--scaffold-bloco5-bg: #d3dde6;
+	--scaffold-bloco6: #955a6c;
+	--scaffold-bloco6-bg: #ead5da;
 
 	/* Cores de humor — gradiente verde (positivo) a vermelho-terroso (difícil), passando por dourado (neutro). Distinto do vermelho de crise/SOS. */
 	--scaffold-mood-otimo: #4f7a58;
@@ -125,6 +131,10 @@
 	--scaffold-lanche-bg: #332c1c;
 	--scaffold-jantar: #b3a6d6;
 	--scaffold-jantar-bg: #292739;
+	--scaffold-bloco5: #93b6d2;
+	--scaffold-bloco5-bg: #1f2a33;
+	--scaffold-bloco6: #d59cae;
+	--scaffold-bloco6-bg: #33232a;
 
 	--scaffold-mood-otimo: #7fae86;
 	--scaffold-mood-bem: #a8c98d;

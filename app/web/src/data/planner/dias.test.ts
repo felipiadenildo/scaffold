@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { aplicarEstrutura, criarDia } from './dias'
+import { aplicarEstrutura, criarDia, destinosDoTexto } from './dias'
 import { criarModelo } from './modelos'
 import type { Dia, Estrutura } from './tipos'
 
@@ -78,5 +78,18 @@ describe('aplicarEstrutura (rearranjo)', () => {
 		const novo = aplicarEstrutura(dia, { ...modelo.estrutura, humor: false, sobreDia: false })
 		expect(novo.humor).toBe('bem')
 		expect(novo.sobreDia).toBe('bom dia')
+	})
+})
+
+describe('destinosDoTexto', () => {
+	it('lista só os blocos removidos que têm texto, com o destino', () => {
+		const dia = comTextos({ [lanche.id]: 'fruta', [jantar.id]: '' })
+		expect(destinosDoTexto(dia, semBlocos(lanche.id, jantar.id))).toEqual([
+			{ de: { id: lanche.id, nome: 'Lanche' }, para: { id: almoco.id, nome: 'Almoço' } },
+		])
+	})
+
+	it('nada muda de lugar quando nenhum bloco com texto sai', () => {
+		expect(destinosDoTexto(comTextos({ [cafe.id]: 'pão' }), semBlocos(jantar.id))).toEqual([])
 	})
 })
