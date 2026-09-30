@@ -7,6 +7,16 @@ manual's own [changelog page](https://felipiadenildo.github.io/scaffold/changelo
 
 ## [Unreleased]
 
+### Changed
+
+- Swiping sideways to change the day now works over the text too (unless a field is being
+  edited), and the sheet follows the finger like a carousel. A tip explains the gesture on first
+  use on touch devices.
+
+### Fixed
+
+- The print preview no longer overflows narrow phone screens (360px).
+
 ## [0.1.0] - 2026-09-30
 
 First public release of the app.

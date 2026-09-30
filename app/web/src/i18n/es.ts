@@ -125,6 +125,8 @@ export const es: Dicionario = {
 		calendario: 'Calendario',
 		diaAnterior: 'Día anterior',
 		proximoDia: 'Día siguiente',
+		dicaDeslizar: 'Consejo: desliza la hoja hacia un lado para cambiar de día.',
+		dicaDeslizarOk: 'Entendido',
 		paraModoVisualizacao: 'Cambiar a modo de visualización',
 		paraModoEdicao: 'Cambiar a modo de edición',
 		editandoDica: 'Editando — haz clic para solo ver',

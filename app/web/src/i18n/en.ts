@@ -125,6 +125,8 @@ export const en: Dicionario = {
 		calendario: 'Calendar',
 		diaAnterior: 'Previous day',
 		proximoDia: 'Next day',
+		dicaDeslizar: 'Tip: swipe the sheet sideways to change the day.',
+		dicaDeslizarOk: 'Got it',
 		paraModoVisualizacao: 'Switch to view mode',
 		paraModoEdicao: 'Switch to edit mode',
 		editandoDica: 'Editing — click to only view',

@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { animate, AnimatePresence, motion, useMotionValue } from 'motion/react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { mostrarAviso } from '../../components/avisos'
 import { DateNav } from '../../components/DateNav'
@@ -12,7 +12,7 @@ import { iniciarPlanner, operacoesModelos, repositorioPlanner } from '../../data
 import type { Modelo, TipoLista } from '../../data/planner/tipos'
 import { useArmazenado } from '../../hooks/useArmazenado'
 import { useDeslizarHorizontal } from '../../hooks/useDeslizarHorizontal'
-import { useTelaEstreita } from '../../hooks/useMidia'
+import { useMidia, useTelaEstreita } from '../../hooks/useMidia'
 import { useDia, useListaDoDia, useModelos } from '../../hooks/usePlanner'
 import { useIdioma } from '../../i18n/useIdioma'
 import { gerarId } from '../../lib/gerarId'
@@ -33,12 +33,22 @@ const CHAVE_BOAS_VINDAS = `${PREFIXO_LOCAL}planner.boasVindasVista`
 
 // Padrão oficial do Framer Motion pra carrossel/paginação direcional: entra do lado de onde
 // "veio" a navegação, sai pro lado oposto — próximo dia desliza da direita, dia anterior da
-// esquerda (https://www.framer.com/motion/examples/ — exemplo "Carousel/Swipe").
-const variantesSlide = {
-	entra: (direcao: number) => ({ x: direcao >= 0 ? 32 : -32, opacity: 0 }),
-	centro: { x: 0, opacity: 1 },
-	sai: (direcao: number) => ({ x: direcao >= 0 ? -32 : 32, opacity: 0 }),
+// esquerda (https://www.framer.com/motion/examples/ — exemplo "Carousel/Swipe"). Quando a troca
+// veio de deslizar o dedo, a folha antiga já saiu da tela arrastada: some na hora, sem animar.
+interface TrocaDeDia {
+	direcao: number
+	arrastando: boolean
 }
+const variantesSlide = {
+	entra: ({ direcao }: TrocaDeDia) => ({ x: direcao >= 0 ? 32 : -32, opacity: 0 }),
+	centro: { x: 0, opacity: 1 },
+	sai: ({ direcao, arrastando }: TrocaDeDia) =>
+		arrastando ? { opacity: 0, transition: { duration: 0 } } : { x: direcao >= 0 ? -32 : 32, opacity: 0 },
+}
+
+// Dica de deslizar pra trocar de dia, mostrada em aparelhos de toque até a pessoa deslizar uma vez
+// ou tocar em "Entendi". Local, como a de boas-vindas.
+const CHAVE_DICA_DESLIZAR = `${PREFIXO_LOCAL}planner.dicaDeslizarVista`
 
 // Preferências de visualização deste aparelho (lembradas entre visitas): largura ajustada e
 // girar / frente e verso juntos.
@@ -157,6 +167,17 @@ export function PlannerDiario() {
 	// atual). Depois, os modelos da pessoa, na ordem dela.
 	const primeiraVez = modelos.length === 0
 	const boasVindasVista = useArmazenado<boolean>(CHAVE_BOAS_VINDAS) === true
+
+	const toque = useMidia('(pointer: coarse)')
+	const dicaDeslizarVista = useArmazenado<boolean>(CHAVE_DICA_DESLIZAR) === true
+	const existeDia = !!dia
+	useEffect(() => {
+		if (!toque || !existeDia || dicaDeslizarVista) return
+		mostrarAviso({
+			texto: t.planner.dicaDeslizar,
+			acao: { rotulo: t.planner.dicaDeslizarOk, executar: () => salvar(CHAVE_DICA_DESLIZAR, true) },
+		})
+	}, [toque, existeDia, dicaDeslizarVista, t])
 	const prontos = useMemo(() => criarModelosProntos(t), [t])
 	const opcoes: OpcaoModelo[] = primeiraVez
 		? prontos.map((p) => ({ modelo: p.modelo, descricao: p.descricao, recomendado: p.chave === 'padrao' }))
@@ -221,12 +242,32 @@ export function PlannerDiario() {
 	}
 
 	// Deslizar o dedo pro lado na área da folha troca de dia (como virar a página de um caderno):
-	// pra esquerda, o próximo; pra direita, o anterior.
+	// pra esquerda, o próximo; pra direita, o anterior. A folha acompanha o dedo; ao soltar, sai da
+	// tela e o novo dia entra, ou volta pro lugar se o gesto foi curto.
 	const areaFolhaRef = useRef<HTMLDivElement>(null)
+	const arrasto = useMotionValue(0)
+	const [arrastando, setArrastando] = useState(false)
+	function trocarArrastando(passo: 1 | -1) {
+		salvar(CHAVE_DICA_DESLIZAR, true)
+		const largura = areaFolhaRef.current?.offsetWidth ?? window.innerWidth
+		animate(arrasto, -passo * largura, { duration: 0.18, ease: 'easeIn' }).then(() => {
+			setArrastando(true)
+			mudarData(somarDias(dataAtual, passo))
+		})
+	}
 	useDeslizarHorizontal(areaFolhaRef, {
-		onEsquerda: () => mudarData(somarDias(dataAtual, 1)),
-		onDireita: () => mudarData(somarDias(dataAtual, -1)),
+		onArrastar: (dx) => arrasto.set(dx),
+		onCancelar: () => animate(arrasto, 0, { type: 'spring', stiffness: 500, damping: 40 }),
+		onEsquerda: () => trocarArrastando(1),
+		onDireita: () => trocarArrastando(-1),
 	})
+	// A folha antiga saiu (sem animar, ver variantesSlide): volta o arrasto pro lugar antes do novo
+	// dia entrar.
+	function aoSairFolha() {
+		if (!arrastando) return
+		arrasto.jump(0)
+		setArrastando(false)
+	}
 
 	// Imprimir: a janela (DialogoImpressao) escolhe o modelo — por padrão o deste dia, ou o em
 	// destaque se o dia não existe. `null` = ainda não mexeu na escolha desde que abriu.
@@ -326,71 +367,75 @@ export function PlannerDiario() {
 				onExcluirDia={dia ? () => setConfirmandoExclusao(true) : undefined}
 			/>
 
-			<div ref={areaFolhaRef}>
-				<AnimatePresence mode="wait" custom={direcao} initial={false}>
-					<motion.div
-						key={dataISO}
-						custom={direcao}
-						variants={variantesSlide}
-						initial="entra"
-						animate="centro"
-						exit="sai"
-						transition={{ duration: 0.2, ease: 'easeOut' }}
-					>
-						{dia ? (
-							<FolhaFlip
-								expandido={expandido}
-								modoVisualizacao={modoVisualizacao}
-								lado={lado}
-								onGirar={girar}
-								frente={{
-									data: dataAtual,
-									onDataChange: mudarData,
-									modoEdicao,
-									onToggleModo: alternarModo,
-									mostrarHumor: dia.estrutura.humor,
-									humor: dia.humor,
-									onHumorChange: (humor) => atualizar((d) => ({ ...d, humor })),
-									blocos: blocosVisuais(dia.estrutura.blocos),
-									// Renomear um bloco aqui vale só pra este dia — cada dia tem a própria estrutura.
-									onRenomearBloco: (id, nome) =>
-										atualizar((d) => ({
-											...d,
-											estrutura: {
-												...d.estrutura,
-												blocos: d.estrutura.blocos.map((b) => (b.id === id ? { ...b, nome, nomeEditado: true } : b)),
-											},
-										})),
-									valoresBlocos: dia.blocos,
-									onValorBlocoChange: (id, valor) => atualizar((d) => ({ ...d, blocos: { ...d.blocos, [id]: valor } })),
-									mostrarSobreDia: dia.estrutura.sobreDia,
-									sobreDia: dia.sobreDia,
-									onSobreDiaChange: (sobreDia) => atualizar((d) => ({ ...d, sobreDia })),
-									somenteLeitura,
-								}}
-								verso={{
-									anotacoes: dia.anotacoes,
-									onAnotacoesChange: (anotacoes) => atualizar((d) => ({ ...d, anotacoes })),
-									habitos: propsLista('habitos', habitos, dia.estrutura.habitos),
-									importantes: propsLista('importantes', importantes, dia.estrutura.importantes),
-									somenteLeitura,
-								}}
-							/>
-						) : (
-							<FolhaInexistente
-								data={dataAtual}
-								onDataChange={mudarData}
-								expandido={expandido}
-								primeiraVez={primeiraVez}
-								opcoes={opcoes}
-								destaqueId={destaqueId}
-								onEscolher={(modelo) => escolherModelo(modelo)}
-								onEditar={primeiraVez ? undefined : (modelo) => setEditando({ tipo: 'modelo', modelo })}
-								onCriarModelo={() => setEditando({ tipo: 'novo' })}
-							/>
-						)}
-					</motion.div>
-				</AnimatePresence>
+			{/* overflow-x-clip: a folha arrastada pra fora da tela não cria rolagem pro lado. A margem
+			    negativa (compensada pelo padding) deixa a sombra da folha fora do corte. */}
+			<div className="-mx-3 overflow-x-clip px-3">
+				<motion.div ref={areaFolhaRef} style={{ x: arrasto }}>
+					<AnimatePresence mode="wait" custom={{ direcao, arrastando }} initial={false} onExitComplete={aoSairFolha}>
+						<motion.div
+							key={dataISO}
+							custom={{ direcao, arrastando }}
+							variants={variantesSlide}
+							initial="entra"
+							animate="centro"
+							exit="sai"
+							transition={{ duration: 0.2, ease: 'easeOut' }}
+						>
+							{dia ? (
+								<FolhaFlip
+									expandido={expandido}
+									modoVisualizacao={modoVisualizacao}
+									lado={lado}
+									onGirar={girar}
+									frente={{
+										data: dataAtual,
+										onDataChange: mudarData,
+										modoEdicao,
+										onToggleModo: alternarModo,
+										mostrarHumor: dia.estrutura.humor,
+										humor: dia.humor,
+										onHumorChange: (humor) => atualizar((d) => ({ ...d, humor })),
+										blocos: blocosVisuais(dia.estrutura.blocos),
+										// Renomear um bloco aqui vale só pra este dia — cada dia tem a própria estrutura.
+										onRenomearBloco: (id, nome) =>
+											atualizar((d) => ({
+												...d,
+												estrutura: {
+													...d.estrutura,
+													blocos: d.estrutura.blocos.map((b) => (b.id === id ? { ...b, nome, nomeEditado: true } : b)),
+												},
+											})),
+										valoresBlocos: dia.blocos,
+										onValorBlocoChange: (id, valor) => atualizar((d) => ({ ...d, blocos: { ...d.blocos, [id]: valor } })),
+										mostrarSobreDia: dia.estrutura.sobreDia,
+										sobreDia: dia.sobreDia,
+										onSobreDiaChange: (sobreDia) => atualizar((d) => ({ ...d, sobreDia })),
+										somenteLeitura,
+									}}
+									verso={{
+										anotacoes: dia.anotacoes,
+										onAnotacoesChange: (anotacoes) => atualizar((d) => ({ ...d, anotacoes })),
+										habitos: propsLista('habitos', habitos, dia.estrutura.habitos),
+										importantes: propsLista('importantes', importantes, dia.estrutura.importantes),
+										somenteLeitura,
+									}}
+								/>
+							) : (
+								<FolhaInexistente
+									data={dataAtual}
+									onDataChange={mudarData}
+									expandido={expandido}
+									primeiraVez={primeiraVez}
+									opcoes={opcoes}
+									destaqueId={destaqueId}
+									onEscolher={(modelo) => escolherModelo(modelo)}
+									onEditar={primeiraVez ? undefined : (modelo) => setEditando({ tipo: 'modelo', modelo })}
+									onCriarModelo={() => setEditando({ tipo: 'novo' })}
+								/>
+							)}
+						</motion.div>
+					</AnimatePresence>
+				</motion.div>
 			</div>
 
 			{editando && (
