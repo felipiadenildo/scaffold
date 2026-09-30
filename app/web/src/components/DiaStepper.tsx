@@ -1,6 +1,13 @@
 import { ChevronLeft, ChevronRight, Eye, Pencil } from 'lucide-react'
 import { useIdioma } from '../i18n/useIdioma'
-import { ehMesmoDia, formatarDataCurtaComDiaSemana, formatarDataLongaComDiaSemana, somarDias } from '../lib/formatarData'
+import {
+	ehMesmoDia,
+	formatarDataCurtaComDiaSemana,
+	formatarDataCurtissima,
+	formatarDataLongaComDiaSemana,
+	formatarDiaMes,
+	somarDias,
+} from '../lib/formatarData'
 
 export function DiaStepper({
 	data,
@@ -8,6 +15,7 @@ export function DiaStepper({
 	modoEdicao,
 	onToggleModo,
 	tamanho = 'normal',
+	plano = false,
 }: {
 	data: Date
 	onChange: (data: Date) => void
@@ -15,6 +23,8 @@ export function DiaStepper({
 	modoEdicao?: boolean
 	onToggleModo?: () => void
 	tamanho?: 'normal' | 'pequeno'
+	// Pequeno sem a sombra de "flutuante" — pra quando fica dentro da barra do PC, junto dos botões.
+	plano?: boolean
 }) {
 	const { t, locale } = useIdioma()
 	const ehHoje = ehMesmoDia(data, new Date())
@@ -27,11 +37,22 @@ export function DiaStepper({
 		const botaoSeta = 'shrink-0 rounded-full p-1 text-ink-soft transition-colors hover:text-ink'
 		// Mesma família visual do botão "Ver verso": pílula única, texto pequeno, discreta.
 		return (
-			<div className="flex items-center gap-0.5 rounded-full border border-border bg-bg-raised py-1 pl-1 pr-2 text-xs font-medium text-ink-soft shadow-raised">
+			<div
+				className={
+					'flex shrink-0 items-center gap-0.5 rounded-full border border-border py-1 pl-1 pr-2 text-xs font-medium text-ink-soft ' +
+					(plano ? '' : 'bg-bg-raised shadow-raised')
+				}
+			>
 				<button type="button" onClick={() => onChange(somarDias(data, -1))} aria-label={t.planner.diaAnterior} className={botaoSeta}>
 					<ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
 				</button>
-				<span className="font-mono">{formatarDataCurtaComDiaSemana(data, locale)}</span>
+				{/* Celular: sem o ano (e, abaixo de 375px, sem o dia da semana), pra caber na linha de
+				    controles do topo. Nunca quebra em duas linhas. */}
+				<span className="whitespace-nowrap font-mono sm:hidden">
+					<span className="max-[374px]:hidden">{formatarDataCurtissima(data, locale)}</span>
+					<span className="hidden max-[374px]:inline">{formatarDiaMes(data, locale)}</span>
+				</span>
+				<span className="hidden whitespace-nowrap font-mono sm:inline">{formatarDataCurtaComDiaSemana(data, locale)}</span>
 				{onToggleModo && (
 					<button
 						type="button"
@@ -63,11 +84,19 @@ export function DiaStepper({
 			</button>
 
 			<div className={'flex items-center gap-1 border-b-2 pb-0.5 ' + (ehHoje ? 'border-accent' : 'border-transparent')}>
-				<span className={'hidden text-base font-semibold sm:inline ' + (ehHoje ? 'text-accent' : '')}>
-					{formatarDataLongaComDiaSemana(data, locale)}
-				</span>
-				<span className={'font-mono text-base font-semibold sm:hidden ' + (ehHoje ? 'text-accent' : '')}>
-					{formatarDataCurtaComDiaSemana(data, locale)}
+				{/* O formato acompanha a largura da FOLHA (container query — a folha tem `@container`),
+				    não a da tela: a data divide a linha com o humor, e a folha pode estar estreita mesmo
+				    numa tela grande (frente e verso lado a lado). Nunca quebra em duas linhas.
+				    ≥ 37.5rem: por extenso · ≥ 27rem: "Ter, 30/09/2026" · ≥ 20rem: "Ter, 30/09" · menor: "30/09". */}
+				<span className={'whitespace-nowrap font-semibold ' + (ehHoje ? 'text-accent' : '')}>
+					<span className="hidden text-base @min-[37.5rem]:inline">{formatarDataLongaComDiaSemana(data, locale)}</span>
+					<span className="hidden font-mono text-base @min-[27rem]:inline @min-[37.5rem]:hidden">
+						{formatarDataCurtaComDiaSemana(data, locale)}
+					</span>
+					<span className="hidden font-mono text-sm @min-[20rem]:inline @min-[27rem]:hidden">
+						{formatarDataCurtissima(data, locale)}
+					</span>
+					<span className="font-mono text-sm @min-[20rem]:hidden">{formatarDiaMes(data, locale)}</span>
 				</span>
 				{onToggleModo && (
 					<button

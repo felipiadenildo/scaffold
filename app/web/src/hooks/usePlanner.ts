@@ -52,8 +52,11 @@ export function useListaDoDia(tipo: TipoLista, dataISO: string) {
 	const itens = resolverLista(lista, dataISO)
 	const editavel = dataISO >= paraISO(new Date())
 
-	function mudar(operacao: (lista: ListaVersionada) => ListaVersionada) {
-		repositorioPlanner.salvarLista(tipo, operacao(repositorioPlanner.lista(tipo)))
+	// Devolve a lista como estava antes, pra quem chamou poder oferecer "Desfazer".
+	function mudar(operacao: (lista: ListaVersionada) => ListaVersionada): ListaVersionada {
+		const antes = repositorioPlanner.lista(tipo)
+		repositorioPlanner.salvarLista(tipo, operacao(antes))
+		return antes
 	}
 
 	return {

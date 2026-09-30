@@ -4,6 +4,7 @@ import { MoodPicker } from '../../components/MoodPicker'
 import { SecaoDia, type ValorSecao } from '../../components/SecaoDia'
 import type { BlocoVisual } from '../../data/planner/cores'
 import type { Humor } from '../../data/planner/humor'
+import { useTelaEstreita } from '../../hooks/useMidia'
 import { useIdioma } from '../../i18n/useIdioma'
 
 export interface PropsFrenteDiario {
@@ -45,10 +46,14 @@ export function FrenteDiario({
 	modoImpressao,
 }: PropsFrenteDiario) {
 	const { t } = useIdioma()
+	const telaEstreita = useTelaEstreita()
 
 	return (
-		<div className="flex h-full flex-col">
-			<div className="mb-4 flex shrink-0 flex-wrap items-center justify-between gap-3 ">
+		// @container: o formato da data (DiaStepper) segue a largura desta folha.
+		<div className="@container flex h-full flex-col">
+			{/* Data e humor sempre na mesma linha, humor à direita: a data encurta conforme a largura
+			    da folha, e no celular os rostinhos ficam menores. */}
+			<div className="mb-4 flex shrink-0 items-center justify-between gap-3 max-sm:gap-2">
 				{modoImpressao ? (
 					<div className="flex min-w-0 flex-1 items-baseline gap-3">
 						<span className="shrink-0 text-lg font-bold">Scaffold</span>
@@ -58,7 +63,11 @@ export function FrenteDiario({
 					<DiaStepper data={data} onChange={onDataChange} modoEdicao={modoEdicao} onToggleModo={onToggleModo} />
 				)}
 				{mostrarHumor && (
-					<MoodPicker valor={humor} onChange={onHumorChange} somenteLeitura={somenteLeitura || modoImpressao} />
+					<MoodPicker
+						valor={humor}
+						onChange={onHumorChange}
+						somenteLeitura={somenteLeitura || modoImpressao}
+					/>
 				)}
 			</div>
 
@@ -95,7 +104,7 @@ export function FrenteDiario({
 							value={sobreDia}
 							onChange={(e) => onSobreDiaChange(e.target.value)}
 							disabled={somenteLeitura}
-							placeholder={t.planner.sobreODiaPlaceholder}
+							placeholder={telaEstreita ? t.planner.sobreODiaCurto : t.planner.sobreODiaPlaceholder}
 							className="min-w-0 flex-1 border-b border-dashed border-border bg-transparent px-1 text-sm outline-none transition-colors placeholder:text-ink-soft focus:border-accent focus:border-solid"
 						/>
 					)}

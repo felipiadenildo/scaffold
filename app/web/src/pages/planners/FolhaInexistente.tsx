@@ -47,11 +47,13 @@ export function FolhaInexistente({
 		<div className={'mx-auto transition-[max-width] duration-300 ease-out ' + classeLargura}>
 			<div
 				className={
-					'flex flex-col rounded-scaffold-lg border-2 border-dashed border-border p-5 sm:p-8 ' +
+					// max-sm:pt-8: espaço pra linha de controles do celular, que entra na folha pelo topo.
+					'flex flex-col rounded-scaffold-lg border-2 border-dashed border-border p-5 max-sm:pt-8 sm:p-8 ' +
 					(expandido ? 'min-h-[70svh]' : 'sm:aspect-[148/210]')
 				}
 			>
-				<div className="shrink-0">
+				{/* @container: o formato da data (DiaStepper) segue a largura da folha. */}
+				<div className="@container shrink-0">
 					<DiaStepper data={data} onChange={onDataChange} />
 				</div>
 

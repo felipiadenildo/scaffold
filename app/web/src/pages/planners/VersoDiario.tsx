@@ -2,6 +2,7 @@ import { Anchor, ListChecks, NotebookPen } from 'lucide-react'
 import { ChecklistEditable } from '../../components/ChecklistEditable'
 import { LinhasImpressao } from '../../components/LinhasImpressao'
 import type { ItemLista } from '../../data/planner/tipos'
+import { useCampoDeEscrita } from '../../hooks/useCampoDeEscrita'
 import { useIdioma } from '../../i18n/useIdioma'
 
 // Uma lista do verso (hábitos ou "não pode deixar de fazer"). `onAdicionar`/`onRemover` ausentes =
@@ -33,6 +34,7 @@ export function VersoDiario({
 	modoImpressao,
 }: PropsVersoDiario) {
 	const { t } = useIdioma()
+	const anotacoesRef = useCampoDeEscrita(anotacoes, onAnotacoesChange)
 	const duasListas = habitos.mostrar && importantes.mostrar
 
 	return (
@@ -46,11 +48,13 @@ export function VersoDiario({
 					<LinhasImpressao className="mt-2 min-h-24 px-0.5" />
 				) : (
 					<textarea
+						ref={anotacoesRef}
 						value={anotacoes}
 						onChange={(e) => onAnotacoesChange(e.target.value)}
 						disabled={somenteLeitura}
 						placeholder={t.planner.anotacoesPlaceholder}
-						className="paper-lines mt-2 min-h-24 w-full flex-1 resize-none bg-transparent px-0.5 text-sm outline-none placeholder:text-ink-soft"
+						// No celular começa maior (é o espaço livre do verso) e cresce com o texto.
+						className="paper-lines campo-cresce mt-2 min-h-24 w-full flex-1 resize-none bg-transparent px-0.5 text-sm outline-none placeholder:text-ink-soft max-sm:min-h-40"
 					/>
 				)}
 			</div>

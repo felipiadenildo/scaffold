@@ -12,6 +12,7 @@ import { iniciarPlanner, operacoesModelos, repositorioPlanner } from '../../data
 import type { Modelo, TipoLista } from '../../data/planner/tipos'
 import { useArmazenado } from '../../hooks/useArmazenado'
 import { useDeslizarHorizontal } from '../../hooks/useDeslizarHorizontal'
+import { useTelaEstreita } from '../../hooks/useMidia'
 import { useDia, useListaDoDia, useModelos } from '../../hooks/usePlanner'
 import { useIdioma } from '../../i18n/useIdioma'
 import { gerarId } from '../../lib/gerarId'
@@ -46,7 +47,6 @@ interface PreferenciasVisualizacao {
 	expandido: boolean
 	modo: 'girar' | 'nao-girar'
 }
-const VISUALIZACAO_PADRAO: PreferenciasVisualizacao = { expandido: false, modo: 'girar' }
 
 // `?dia=` só vale se for uma data de verdade no formato do app — qualquer outra coisa cai em hoje.
 function dataDaUrl(valor: string | null): string | null {
@@ -99,7 +99,13 @@ export function PlannerDiario() {
 	// `modo`: 'girar' (padrão) é o card que vira; 'nao-girar' mostra as duas faces ao mesmo tempo — o
 	// arranjo dentro dele (lado a lado ou empilhado) não é estado, é derivado em FolhaFlip a partir
 	// de `expandido` e do espaço disponível na tela.
-	const visualizacao = useArmazenado<PreferenciasVisualizacao>(CHAVE_VISUALIZACAO) ?? VISUALIZACAO_PADRAO
+	// Sem escolha salva: no celular, frente e verso empilhados (rolar passa da frente pro verso, e o
+	// deslizar pro lado fica só pra trocar de dia); no PC, a folha que vira.
+	const telaEstreita = useTelaEstreita()
+	const visualizacao = useArmazenado<PreferenciasVisualizacao>(CHAVE_VISUALIZACAO) ?? {
+		expandido: false,
+		modo: telaEstreita ? 'nao-girar' : 'girar',
+	}
 	const { expandido, modo: modoVisualizacao } = visualizacao
 	function mudarVisualizacao(mudancas: Partial<PreferenciasVisualizacao>) {
 		salvar(CHAVE_VISUALIZACAO, { ...visualizacao, ...mudancas })
@@ -135,7 +141,15 @@ export function PlannerDiario() {
 			onMarcadosChange: (marcados) => atualizar((d) => ({ ...d, marcados: { ...d.marcados, [tipo]: marcados } })),
 			// Lista travada em dias passados: só marcar/desmarcar (ver useListaDoDia).
 			onAdicionar: lista.editavel ? lista.adicionar : undefined,
-			onRemover: lista.editavel ? lista.remover : undefined,
+			onRemover: lista.editavel
+				? (id) => {
+						const antes = lista.remover(id)
+						mostrarAviso({
+							texto: t.planner.itemRemovido,
+							acao: { rotulo: t.app.desfazer, executar: () => repositorioPlanner.salvarLista(tipo, antes) },
+						})
+					}
+				: undefined,
 		}
 	}
 
@@ -277,6 +291,11 @@ export function PlannerDiario() {
 				onAlternarModoVisualizacao={alternarModoVisualizacao}
 				onImprimir={abrirImpressao}
 				baixandoPdf={gerandoPdf}
+				lado={lado}
+				// Virar só existe com o dia criado e no modo "virar a folha".
+				onGirar={dia && modoVisualizacao === 'girar' ? () => girar(lado === 'frente' ? 1 : -1) : undefined}
+				modoEdicao={modoEdicao}
+				onToggleModo={alternarModo}
 				onEditarDia={dia ? () => setEditando({ tipo: 'dia', dia }) : undefined}
 				onExcluirDia={dia ? () => setConfirmandoExclusao(true) : undefined}
 			/>

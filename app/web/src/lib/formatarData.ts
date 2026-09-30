@@ -17,6 +17,18 @@ export function formatarDataCurtaComDiaSemana(data: Date, locale: string): strin
 	return `${capitalizar(diaSemana)}, ${dataCurta}`
 }
 
+// "Ter, 15/09" / "Tue, 09/15" — celular, onde a data divide a linha com o humor e os controles.
+export function formatarDataCurtissima(data: Date, locale: string): string {
+	const diaSemana = data.toLocaleDateString(locale, { weekday: 'short' }).replace('.', '')
+	const diaMes = data.toLocaleDateString(locale, { day: '2-digit', month: '2-digit' })
+	return `${capitalizar(diaSemana)}, ${diaMes}`
+}
+
+// "15/09" / "09/15" — telas bem estreitas (menos de 375px), onde nem o dia da semana cabe.
+export function formatarDiaMes(data: Date, locale: string): string {
+	return data.toLocaleDateString(locale, { day: '2-digit', month: '2-digit' })
+}
+
 export function paraISO(data: Date): string {
 	const ano = data.getFullYear()
 	const mes = String(data.getMonth() + 1).padStart(2, '0')

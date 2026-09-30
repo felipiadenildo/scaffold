@@ -24,7 +24,8 @@ export function Layout() {
 		<HeaderSlotContext.Provider value={setHeaderExtra}>
 			<div className="flex min-h-svh flex-col bg-bg text-ink">
 				{!emFoco && (
-					<header className="border-b border-border">
+					// Com o app ocupando a tela toda (viewport-fit=cover), o cabeçalho desce da área do relógio.
+					<header className="border-b border-border pt-[env(safe-area-inset-top)]">
 						{/*
 							Três zonas: logo (fixo) | slot (flexível, truncável) | ações (fixo: idioma, tema).
 							`min-w-0` no slot é o que permite `truncate` funcionar dentro de flex;
@@ -54,9 +55,14 @@ export function Layout() {
 				)}
 
 				<main
+					style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
 					className={
 						'mx-auto w-full flex-1 px-4 transition-[max-width] duration-300 ease-out ' +
-						(emFoco ? 'max-w-none py-4' : 'max-w-4xl py-6 sm:py-8')
+						// Celular no modo foco: laterais menores (mais largura pra folha); em cima, o respiro
+						// inclui a área do relógio quando o app ocupa a tela toda.
+						(emFoco
+							? 'max-w-none py-4 max-sm:px-3 max-sm:pt-[max(0.75rem,env(safe-area-inset-top))]'
+							: 'max-w-4xl py-6 sm:py-8')
 					}
 				>
 					<Outlet />

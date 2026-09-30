@@ -2,6 +2,8 @@ import { Pencil } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
 import type { BlocoVisual } from '../data/planner/cores'
 import type { ConteudoBloco } from '../data/planner/tipos'
+import { useCampoDeEscrita } from '../hooks/useCampoDeEscrita'
+import { useTelaEstreita } from '../hooks/useMidia'
 import { useIdioma } from '../i18n/useIdioma'
 import { LinhasImpressao } from './LinhasImpressao'
 
@@ -25,6 +27,8 @@ export function SecaoDia({
 	const { t } = useIdioma()
 	const [editandoNome, setEditandoNome] = useState(false)
 	const [rascunhoNome, setRascunhoNome] = useState(secao.nome)
+	const telaEstreita = useTelaEstreita()
+	const campoRef = useCampoDeEscrita(valor.texto, (texto) => onChange({ ...valor, texto }))
 
 	function confirmarNome() {
 		const nome = rascunhoNome.trim()
@@ -70,7 +74,11 @@ export function SecaoDia({
 					>
 						{secao.nome}
 						{!somenteLeitura && onRenomear && (
-							<Pencil className="h-3 w-3 opacity-0 transition-opacity group-hover/nome:opacity-60" aria-hidden="true" />
+							// No toque não existe "passar o mouse": o lápis fica sempre à vista, discreto.
+							<Pencil
+								className="h-3 w-3 opacity-0 transition-opacity group-hover/nome:opacity-60 pointer-coarse:opacity-40"
+								aria-hidden="true"
+							/>
 						)}
 					</button>
 				)}
@@ -79,7 +87,8 @@ export function SecaoDia({
 						value={valor.tituloExtra}
 						onChange={(e) => onChange({ ...valor, tituloExtra: e.target.value })}
 						disabled={somenteLeitura}
-						placeholder={t.planner.tituloExtraPlaceholder}
+						// No celular o texto longo ficava cortado: versão curta.
+						placeholder={telaEstreita ? t.planner.tituloExtraCurto : t.planner.tituloExtraPlaceholder}
 						className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-ink-soft/70 disabled:placeholder:text-ink-soft/40"
 					/>
 				)}
@@ -88,11 +97,12 @@ export function SecaoDia({
 				<LinhasImpressao className="min-h-24 px-3 py-2.5" />
 			) : (
 				<textarea
+					ref={campoRef}
 					value={valor.texto}
 					onChange={(e) => onChange({ ...valor, texto: e.target.value })}
 					disabled={somenteLeitura}
 					placeholder={t.planner.escrevaAqui}
-					className="paper-lines block min-h-24 w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft"
+					className="paper-lines campo-cresce block min-h-24 w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft"
 				/>
 			)}
 		</div>
