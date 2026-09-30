@@ -101,32 +101,24 @@ Twelve chapters on routine and environment, written in Portuguese, plus template
 
 > Scaffold is support material and does not replace professional care. If you are in crisis, contact your local emergency number or a crisis line in your country.
 
-<div align="center">
-  <div style="display: flex; gap: 8px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
-    <div style="flex: 0 0 30%;">
-      <img src="docs/screenshots/celular.webp" alt="Planner on a phone" /><br />
+## Screenshots
+
+<table>
+  <tr>
+    <td width="22%" align="center" valign="middle">
+      <img src="docs/screenshots/celular.webp" alt="Planner on a phone" width="160" /><br />
       <sub>On a phone</sub>
-    </div>
-    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
-      <div>
-        <img src="docs/screenshots/planner-escuro.webp" alt="Planner in dark theme" /><br />
-        <sub>Dark theme</sub>
-      </div>
-      <div>
-        <img src="docs/screenshots/modelos.webp" alt="Choosing a template on first use" /><br />
-        <sub>Choosing a template</sub>
-      </div>
-    </div>
-  </div>
-  <div style="margin-top: 8px;">
-    <img src="docs/screenshots/impressao.webp" alt="Print dialog with preview" width="720" /><br />
-    <sub>Printing with preview</sub>
-  </div>
-  <div style="margin-top: 8px;">
-    <img src="docs/screenshots/catalogo.webp" alt="Tool catalog" width="720" /><br />
-    <sub>Tool catalog</sub>
-  </div>
-</div>
+    </td>
+    <td width="39%" align="center" valign="middle">
+      <img src="docs/screenshots/planner-escuro.webp" alt="Planner in dark theme" width="360" /><br />
+      <sub>Dark theme</sub>
+    </td>
+    <td width="39%" align="center" valign="middle">
+      <img src="docs/screenshots/impressao.webp" alt="Print dialog with preview" width="360" /><br />
+      <sub>Printing with preview</sub>
+    </td>
+  </tr>
+</table>
 
 ## Principles
 
