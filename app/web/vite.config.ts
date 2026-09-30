@@ -34,6 +34,9 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
+        // Identidade fixa do app instalado (sem ela, o Chrome usa o start_url — mudar a tela de abertura
+        // no futuro viraria "outro app" pra quem já instalou).
+        id: '/',
         name: 'Scaffold',
         short_name: 'Scaffold',
         description: 'Planner e ferramentas de rotina para TDAH.',
@@ -66,6 +69,10 @@ export default defineConfig({
         ],
         // Rotas do app (SPA): sem internet, qualquer endereço abre o index.html guardado.
         navigateFallback: '/index.html',
+        // Na PRIMEIRA instalação, o service worker já assume a página aberta — o app funciona offline
+        // desde a primeira visita (sem isso, só depois de recarregar). Versões seguintes continuam
+        // esperando o "Atualizar" (registerType 'prompt').
+        clientsClaim: true,
       },
     }),
   ],
