@@ -197,6 +197,15 @@ export const es: Dicionario = {
 		escolhaModelo: 'Elige la plantilla de la hoja:',
 		avisoListas:
 			'Los Hábitos y el "No puedo dejar de hacer" salen con los elementos de hoy. Para cambiar lo que se imprime, edita esas listas en la hoja de hoy. Las plantillas sin esas listas no se ven afectadas.',
+		opcoes: 'Opciones',
+		economizarTinta: 'Ahorrar tinta',
+		economizarTintaDica: 'Sin fondo de papel y sin los colores de las barras',
+		pretoEBranco: 'Blanco y negro',
+		linhasNasListas: 'Líneas en blanco en las listas',
+		avisoLinhas: 'Las listas salen con líneas en blanco, para escribir a mano.',
+		previa: 'Cómo va a quedar:',
+		naoCabe:
+			'No todo cabe en una hoja A5: saldrá un poco reducida. Quita elementos de las listas o usa líneas en blanco.',
 		formato: 'Descargar como:',
 		gerandoPdf: 'Generando PDF…',
 		gerando: 'Generando…',

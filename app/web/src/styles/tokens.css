@@ -8,7 +8,11 @@
 @import '@fontsource/atkinson-hyperlegible-next/400.css';
 @import '@fontsource/atkinson-hyperlegible-next/700.css';
 
-:root {
+/* Paleta clara: vale pra página toda e pra qualquer trecho marcado com data-theme="light" — é
+   assim que a folha de impressão (CartoesImprimiveis) sai sempre clara, mesmo com o app no tema
+   escuro. No elemento raiz, :root[data-theme='dark'] (mais específico) vence. */
+:root,
+[data-theme='light'] {
 	/* Base do app: neutra, só um traço de calidez — o "papel" de verdade fica só na superfície do
 	   Planner (--scaffold-paper, abaixo), não espalhado pelo app inteiro. Ver nota de correção no fim do arquivo. */
 	--scaffold-bg: #faf8f3;

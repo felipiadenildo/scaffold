@@ -39,9 +39,16 @@ export function SecaoDia({
 	return (
 		<div
 			style={{ '--secao-cor': secao.cor } as CSSProperties}
-			className="flex h-full flex-col overflow-hidden rounded-scaffold border border-border/70 transition-shadow duration-200 focus-within:shadow-[0_0_0_2px_var(--secao-cor)]"
+			className={
+				// Impressão: contorno mais forte — o da tela, claro, sumia sobre o papel no PDF.
+				'flex flex-1 flex-col overflow-hidden rounded-scaffold border ' +
+				(modoImpressao ? 'border-paper-ink/30' : 'border-border/70') +
+				' transition-shadow duration-200 focus-within:shadow-[0_0_0_2px_var(--secao-cor)]'
+			}
 		>
 			<div
+				// data-fundo: some com "Economizar tinta" na impressão (index.css).
+				data-fundo
 				className="flex shrink-0 items-center gap-2 border-b-2 px-3 py-2"
 				style={{ backgroundColor: secao.corSuave, borderBottomColor: secao.cor }}
 			>
@@ -94,7 +101,8 @@ export function SecaoDia({
 				)}
 			</div>
 			{modoImpressao ? (
-				<LinhasImpressao className="min-h-24 px-3 py-2.5" />
+				// Mínimo menor que o da tela: até 6 blocos precisam caber numa folha A5.
+				<LinhasImpressao className="min-h-12 px-3 py-2.5" />
 			) : (
 				<textarea
 					ref={campoRef}
@@ -102,7 +110,9 @@ export function SecaoDia({
 					onChange={(e) => onChange({ ...valor, texto: e.target.value })}
 					disabled={somenteLeitura}
 					placeholder={t.planner.escrevaAqui}
-					className="paper-lines campo-cresce block min-h-24 w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft"
+					// sm:min-h-12: no PC a folha tem altura fixa (proporção A5) e os blocos esticam pra ocupar tudo;
+					// o mínimo menor só evita a rolagem com 5–6 blocos (Detalhado). No celular a folha cresce.
+					className="paper-lines campo-cresce block min-h-24 w-full flex-1 resize-none bg-transparent px-3 py-2.5 text-sm outline-none placeholder:text-ink-soft sm:min-h-12"
 				/>
 			)}
 		</div>

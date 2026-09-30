@@ -14,6 +14,8 @@ export interface PropsListaVerso {
 	onMarcadosChange: (v: Record<string, boolean>) => void
 	onAdicionar?: (texto: string) => void
 	onRemover?: (id: string) => void
+	// Só na impressão: no lugar dos itens, esta quantidade de linhas em branco pra escrever à mão.
+	linhasEmBranco?: number
 }
 
 export interface PropsVersoDiario {
@@ -38,7 +40,8 @@ export function VersoDiario({
 	const duasListas = habitos.mostrar && importantes.mostrar
 
 	return (
-		<div className="flex h-full flex-col">
+		// Impressão: min-h-full (não h-full) — ver FrenteDiario.
+		<div className={'flex flex-col ' + (modoImpressao ? 'min-h-full' : 'h-full')}>
 			<div className="flex flex-1 flex-col rounded-scaffold border border-border p-4">
 				<h3 className="flex items-center gap-1.5 text-sm font-semibold text-paper-ink-soft">
 					<NotebookPen className="h-4 w-4" aria-hidden="true" />
@@ -70,6 +73,7 @@ export function VersoDiario({
 							onMarcadosChange={habitos.onMarcadosChange}
 							onAdicionar={habitos.onAdicionar}
 							onRemover={habitos.onRemover}
+							linhasEmBranco={habitos.linhasEmBranco}
 							cor="var(--color-accent)"
 							somenteLeitura={somenteLeitura}
 						/>
@@ -83,6 +87,7 @@ export function VersoDiario({
 							onMarcadosChange={importantes.onMarcadosChange}
 							onAdicionar={importantes.onAdicionar}
 							onRemover={importantes.onRemover}
+							linhasEmBranco={importantes.linhasEmBranco}
 							cor="var(--color-caution)"
 							corFundo="var(--color-caution-bg)"
 							somenteLeitura={somenteLeitura}

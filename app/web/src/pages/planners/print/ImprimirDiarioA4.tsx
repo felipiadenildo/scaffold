@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { baixarBlob, gerarPdfBlobA4DoisPlanners, registrarGanchoDeTeste } from '../../../pdf/capturarCardComoPdf'
 import { paraISO } from '../../../lib/formatarData'
 import { CartoesImprimiveis } from '../../../pdf/CartoesImprimiveis'
-import { useConteudoImpressao } from '../../../pdf/useConteudoImpressao'
+import { useConteudoImpressao, useOpcoesImpressao } from '../../../pdf/useConteudoImpressao'
 import { useIdioma } from '../../../i18n/useIdioma'
 import { useDia } from '../../../hooks/usePlanner'
 import './imprimir.css'
@@ -12,6 +12,7 @@ import './imprimir.css'
 export function ImprimirDiarioA4() {
 	const { estrutura } = useDia(paraISO(new Date()))
 	const conteudo = useConteudoImpressao(estrutura)
+	const { opcoes } = useOpcoesImpressao()
 	const { t } = useIdioma()
 	const [gerando, setGerando] = useState(false)
 
@@ -20,12 +21,13 @@ export function ImprimirDiarioA4() {
 
 	async function gerar() {
 		if (!frenteRef.current || !versoRef.current) throw new Error('cards não montados')
-		return gerarPdfBlobA4DoisPlanners(frenteRef.current, versoRef.current)
+		return gerarPdfBlobA4DoisPlanners(frenteRef.current, versoRef.current, { pretoEBranco: opcoes.pretoEBranco, semTextura: opcoes.economizarTinta })
 	}
 
+	// A cada render: o gancho de teste sempre chama a versão atual de gerar() (com as opções atuais).
 	useEffect(() => {
 		registrarGanchoDeTeste(gerar)
-	}, [])
+	})
 
 	async function baixarPdf() {
 		setGerando(true)
@@ -43,7 +45,7 @@ export function ImprimirDiarioA4() {
 			</button>
 			<p className="no-print aviso-a4">{t.impressao.avisoA4}</p>
 
-			<CartoesImprimiveis conteudo={conteudo} frenteRef={frenteRef} versoRef={versoRef} />
+			<CartoesImprimiveis conteudo={conteudo} opcoes={opcoes} frenteRef={frenteRef} versoRef={versoRef} />
 		</div>
 	)
 }

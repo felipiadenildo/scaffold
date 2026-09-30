@@ -1,13 +1,39 @@
 import { useMemo } from 'react'
+import { PREFIXO_LOCAL, salvar } from '../data/armazenamento/armazenamento'
 import { blocosVisuais, type BlocoVisual } from '../data/planner/cores'
 import { resolverLista } from '../data/planner/listas'
 import { criarModelosProntos, listasSugeridas, prontoPadrao } from '../data/planner/prontos'
 import type { Estrutura, ItemLista } from '../data/planner/tipos'
+import { useArmazenado } from '../hooks/useArmazenado'
 import { useListaDoDia, useModelos } from '../hooks/usePlanner'
 import { useIdioma } from '../i18n/useIdioma'
 import { paraISO } from '../lib/formatarData'
 
 export const semAcaoImpressao = () => {}
+
+// Escolhas da janela de impressão, lembradas neste aparelho.
+export interface OpcoesImpressao {
+	// Sem o fundo de papel (creme + textura) e sem as cores de fundo das barras. Desligado por padrão:
+	// o padrão é a folha como aparece na tela.
+	economizarTinta: boolean
+	// PDF em tons de cinza (pra impressora sem cor, ou só pra economizar a tinta colorida).
+	pretoEBranco: boolean
+	// As duas listas saem com os itens de hoje ou com linhas em branco pra escrever à mão.
+	listas: 'itens' | 'linhas'
+}
+
+const CHAVE_OPCOES_IMPRESSAO = `${PREFIXO_LOCAL}impressao`
+const OPCOES_PADRAO: OpcoesImpressao = { economizarTinta: false, pretoEBranco: false, listas: 'itens' }
+
+export function useOpcoesImpressao() {
+	// Mescla com o padrão: opções salvas por uma versão anterior (sem algum campo) continuam válidas.
+	const salvas = useArmazenado<Partial<OpcoesImpressao>>(CHAVE_OPCOES_IMPRESSAO)
+	const opcoes: OpcoesImpressao = { ...OPCOES_PADRAO, ...salvas }
+	return {
+		opcoes,
+		mudarOpcoes: (mudancas: Partial<OpcoesImpressao>) => salvar(CHAVE_OPCOES_IMPRESSAO, { ...opcoes, ...mudancas }),
+	}
+}
 
 export interface ConteudoImpressao {
 	estrutura: Estrutura

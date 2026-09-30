@@ -52,7 +52,13 @@ export function DiaStepper({
 					<span className="max-[374px]:hidden">{formatarDataCurtissima(data, locale)}</span>
 					<span className="hidden max-[374px]:inline">{formatarDiaMes(data, locale)}</span>
 				</span>
-				<span className="hidden whitespace-nowrap font-mono sm:inline">{formatarDataCurtaComDiaSemana(data, locale)}</span>
+				{/* Tela larga: com o ano; sem o ano quando a barra do PC está apertada (DateNav, @container). */}
+				<span className="hidden whitespace-nowrap font-mono sm:inline sm:@max-[44rem]:hidden">
+					{formatarDataCurtaComDiaSemana(data, locale)}
+				</span>
+				<span className="hidden whitespace-nowrap font-mono sm:@max-[44rem]:inline">
+					{formatarDataCurtissima(data, locale)}
+				</span>
 				{onToggleModo && (
 					<button
 						type="button"

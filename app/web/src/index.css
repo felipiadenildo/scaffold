@@ -121,3 +121,19 @@ body {
 	outline: 2px solid var(--color-accent);
 	outline-offset: 2px;
 }
+
+/*
+	Folha de impressão (CartoesImprimiveis) com "Economizar tinta": sai o papel (creme + textura, que
+	vem do ::before de .paper-grain) e os fundos coloridos das barras (cabeçalho dos blocos, caixa do
+	"não pode deixar de fazer"), que vêm em style inline — por isso o !important, só aqui. Friso e
+	texto continuam na cor.
+*/
+.folha-impressao.tinta-economica {
+	--scaffold-paper: #ffffff;
+}
+.folha-impressao.tinta-economica::before {
+	display: none;
+}
+.folha-impressao.tinta-economica [data-fundo] {
+	background-color: transparent !important;
+}

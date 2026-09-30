@@ -82,9 +82,12 @@ export function DateNav({
 				onExcluirDia={onExcluirDia}
 			/>
 
-			{/* Tela larga (sm+). No celular, a linha acima (ControlesCelular). */}
+			{/* Tela larga (sm+). No celular, a linha acima (ControlesCelular).
+			    @container: a barra encolhe o que mostra conforme a PRÓPRIA largura — na largura normal
+			    (~672px), no verso de um dia que não é hoje, tudo junto passava do espaço. Abaixo de
+			    44rem: "Scaffold | ícone" sem o nome da visão, e a data do verso sem o ano. */}
 			<div
-				className={`mx-auto mb-4 hidden items-center justify-between gap-3 transition-[max-width] duration-300 ease-out sm:flex ${classeLargura}`}
+				className={`@container mx-auto mb-4 hidden items-center justify-between gap-3 transition-[max-width] duration-300 ease-out sm:flex ${classeLargura}`}
 			>
 				{/* Esquerda: "Scaffold | visão" (menu com catálogo e visões) e, no verso, a data. */}
 				<div className="flex min-w-0 items-center gap-2">

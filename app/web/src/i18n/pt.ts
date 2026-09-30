@@ -202,6 +202,15 @@ export const pt = {
 		escolhaModelo: 'Escolha o modelo da folha:',
 		avisoListas:
 			'O Habit tracker e o "Não pode deixar de fazer" saem com os itens de hoje. Pra mudar o que sai impresso, edite essas listas na folha de hoje. Modelos sem essas listas não são afetados.',
+		opcoes: 'Opções',
+		economizarTinta: 'Economizar tinta',
+		economizarTintaDica: 'Sem o fundo de papel e sem as cores das barras',
+		pretoEBranco: 'Preto e branco',
+		linhasNasListas: 'Linhas em branco nas listas',
+		avisoLinhas: 'As listas saem com linhas em branco, pra escrever à mão.',
+		previa: 'Como vai sair:',
+		naoCabe:
+			'Nem tudo cabe numa folha A5: ela vai sair um pouco reduzida. Tire itens das listas ou use linhas em branco.',
 		formato: 'Baixar como:',
 		gerandoPdf: 'Gerando PDF…',
 		gerando: 'Gerando…',

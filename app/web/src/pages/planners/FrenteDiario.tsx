@@ -50,7 +50,9 @@ export function FrenteDiario({
 
 	return (
 		// @container: o formato da data (DiaStepper) segue a largura desta folha.
-		<div className="@container flex h-full flex-col">
+		// Impressão: min-h-full (não h-full) — se não couber tudo na proporção A5, a folha cresce e o PDF
+		// sai reduzido, em vez de cortar o que passou (CartoesImprimiveis mede isso pro aviso).
+		<div className={'@container flex flex-col ' + (modoImpressao ? 'min-h-full' : 'h-full')}>
 			{/* Data e humor sempre na mesma linha, humor à direita: a data encurta conforme a largura
 			    da folha, e no celular os rostinhos ficam menores. */}
 			<div className="mb-4 flex shrink-0 items-center justify-between gap-3 max-sm:gap-2">
@@ -75,7 +77,9 @@ export function FrenteDiario({
 				{blocos.map((bloco, i) => (
 					<motion.div
 						key={bloco.id}
-						className="flex-1"
+						// Estica pelo flex (não por h-full): na impressão a folha pode crescer, e altura em %
+						// dentro de uma altura não fixa deixava os blocos encolhidos.
+						className="flex flex-1 flex-col"
 						initial={modoImpressao ? undefined : { opacity: 0, y: 8 }}
 						animate={modoImpressao ? undefined : { opacity: 1, y: 0 }}
 						transition={{ delay: i * 0.05, duration: 0.25 }}

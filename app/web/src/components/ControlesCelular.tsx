@@ -48,7 +48,8 @@ export function MenuScaffold({ visaoAtual, naBarra = false }: { visaoAtual: Slug
 				<IconeAtual className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
 				{naBarra && (
 					<>
-						<span className="font-medium text-ink">{t.planner.visoes[visaoAtual]}</span>
+						{/* Some quando a barra está apertada (DateNav, @container). */}
+						<span className="font-medium text-ink @max-[44rem]:hidden">{t.planner.visoes[visaoAtual]}</span>
 						<ChevronDown className="h-3 w-3 transition-transform group-open:rotate-180" aria-hidden="true" />
 					</>
 				)}

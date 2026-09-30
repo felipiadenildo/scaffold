@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { mostrarAviso } from '../../components/avisos'
 import { DateNav } from '../../components/DateNav'
@@ -18,7 +18,7 @@ import { useIdioma } from '../../i18n/useIdioma'
 import { gerarId } from '../../lib/gerarId'
 import { deISO, paraISO, somarDias } from '../../lib/formatarData'
 import { CartoesImprimiveis } from '../../pdf/CartoesImprimiveis'
-import { useConteudoImpressao } from '../../pdf/useConteudoImpressao'
+import { useConteudoImpressao, useOpcoesImpressao } from '../../pdf/useConteudoImpressao'
 import { BoasVindasPlanner } from './BoasVindasPlanner'
 import { ConfirmarExclusaoDia } from './ConfirmarExclusaoDia'
 import { DialogoImpressao } from './DialogoImpressao'
@@ -231,6 +231,7 @@ export function PlannerDiario() {
 	const modeloDoDia = dia?.modeloId && opcoes.some((o) => o.modelo.id === dia.modeloId) ? dia.modeloId : null
 	const idImpressao = modeloImpressaoId ?? modeloDoDia ?? destaqueId
 	const conteudoImpressao = useConteudoImpressao(opcoes.find((o) => o.modelo.id === idImpressao)?.modelo.estrutura ?? null)
+	const { opcoes: opcoesImpressao, mudarOpcoes: mudarOpcoesImpressao } = useOpcoesImpressao()
 
 	function abrirImpressao() {
 		setModeloImpressaoId(null)
@@ -244,6 +245,20 @@ export function PlannerDiario() {
 	const frenteImpressaoRef = useRef<HTMLDivElement>(null)
 	const versoImpressaoRef = useRef<HTMLDivElement>(null)
 
+	// "Não cabe": a folha montada pra captura cresce além da proporção A5 quando as listas são longas
+	// demais (o PDF então sai reduzido pra caber na página). Medido na folha real, depois do render.
+	const [naoCabe, setNaoCabe] = useState(false)
+	useLayoutEffect(() => {
+		if (!imprimindo) return
+		const quadro = requestAnimationFrame(() => {
+			const passou = [frenteImpressaoRef.current, versoImpressaoRef.current].some(
+				(folha) => folha && folha.offsetHeight > (folha.offsetWidth * 210) / 148 + 1,
+			)
+			setNaoCabe(passou)
+		})
+		return () => cancelAnimationFrame(quadro)
+	})
+
 	async function baixarA5() {
 		if (!frenteImpressaoRef.current || !versoImpressaoRef.current) return
 		setGerandoPdf(true)
@@ -252,7 +267,10 @@ export function PlannerDiario() {
 			// clica em baixar, não sempre que a página do Diário monta (ver App.tsx, mesma lógica
 			// de code-splitting das rotas /imprimir-a5 e /imprimir-a4).
 			const { gerarPdfBlobDeElementos, baixarBlob } = await import('../../pdf/capturarCardComoPdf')
-			const blob = await gerarPdfBlobDeElementos([frenteImpressaoRef.current, versoImpressaoRef.current])
+			const blob = await gerarPdfBlobDeElementos([frenteImpressaoRef.current, versoImpressaoRef.current], {
+				pretoEBranco: opcoesImpressao.pretoEBranco,
+				semTextura: opcoesImpressao.economizarTinta,
+			})
 			baixarBlob(blob, 'scaffold-planner-diario-a5.pdf')
 			setImprimindo(false)
 		} finally {
@@ -265,7 +283,10 @@ export function PlannerDiario() {
 		setGerandoPdf(true)
 		try {
 			const { gerarPdfBlobA4DoisPlanners, baixarBlob } = await import('../../pdf/capturarCardComoPdf')
-			const blob = await gerarPdfBlobA4DoisPlanners(frenteImpressaoRef.current, versoImpressaoRef.current)
+			const blob = await gerarPdfBlobA4DoisPlanners(frenteImpressaoRef.current, versoImpressaoRef.current, {
+				pretoEBranco: opcoesImpressao.pretoEBranco,
+				semTextura: opcoesImpressao.economizarTinta,
+			})
 			baixarBlob(blob, 'scaffold-planner-diario-a4-2-planners.pdf')
 			setImprimindo(false)
 		} finally {
@@ -277,6 +298,7 @@ export function PlannerDiario() {
 		<div>
 			<CartoesImprimiveis
 				conteudo={conteudoImpressao}
+				opcoes={opcoesImpressao}
 				frenteRef={frenteImpressaoRef}
 				versoRef={versoImpressaoRef}
 				foraDaTela
@@ -383,6 +405,10 @@ export function PlannerDiario() {
 					opcoes={opcoes}
 					selecionadoId={idImpressao}
 					onSelecionar={setModeloImpressaoId}
+					conteudo={conteudoImpressao}
+					opcoesImpressao={opcoesImpressao}
+					onMudarOpcoes={mudarOpcoesImpressao}
+					naoCabe={naoCabe}
 					onBaixarA5={baixarA5}
 					onBaixarA4={baixarA4}
 					gerando={gerandoPdf}

@@ -69,7 +69,9 @@ justificativa e referência.
 
 ### Fica para depois da Fase 0
 Horários nos blocos e itens · arrastar para reordenar · editor de texto visual (Tiptap) · resetar
-itens · imprimir semana / dia preenchido.
+itens · imprimir semana / dia preenchido · **padronizar as janelas (modais)**: disposição dos
+elementos, posição e nome dos botões (Cancelar/Voltar/Salvar), comportamento no celular — pedido em
+30/09/2026 · PDF vetorial (texto nítido, arquivo mínimo) em vez de captura da tela.
 
 ---
 
@@ -132,5 +134,5 @@ interface Dia {
 | **0-C · Planner com modelos** | Mensagem de boas-vindas (primeira vez) · folha pontilhada para dia inexistente com modelos em botões e "Criar o seu próprio modelo" (desativado até a 0-D) · modelos prontos copiados no idioma atual · 👤 na barra + agrupamento ⋯ em tela estreita | Planner funcionando com modelos, sem editor |
 | **0-D · Janela de modelo** | Criar/editar modelo e editar o formato do dia numa janela · prontos Leve/Padrão/Detalhado sempre presentes · 6 cores de bloco · excluir modelo com "Desfazer" | Montar e editar modelos e dias |
 | **0-E · Uso no celular** | Campos que crescem com o texto (`field-sizing` + ajuste por JS) · sem zoom do iPhone nos campos · alvos de toque maiores (linha inteira marca o item) · desfazer ao remover item · atalhos de lista (`- `, `1. `, via `beforeinput`) · barra do Planner fixa no topo · frente e verso empilhados como padrão no celular · janelas como painel de baixo · base de app instalável (viewport-fit, áreas seguras, theme-color) | Uso diário confortável no celular |
-| **0-F · Impressão** | Painel de impressão: este dia ou um modelo, A5/A4, itens incluídos, itens ou linhas em branco, prévia, aviso de "não cabe" · impressão no idioma atual | PDF fiel à estrutura escolhida |
+| **0-F · Impressão** | Janela de impressão com prévia sobre a página A5 · padrão = folha como na tela (papel, cores); opções "Economizar tinta" (sem papel e sem cores nas barras), "Preto e branco" e "Linhas em branco nas listas" · aviso quando não cabe (a folha cresce e o PDF sai reduzido) · folha sempre na paleta clara · PDF de ~18 MB para ~450 KB (compressão no jsPDF; JPEG com textura, PNG sem) · janela de tamanho fixo | PDF fiel e leve |
 | **0-G · Segurança** | PWA (manifest, ícones, offline, aviso de nova versão, instalar no Android e guia no iPhone, `storage.persist`) · exportar/importar JSON (substituir ou juntar) · tela de erro amigável | Pronto para a fase de login |
