@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://scaffold-app.scaffold-app.workers.dev
+      url: https://app.myscaffold.workers.dev
     defaults:
       run:
         working-directory: app/web

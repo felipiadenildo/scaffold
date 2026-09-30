@@ -8,7 +8,7 @@
 
 Um manual de referência e um app que colocam o manual em prática, para quem tem o diagnóstico e para quem apoia.
 
-[**Abrir o app**](https://scaffold-app.scaffold-app.workers.dev) · [**Ler o manual**](https://felipiadenildo.github.io/scaffold/) · [Enviar sugestão](#contato)
+[**Abrir o app**](https://app.myscaffold.workers.dev) · [**Ler o manual**](https://felipiadenildo.github.io/scaffold/) · [Enviar sugestão](#contato)
 
 [English](README.md) · **Português** · [Español](README.es.md)
 
@@ -48,7 +48,7 @@ São duas partes que se completam:
 | | O que é | Onde fica |
 |---|---|---|
 | **Manual** | Explica o porquê e o como pensar de cada solução, com fontes checadas | [felipiadenildo.github.io/scaffold](https://felipiadenildo.github.io/scaffold/) |
-| **App** | Coloca as soluções em uso, no celular, no computador ou impressas | [scaffold-app.scaffold-app.workers.dev](https://scaffold-app.scaffold-app.workers.dev) |
+| **App** | Coloca as soluções em uso, no celular, no computador ou impressas | [app.myscaffold.workers.dev](https://app.myscaffold.workers.dev) |
 
 ## O app
 
@@ -103,15 +103,18 @@ Doze capítulos sobre rotina e ambiente, escritos em português, com templates e
 
 <table>
   <tr>
-    <td width="33%" align="center"><img src="docs/screenshots/celular.webp" alt="Planner no celular" /><br /><sub>No celular</sub></td>
-    <td width="67%" align="center"><img src="docs/screenshots/planner-escuro.webp" alt="Planner no tema escuro" /><br /><sub>Tema escuro</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="docs/screenshots/modelos.webp" alt="Escolha do modelo no primeiro acesso" /><br /><sub>Escolha do modelo</sub></td>
-    <td align="center"><img src="docs/screenshots/impressao.webp" alt="Janela de impressão com prévia" /><br /><sub>Impressão com prévia</sub></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><img src="docs/screenshots/catalogo.webp" alt="Catálogo de ferramentas" width="720" /><br /><sub>Catálogo de ferramentas</sub></td>
+    <td width="22%" align="center" valign="middle">
+      <img src="docs/screenshots/celular.webp" alt="Planner no celular" width="160" /><br />
+      <sub>No celular</sub>
+    </td>
+    <td width="39%" align="center" valign="middle">
+      <img src="docs/screenshots/planner-escuro.webp" alt="Planner no tema escuro" width="360" /><br />
+      <sub>Tema escuro</sub>
+    </td>
+    <td width="39%" align="center" valign="middle">
+      <img src="docs/screenshots/impressao.webp" alt="Janela de impressão com prévia" width="360" /><br />
+      <sub>Impressão com prévia</sub>
+    </td>
   </tr>
 </table>
 
