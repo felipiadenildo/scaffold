@@ -3,42 +3,45 @@ import { criarDia } from '../data/planner/dias'
 import { adicionarItem, removerItem, renomearItem, resolverLista } from '../data/planner/listas'
 import { modeloSugerido } from '../data/planner/modelos'
 import { chavesPlanner, repositorioPlanner } from '../data/planner/repositorio'
-import type { Dia, Estrutura, ListaVersionada, Modelo, TipoLista } from '../data/planner/tipos'
+import type { Dia, ListaVersionada, Modelo, TipoLista } from '../data/planner/tipos'
 import { paraISO } from '../lib/formatarData'
 import { useArmazenado } from './useArmazenado'
 
 // Constantes (e não literais inline) pra devolver sempre a mesma referência quando não há dado.
 const SEM_MODELOS: Modelo[] = []
 const LISTA_VAZIA: ListaVersionada = { versoes: [] }
-const ESTRUTURA_VAZIA: Estrutura = { blocos: [], humor: false, sobreDia: false, habitos: false, importantes: false }
 
 export function useModelos(): Modelo[] {
 	return useArmazenado<Modelo[]>(chavesPlanner.modelos) ?? SEM_MODELOS
 }
 
-function criarDiaComModeloSugerido(dataISO: string): Dia | null {
-	const modelo = modeloSugerido(repositorioPlanner.modelos(), dataISO)
-	return modelo ? criarDia(modelo, dataISO) : null
-}
-
+// `dia` null = o dia ainda não foi criado (a tela mostra a folha pontilhada com os modelos).
+// `estrutura` existe mesmo assim — a do modelo sugerido pra aquela data — pra poder imprimir a folha
+// em branco de um dia que ainda não existe.
 export function useDia(dataISO: string) {
 	const dia = useArmazenado<Dia>(chavesPlanner.dia(dataISO))
 	const modelos = useModelos()
+	const estrutura = dia?.estrutura ?? modeloSugerido(modelos, dataISO)?.estrutura ?? null
 
-	// TEMPORÁRIO (até a etapa 0-C): um dia que ainda não existe aparece com a estrutura do modelo
-	// sugerido e é criado de verdade na primeira edição. Na 0-C ele passa a aparecer como folha
-	// pontilhada, com os modelos pra escolher.
-	const estrutura = dia?.estrutura ?? modeloSugerido(modelos, dataISO)?.estrutura ?? ESTRUTURA_VAZIA
-
+	// Só mexe em dia que já existe: criar é sempre uma escolha explícita (criar(), com o modelo).
 	const atualizar = useCallback(
 		(mudar: (dia: Dia) => Dia) => {
-			const atual = repositorioPlanner.dia(dataISO) ?? criarDiaComModeloSugerido(dataISO)
+			const atual = repositorioPlanner.dia(dataISO)
 			if (atual) repositorioPlanner.salvarDia(mudar(atual))
 		},
 		[dataISO],
 	)
 
-	return { dia, estrutura, atualizar }
+	const criar = useCallback((modelo: Modelo) => repositorioPlanner.salvarDia(criarDia(modelo, dataISO)), [dataISO])
+
+	// Devolve o dia como estava, pra quem chamou poder oferecer "Desfazer" (restaurar = salvarDia).
+	const excluir = useCallback((): Dia | null => {
+		const atual = repositorioPlanner.dia(dataISO)
+		if (atual) repositorioPlanner.removerDia(dataISO)
+		return atual
+	}, [dataISO])
+
+	return { dia, estrutura, atualizar, criar, excluir }
 }
 
 // Itens da lista como valiam no dia `dataISO`. Editar a lista (adicionar/remover/renomear) vale

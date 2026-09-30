@@ -24,6 +24,13 @@ export function paraISO(data: Date): string {
 	return `${ano}-${mes}-${dia}`
 }
 
+// Inverso de paraISO: "2026-09-30" → Date local (meia-noite no fuso da pessoa, não em UTC — o que
+// `new Date("2026-09-30")` faria, voltando um dia no Brasil).
+export function deISO(dataISO: string): Date {
+	const [ano, mes, dia] = dataISO.split('-').map(Number)
+	return new Date(ano, mes - 1, dia)
+}
+
 export function ehMesmoDia(a: Date, b: Date): boolean {
 	return paraISO(a) === paraISO(b)
 }

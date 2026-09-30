@@ -11,8 +11,9 @@ export function DiaStepper({
 }: {
 	data: Date
 	onChange: (data: Date) => void
-	modoEdicao: boolean
-	onToggleModo: () => void
+	// Sem os dois (dia que ainda não existe), o botão de alternar editar/visualizar não aparece.
+	modoEdicao?: boolean
+	onToggleModo?: () => void
 	tamanho?: 'normal' | 'pequeno'
 }) {
 	const { t, locale } = useIdioma()
@@ -31,15 +32,17 @@ export function DiaStepper({
 					<ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
 				</button>
 				<span className="font-mono">{formatarDataCurtaComDiaSemana(data, locale)}</span>
-				<button
-					type="button"
-					onClick={onToggleModo}
-					aria-label={rotuloModo}
-					title={dicaModo}
-					className="rounded-full p-0.5 hover:text-ink"
-				>
-					<IconeModo className="h-3 w-3" aria-hidden="true" />
-				</button>
+				{onToggleModo && (
+					<button
+						type="button"
+						onClick={onToggleModo}
+						aria-label={rotuloModo}
+						title={dicaModo}
+						className="rounded-full p-0.5 hover:text-ink"
+					>
+						<IconeModo className="h-3 w-3" aria-hidden="true" />
+					</button>
+				)}
 				<button type="button" onClick={() => onChange(somarDias(data, 1))} aria-label={t.planner.proximoDia} className={botaoSeta}>
 					<ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
 				</button>
@@ -66,15 +69,17 @@ export function DiaStepper({
 				<span className={'font-mono text-base font-semibold sm:hidden ' + (ehHoje ? 'text-accent' : '')}>
 					{formatarDataCurtaComDiaSemana(data, locale)}
 				</span>
-				<button
-					type="button"
-					onClick={onToggleModo}
-					aria-label={rotuloModo}
-					title={dicaModo}
-					className="flex h-6 w-6 items-center justify-center rounded-full text-paper-ink-soft transition-colors hover:bg-black/5 hover:text-paper-ink"
-				>
-					<IconeModo className="h-3.5 w-3.5" aria-hidden="true" />
-				</button>
+				{onToggleModo && (
+					<button
+						type="button"
+						onClick={onToggleModo}
+						aria-label={rotuloModo}
+						title={dicaModo}
+						className="flex h-6 w-6 items-center justify-center rounded-full text-paper-ink-soft transition-colors hover:bg-black/5 hover:text-paper-ink"
+					>
+						<IconeModo className="h-3.5 w-3.5" aria-hidden="true" />
+					</button>
+				)}
 			</div>
 
 			<button type="button" onClick={() => onChange(somarDias(data, 1))} aria-label={t.planner.proximoDia} className={botaoSetaPapel}>

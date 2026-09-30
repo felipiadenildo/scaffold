@@ -6,6 +6,9 @@ export const pt = {
 		rodapeAviso: 'Versão em construção. Consulte o',
 		rodapeManual: 'manual completo',
 		carregandoImpressao: 'Carregando editor de impressão…',
+		fecharAviso: 'Fechar aviso',
+		desfazer: 'Desfazer',
+		cancelar: 'Cancelar',
 	},
 	idioma: {
 		rotulo: 'Idioma',
@@ -13,6 +16,8 @@ export const pt = {
 	tema: {
 		paraEscuro: 'Mudar para tema escuro',
 		paraClaro: 'Mudar para tema claro',
+		escuro: 'Tema escuro',
+		claro: 'Tema claro',
 	},
 	catalogo: {
 		trilha: 'Trilha de navegação',
@@ -105,9 +110,65 @@ export const pt = {
 		adicionarItemEm: (lista: string) => `Adicionar item em ${lista}`,
 		adicionar: 'Adicionar',
 		removerItem: (item: string) => `Remover "${item}"`,
+		perfil: 'Perfil',
+		maisAcoes: 'Mais ações',
+		escolherData: 'Escolher data',
+		excluirDia: 'Excluir dia',
+		confirmarExclusao: {
+			titulo: 'Excluir este dia?',
+			texto: 'O que você escreveu nele será apagado e a folha volta a ficar em branco, pronta pra ser criada de novo.',
+			confirmar: 'Excluir',
+		},
+		diaExcluido: 'Dia excluído.',
+		boasVindas: {
+			titulo: 'Boas-vindas ao seu Planner',
+			itens: [
+				'Cada dia é uma folha de papel, com frente e verso.',
+				'Pra começar um dia, você escolhe um modelo: o jeito como a folha é dividida.',
+				'Dá pra mudar um dia específico ou os seus modelos quando quiser.',
+				'Tudo pode ser impresso pra usar no papel.',
+			],
+			comecar: 'Escolher meu modelo',
+		},
+		folhaInexistente: {
+			naoExiste: 'Este dia ainda não existe.',
+			escolhaModelo: 'Escolha um modelo para criá-lo:',
+			primeiraVez: 'Escolha um modelo pra começar.',
+			criarProprio: 'Criar o seu próprio modelo',
+			recomendado: 'Recomendado',
+		},
+		// Modelos prontos: copiados pra pessoa no idioma do momento da escolha e, dali em diante, dela.
+		prontos: {
+			padrao: {
+				nome: 'Padrão',
+				descricao: 'O dia dividido pelas refeições, com hábitos e o essencial.',
+				blocos: ['Café da manhã', 'Almoço', 'Lanche da tarde', 'Jantar'],
+			},
+			fimDeSemana: { nome: 'Fim de semana', descricao: 'Um bloco só, pra um dia mais solto.', blocos: ['Meu dia'] },
+			diaDificil: { nome: 'Dia difícil', descricao: 'O mínimo: humor e o que não pode faltar.', blocos: ['Meu dia'] },
+			trabalhoEstudo: {
+				nome: 'Trabalho/estudo',
+				descricao: 'Manhã, tarde e noite, com hábitos e o essencial.',
+				blocos: ['Manhã', 'Tarde', 'Noite'],
+			},
+		},
+		itensSugeridos: {
+			habitos: ['Água', 'Remédio', 'Movimento', 'Higiene', 'Refeição regular'],
+			importantes: [
+				'Água / remédio',
+				'Comer algo, mesmo que pronto',
+				'Só a tarefa principal da manhã',
+				'Aceitar o descanso sem se punir',
+			],
+		},
 	},
 	impressao: {
 		imprimir: 'Imprimir',
+		imprimirFolha: 'Imprimir folha em branco',
+		escolhaModelo: 'Escolha o modelo da folha:',
+		avisoListas:
+			'O Habit tracker e o "Não pode deixar de fazer" saem com os itens de hoje. Pra mudar o que sai impresso, edite essas listas na folha de hoje. Modelos sem essas listas não são afetados.',
+		formato: 'Baixar como:',
 		gerandoPdf: 'Gerando PDF…',
 		gerando: 'Gerando…',
 		umPorFolha: '1 por folha',

@@ -1,9 +1,10 @@
-import { Calendar, ChevronDown, FlipHorizontal2, Maximize2, Minimize2 } from 'lucide-react'
+import { Calendar, ChevronDown, FileDown, FlipHorizontal2, Maximize2, Minimize2, Trash2 } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useMenuSuspenso } from '../hooks/useMenuSuspenso'
 import { useIdioma } from '../i18n/useIdioma'
-import { PlannerDownloadMenu } from './PlannerDownloadMenu'
-import { ehMesmoDia, paraISO } from '../lib/formatarData'
+import { MenuAcoesCompacto } from './MenuAcoesCompacto'
+import { MenuPerfil } from './MenuPerfil'
+import { deISO, ehMesmoDia, paraISO } from '../lib/formatarData'
 
 // Só Diário existe por enquanto — Semanal e Mensal ficam reservados aqui (desabilitados) pra já
 // deixar claro que o Planner é uma família de visões, não só uma página.
@@ -68,9 +69,9 @@ export function DateNav({
 	onToggleExpandido,
 	modoVisualizacao,
 	onAlternarModoVisualizacao,
-	onBaixarA5,
-	onBaixarA4,
+	onImprimir,
 	baixandoPdf,
+	onExcluirDia,
 }: {
 	data: Date
 	onChange: (data: Date) => void
@@ -78,9 +79,11 @@ export function DateNav({
 	onToggleExpandido: () => void
 	modoVisualizacao: 'girar' | 'nao-girar'
 	onAlternarModoVisualizacao: () => void
-	onBaixarA5: () => void
-	onBaixarA4: () => void
+	// Abre a janela de impressão (escolha do modelo e do formato — DialogoImpressao).
+	onImprimir: () => void
 	baixandoPdf: boolean
+	// Só vem quando o dia existe (não há o que excluir numa folha pontilhada).
+	onExcluirDia?: () => void
 }) {
 	const { pathname } = useLocation()
 	const { t } = useIdioma()
@@ -151,35 +154,58 @@ export function DateNav({
 				</div>
 			</div>
 
-			{/* Ações da folha — à direita: largura, modo de visualização, impressão, hoje, calendário.
-			    Só ícone + tooltip (Bloco 6), exceto "Hoje": texto curto, ação contextual clara. */}
+			{/* Ações da folha — à direita: largura, modo de visualização, impressão, excluir, hoje, calendário, perfil.
+			    Só ícone + tooltip (Bloco 6), exceto "Hoje": texto curto, ação contextual clara.
+			    Abaixo de sm não cabem lado a lado: tudo menos "Hoje" vai pro menu ⋯ (MenuAcoesCompacto). */}
 			<div className="flex shrink-0 items-center gap-2">
-				<button
-					type="button"
-					onClick={onToggleExpandido}
-					aria-pressed={expandido}
-					aria-label={t.planner.ajustarLargura}
-					title={t.planner.ajustarLargura}
-					className="shrink-0 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink"
-				>
-					<IconeAlternarLargura className="h-3.5 w-3.5" aria-hidden="true" />
-				</button>
+				<div className="hidden items-center gap-2 sm:flex">
+					<button
+						type="button"
+						onClick={onToggleExpandido}
+						aria-pressed={expandido}
+						aria-label={t.planner.ajustarLargura}
+						title={t.planner.ajustarLargura}
+						className="shrink-0 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink"
+					>
+						<IconeAlternarLargura className="h-3.5 w-3.5" aria-hidden="true" />
+					</button>
 
-				<button
-					type="button"
-					onClick={onAlternarModoVisualizacao}
-					aria-pressed={emNaoGirar}
-					aria-label={t.planner.modoVisualizacao}
-					title={t.planner.modoVisualizacao}
-					className={
-						'shrink-0 rounded-full border p-1.5 transition-colors ' +
-						(emNaoGirar ? 'border-accent bg-accent text-accent-ink' : 'border-border text-ink-soft hover:text-ink')
-					}
-				>
-					<FlipHorizontal2 className="h-3.5 w-3.5" aria-hidden="true" />
-				</button>
+					<button
+						type="button"
+						onClick={onAlternarModoVisualizacao}
+						aria-pressed={emNaoGirar}
+						aria-label={t.planner.modoVisualizacao}
+						title={t.planner.modoVisualizacao}
+						className={
+							'shrink-0 rounded-full border p-1.5 transition-colors ' +
+							(emNaoGirar ? 'border-accent bg-accent text-accent-ink' : 'border-border text-ink-soft hover:text-ink')
+						}
+					>
+						<FlipHorizontal2 className="h-3.5 w-3.5" aria-hidden="true" />
+					</button>
 
-				<PlannerDownloadMenu onBaixarA5={onBaixarA5} onBaixarA4={onBaixarA4} baixando={baixandoPdf} />
+					<button
+						type="button"
+						onClick={onImprimir}
+						aria-label={baixandoPdf ? t.impressao.gerandoPdf : t.impressao.imprimir}
+						title={baixandoPdf ? t.impressao.gerandoPdf : t.impressao.imprimir}
+						className="shrink-0 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink"
+					>
+						<FileDown className={'h-3.5 w-3.5' + (baixandoPdf ? ' animate-pulse' : '')} aria-hidden="true" />
+					</button>
+
+					{onExcluirDia && (
+						<button
+							type="button"
+							onClick={onExcluirDia}
+							aria-label={t.planner.excluirDia}
+							title={t.planner.excluirDia}
+							className="shrink-0 rounded-full border border-border p-1.5 text-ink-soft transition-colors hover:text-ink"
+						>
+							<Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+						</button>
+					)}
+				</div>
 
 				{!ehHoje && (
 					<button
@@ -196,15 +222,12 @@ export function DateNav({
 					está com opacity-0, então o outline nele seria invisível. O anel de foco vai no
 					<div> decorativo via `peer`, que é o que a pessoa realmente vê.
 				*/}
-				<div className="relative h-7 w-7 shrink-0">
+				<div className="relative hidden h-7 w-7 shrink-0 sm:block">
 					<input
 						type="date"
 						value={paraISO(data)}
 						onChange={(e) => {
-							if (!e.target.value) return
-							// TODO: extrair pra `deISO` em ../lib/formatarData e reusar aqui.
-							const [ano, mes, dia] = e.target.value.split('-').map(Number)
-							onChange(new Date(ano, mes - 1, dia))
+							if (e.target.value) onChange(deISO(e.target.value))
 						}}
 						aria-label={t.planner.calendario}
 						title={t.planner.calendario}
@@ -216,6 +239,21 @@ export function DateNav({
 					>
 						<Calendar className="h-3.5 w-3.5" />
 					</div>
+				</div>
+
+				<div className="hidden sm:block">
+					<MenuPerfil />
+				</div>
+
+				<div className="sm:hidden">
+					<MenuAcoesCompacto
+						data={data}
+						onDataChange={onChange}
+						modoVisualizacao={modoVisualizacao}
+						onAlternarModoVisualizacao={onAlternarModoVisualizacao}
+						onImprimir={onImprimir}
+						onExcluirDia={onExcluirDia}
+					/>
 				</div>
 			</div>
 		</div>

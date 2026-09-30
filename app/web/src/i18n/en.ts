@@ -6,6 +6,9 @@ export const en: Dicionario = {
 		rodapeAviso: 'Work in progress. See the',
 		rodapeManual: 'full manual (in Portuguese)',
 		carregandoImpressao: 'Loading print editor…',
+		fecharAviso: 'Dismiss',
+		desfazer: 'Undo',
+		cancelar: 'Cancel',
 	},
 	idioma: {
 		rotulo: 'Language',
@@ -13,6 +16,8 @@ export const en: Dicionario = {
 	tema: {
 		paraEscuro: 'Switch to dark theme',
 		paraClaro: 'Switch to light theme',
+		escuro: 'Dark theme',
+		claro: 'Light theme',
 	},
 	catalogo: {
 		trilha: 'Breadcrumb',
@@ -104,9 +109,64 @@ export const en: Dicionario = {
 		adicionarItemEm: (lista: string) => `Add item to ${lista}`,
 		adicionar: 'Add',
 		removerItem: (item: string) => `Remove "${item}"`,
+		perfil: 'Profile',
+		maisAcoes: 'More actions',
+		escolherData: 'Pick a date',
+		excluirDia: 'Delete day',
+		confirmarExclusao: {
+			titulo: 'Delete this day?',
+			texto: "What you wrote on it will be erased and the sheet goes back to blank, ready to be created again.",
+			confirmar: 'Delete',
+		},
+		diaExcluido: 'Day deleted.',
+		boasVindas: {
+			titulo: 'Welcome to your Planner',
+			itens: [
+				'Each day is a sheet of paper, front and back.',
+				'To start a day, you pick a template: the way the sheet is divided.',
+				'You can change a specific day or your templates anytime.',
+				'Everything can be printed to use on paper.',
+			],
+			comecar: 'Choose my template',
+		},
+		folhaInexistente: {
+			naoExiste: "This day doesn't exist yet.",
+			escolhaModelo: 'Pick a template to create it:',
+			primeiraVez: 'Pick a template to get started.',
+			criarProprio: 'Create your own template',
+			recomendado: 'Recommended',
+		},
+		prontos: {
+			padrao: {
+				nome: 'Default',
+				descricao: 'Your day split by meals, with habits and the essentials.',
+				blocos: ['Breakfast', 'Lunch', 'Afternoon snack', 'Dinner'],
+			},
+			fimDeSemana: { nome: 'Weekend', descricao: 'A single block, for a looser day.', blocos: ['My day'] },
+			diaDificil: { nome: 'Hard day', descricao: "The minimum: mood and what can't be skipped.", blocos: ['My day'] },
+			trabalhoEstudo: {
+				nome: 'Work/study',
+				descricao: 'Morning, afternoon and evening, with habits and the essentials.',
+				blocos: ['Morning', 'Afternoon', 'Evening'],
+			},
+		},
+		itensSugeridos: {
+			habitos: ['Water', 'Medication', 'Movement', 'Hygiene', 'Regular meals'],
+			importantes: [
+				'Water / medication',
+				'Eat something, even if ready-made',
+				'Only the main task of the morning',
+				'Accept rest without punishing yourself',
+			],
+		},
 	},
 	impressao: {
 		imprimir: 'Print',
+		imprimirFolha: 'Print a blank sheet',
+		escolhaModelo: 'Choose the sheet template:',
+		avisoListas:
+			'The Habit tracker and "Don\'t skip" lists print with today\'s items. To change what gets printed, edit those lists on today\'s sheet. Templates without these lists are not affected.',
+		formato: 'Download as:',
 		gerandoPdf: 'Generating PDF…',
 		gerando: 'Generating…',
 		umPorFolha: '1 per sheet',

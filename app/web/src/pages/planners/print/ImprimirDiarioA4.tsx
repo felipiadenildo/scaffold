@@ -4,11 +4,14 @@ import { paraISO } from '../../../lib/formatarData'
 import { CartoesImprimiveis } from '../../../pdf/CartoesImprimiveis'
 import { useConteudoImpressao } from '../../../pdf/useConteudoImpressao'
 import { useIdioma } from '../../../i18n/useIdioma'
+import { useDia } from '../../../hooks/usePlanner'
 import './imprimir.css'
 
-// Página de fallback (link direto): imprime a folha em branco com a estrutura de hoje.
+// Página de fallback (link direto): imprime a folha em branco com a estrutura de hoje (a do dia, se
+// já existe; senão a do modelo sugerido pra hoje).
 export function ImprimirDiarioA4() {
-	const conteudo = useConteudoImpressao(paraISO(new Date()))
+	const { estrutura } = useDia(paraISO(new Date()))
+	const conteudo = useConteudoImpressao(estrutura)
 	const { t } = useIdioma()
 	const [gerando, setGerando] = useState(false)
 

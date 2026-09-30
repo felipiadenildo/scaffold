@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { Avisos } from './components/Avisos'
 import { useIdioma } from './i18n/useIdioma'
 import { Layout } from './layout/Layout'
 import { Catalogo } from './pages/Catalogo'
@@ -41,45 +42,50 @@ function App() {
 	}, [locale])
 
 	return (
-		<Routes>
-			{/* Fora do Layout de propósito — é uma folha pra imprimir, sem cabeçalho/rodapé do app. */}
-			<Route
-				path="planners/diario/imprimir-a5"
-				element={
-					<Suspense fallback={<CarregandoImpressao />}>
-						<ImprimirDiarioA5 />
-					</Suspense>
-				}
-			/>
-			<Route
-				path="planners/diario/imprimir-a4"
-				element={
-					<Suspense fallback={<CarregandoImpressao />}>
-						<ImprimirDiarioA4 />
-					</Suspense>
-				}
-			/>
+		<>
+			<Routes>
+				{/* Fora do Layout de propósito — é uma folha pra imprimir, sem cabeçalho/rodapé do app. */}
+				<Route
+					path="planners/diario/imprimir-a5"
+					element={
+						<Suspense fallback={<CarregandoImpressao />}>
+							<ImprimirDiarioA5 />
+						</Suspense>
+					}
+				/>
+				<Route
+					path="planners/diario/imprimir-a4"
+					element={
+						<Suspense fallback={<CarregandoImpressao />}>
+							<ImprimirDiarioA4 />
+						</Suspense>
+					}
+				/>
 
-			<Route element={<Layout />}>
-				<Route index element={<Catalogo />} />
-				<Route path="planners" element={<PlannersHub />}>
-					<Route index element={<Navigate to="diario" replace />} />
-					<Route path="diario" element={<PlannerDiario />} />
+				<Route element={<Layout />}>
+					<Route index element={<Catalogo />} />
+					<Route path="planners" element={<PlannersHub />}>
+						<Route index element={<Navigate to="diario" replace />} />
+						<Route path="diario" element={<PlannerDiario />} />
+					</Route>
+					<Route path="lista-compras" element={<ShoppingList />} />
+					<Route path="dopamine-menu" element={<DopamineMenu />} />
+					<Route path="meal-prep" element={<MealPrep />} />
+					<Route path="cartao-sos" element={<CartaoSos />} />
+					<Route path="financeiro" element={<Financeiro />} />
+					<Route path="viagem" element={<Viagem />} />
+
+					{/*
+						URL inválida volta pro catálogo em vez de renderizar <Outlet /> vazio.
+						Se um dia houver 404 dedicado, trocar por <Route path="*" element={<NaoEncontrado />} />.
+					*/}
+					<Route path="*" element={<Navigate to="/" replace />} />
 				</Route>
-				<Route path="lista-compras" element={<ShoppingList />} />
-				<Route path="dopamine-menu" element={<DopamineMenu />} />
-				<Route path="meal-prep" element={<MealPrep />} />
-				<Route path="cartao-sos" element={<CartaoSos />} />
-				<Route path="financeiro" element={<Financeiro />} />
-				<Route path="viagem" element={<Viagem />} />
+			</Routes>
 
-				{/*
-					URL inválida volta pro catálogo em vez de renderizar <Outlet /> vazio.
-					Se um dia houver 404 dedicado, trocar por <Route path="*" element={<NaoEncontrado />} />.
-				*/}
-				<Route path="*" element={<Navigate to="/" replace />} />
-			</Route>
-		</Routes>
+			{/* Avisos com "Desfazer" (ver components/avisos.ts): fora das rotas, valem pra todas. */}
+			<Avisos />
+		</>
 	)
 }
 

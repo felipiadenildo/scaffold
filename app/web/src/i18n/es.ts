@@ -6,6 +6,9 @@ export const es: Dicionario = {
 		rodapeAviso: 'Versión en construcción. Consulta el',
 		rodapeManual: 'manual completo (en portugués)',
 		carregandoImpressao: 'Cargando editor de impresión…',
+		fecharAviso: 'Cerrar aviso',
+		desfazer: 'Deshacer',
+		cancelar: 'Cancelar',
 	},
 	idioma: {
 		rotulo: 'Idioma',
@@ -13,6 +16,8 @@ export const es: Dicionario = {
 	tema: {
 		paraEscuro: 'Cambiar a tema oscuro',
 		paraClaro: 'Cambiar a tema claro',
+		escuro: 'Tema oscuro',
+		claro: 'Tema claro',
 	},
 	catalogo: {
 		trilha: 'Ruta de navegación',
@@ -104,9 +109,64 @@ export const es: Dicionario = {
 		adicionarItemEm: (lista: string) => `Añadir elemento a ${lista}`,
 		adicionar: 'Añadir',
 		removerItem: (item: string) => `Quitar "${item}"`,
+		perfil: 'Perfil',
+		maisAcoes: 'Más acciones',
+		escolherData: 'Elegir fecha',
+		excluirDia: 'Eliminar día',
+		confirmarExclusao: {
+			titulo: '¿Eliminar este día?',
+			texto: 'Lo que escribiste se borrará y la hoja vuelve a quedar en blanco, lista para crearse de nuevo.',
+			confirmar: 'Eliminar',
+		},
+		diaExcluido: 'Día eliminado.',
+		boasVindas: {
+			titulo: 'Te damos la bienvenida a tu Planner',
+			itens: [
+				'Cada día es una hoja de papel, con anverso y reverso.',
+				'Para empezar un día, eliges una plantilla: la forma en que se divide la hoja.',
+				'Puedes cambiar un día concreto o tus plantillas cuando quieras.',
+				'Todo se puede imprimir para usarlo en papel.',
+			],
+			comecar: 'Elegir mi plantilla',
+		},
+		folhaInexistente: {
+			naoExiste: 'Este día todavía no existe.',
+			escolhaModelo: 'Elige una plantilla para crearlo:',
+			primeiraVez: 'Elige una plantilla para empezar.',
+			criarProprio: 'Crear tu propia plantilla',
+			recomendado: 'Recomendado',
+		},
+		prontos: {
+			padrao: {
+				nome: 'Estándar',
+				descricao: 'El día dividido por las comidas, con hábitos y lo esencial.',
+				blocos: ['Desayuno', 'Almuerzo', 'Merienda', 'Cena'],
+			},
+			fimDeSemana: { nome: 'Fin de semana', descricao: 'Un solo bloque, para un día más suelto.', blocos: ['Mi día'] },
+			diaDificil: { nome: 'Día difícil', descricao: 'Lo mínimo: ánimo y lo que no puede faltar.', blocos: ['Mi día'] },
+			trabalhoEstudo: {
+				nome: 'Trabajo/estudio',
+				descricao: 'Mañana, tarde y noche, con hábitos y lo esencial.',
+				blocos: ['Mañana', 'Tarde', 'Noche'],
+			},
+		},
+		itensSugeridos: {
+			habitos: ['Agua', 'Medicación', 'Movimiento', 'Higiene', 'Comidas regulares'],
+			importantes: [
+				'Agua / medicación',
+				'Comer algo, aunque sea preparado',
+				'Solo la tarea principal de la mañana',
+				'Aceptar el descanso sin castigarte',
+			],
+		},
 	},
 	impressao: {
 		imprimir: 'Imprimir',
+		imprimirFolha: 'Imprimir hoja en blanco',
+		escolhaModelo: 'Elige la plantilla de la hoja:',
+		avisoListas:
+			'Los Hábitos y el "No puedo dejar de hacer" salen con los elementos de hoy. Para cambiar lo que se imprime, edita esas listas en la hoja de hoy. Las plantillas sin esas listas no se ven afectadas.',
+		formato: 'Descargar como:',
 		gerandoPdf: 'Generando PDF…',
 		gerando: 'Generando…',
 		umPorFolha: '1 por hoja',
