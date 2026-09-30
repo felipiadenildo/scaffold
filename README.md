@@ -8,7 +8,7 @@
 
 A reference manual and an app that puts the manual into practice, for people with ADHD and the people who support them.
 
-[**Open the app**](https://app.myscaffold.workers.dev) · [**Read the manual**](https://felipiadenildo.github.io/scaffold/) (Portuguese) · [Send feedback](#contact)
+[**Open the app**](https://app.myscaffold.workers.dev) · [**Read the manual**](https://felipiadenildo.github.io/scaffold/) (Portuguese) · [Contact](#contact)
 
 **English** · [Português](README.pt-BR.md) · [Español](README.es.md)
 
@@ -38,7 +38,6 @@ A reference manual and an app that puts the manual into practice, for people wit
 - [Repository structure](#repository-structure)
 - [Running locally](#running-locally)
 - [Roadmap](#roadmap)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
@@ -187,14 +186,6 @@ npm run dev        # http://localhost:4321/scaffold
 - [ ] Optional sign in to sync across devices
 - [ ] Vector PDF, with crisp text and smaller files
 
-## Contributing
-
-Suggestions, experience reports and fixes are very welcome, especially from people who live with ADHD or support someone who does.
-
-- **Found a problem or have an idea?** Open an [issue](https://github.com/felipiadenildo/scaffold/issues).
-- **Want to work on the code?** Fork the repository, create a branch and open a pull request explaining what changed and why. Before sending it, run `npm test`, `npm run lint` and `npm run build` in `app/web`.
-- **Want to fix something in the manual?** Every manual page has an "Edit page" link that opens the file here on GitHub.
-
 ## License
 
 - **Code** (app and manual website): [GNU Affero General Public License v3.0](LICENSE). You may use, study, modify and redistribute it. If you publish a modified version, including as a service over a network, you must make its source code available under the same license.
@@ -204,8 +195,4 @@ Copyright © 2026 Felipi Adenildo.
 
 ## Contact
 
-Have a suggestion, a critique or a story about how Scaffold helped (or did not)? All feedback helps the project improve.
-
-- **Contact form:** [felipiadenildo.github.io/scaffold/contato](https://felipiadenildo.github.io/scaffold/contato/)
-- **GitHub issues:** [github.com/felipiadenildo/scaffold/issues](https://github.com/felipiadenildo/scaffold/issues)
-- **GitHub:** [@felipiadenildo](https://github.com/felipiadenildo)
+To get in touch, use the contact details on my GitHub profile: [@felipiadenildo](https://github.com/felipiadenildo).

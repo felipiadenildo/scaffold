@@ -8,7 +8,7 @@
 
 Un manual de referencia y una app que lleva el manual a la práctica, para quienes tienen el diagnóstico y para quienes los acompañan.
 
-[**Abrir la app**](https://app.myscaffold.workers.dev) · [**Leer el manual**](https://felipiadenildo.github.io/scaffold/) (en portugués) · [Enviar sugerencias](#contacto)
+[**Abrir la app**](https://app.myscaffold.workers.dev) · [**Leer el manual**](https://felipiadenildo.github.io/scaffold/) (en portugués) · [Contacto](#contacto)
 
 [English](README.md) · [Português](README.pt-BR.md) · **Español**
 
@@ -38,7 +38,6 @@ Un manual de referencia y una app que lleva el manual a la práctica, para quien
 - [Estructura del repositorio](#estructura-del-repositorio)
 - [Ejecutar en local](#ejecutar-en-local)
 - [Próximos pasos](#próximos-pasos)
-- [Cómo contribuir](#cómo-contribuir)
 - [Licencia](#licencia)
 - [Contacto](#contacto)
 
@@ -187,14 +186,6 @@ npm run dev        # http://localhost:4321/scaffold
 - [ ] Inicio de sesión opcional para sincronizar entre dispositivos
 - [ ] PDF vectorial, con texto nítido y archivos más ligeros
 
-## Cómo contribuir
-
-Las sugerencias, experiencias de uso y correcciones son muy bienvenidas, sobre todo de quienes viven con TDAH o acompañan a alguien que vive con él.
-
-- **¿Encontraste un problema o tienes una idea?** Abre un [issue](https://github.com/felipiadenildo/scaffold/issues).
-- **¿Quieres trabajar en el código?** Haz un fork, crea una rama y abre un pull request explicando qué cambió y por qué. Antes de enviarlo, ejecuta `npm test`, `npm run lint` y `npm run build` en `app/web`.
-- **¿Quieres corregir el manual?** Cada página del manual tiene un enlace "Editar página" que abre el archivo aquí en GitHub.
-
 ## Licencia
 
 - **Código** (app y sitio del manual): [GNU Affero General Public License v3.0](LICENSE). Puedes usarlo, estudiarlo, modificarlo y redistribuirlo. Si publicas una versión modificada, incluso como servicio en internet, debes poner su código fuente a disposición bajo la misma licencia.
@@ -204,8 +195,4 @@ Copyright © 2026 Felipi Adenildo.
 
 ## Contacto
 
-¿Tienes una sugerencia, una crítica o una historia sobre cómo Scaffold te ayudó (o no)? Todo comentario ayuda a mejorar el proyecto.
-
-- **Formulario de contacto:** [felipiadenildo.github.io/scaffold/contato](https://felipiadenildo.github.io/scaffold/contato/)
-- **Issues en GitHub:** [github.com/felipiadenildo/scaffold/issues](https://github.com/felipiadenildo/scaffold/issues)
-- **GitHub:** [@felipiadenildo](https://github.com/felipiadenildo)
+Para hablar conmigo, usa los datos de contacto de mi perfil de GitHub: [@felipiadenildo](https://github.com/felipiadenildo).

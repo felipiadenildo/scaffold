@@ -69,7 +69,7 @@ export const pt = {
 		trilha: 'Trilha de navegação',
 		inicio: 'Catálogo',
 		descricao: 'Ferramentas para organizar o dia, o dinheiro e a rotina. Escolha por onde começar.',
-		prontoParaUsar: 'Pronto para usar',
+		prontoParaUsar: 'Protótipo',
 		emDesenvolvimento: 'Em desenvolvimento',
 		emDesenvolvimentoDescricao: 'Já dá pra usar, mas o design e o conteúdo ainda podem mudar.',
 		soEmPortugues: 'Disponível só em português por enquanto.',
