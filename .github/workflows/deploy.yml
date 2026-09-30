@@ -1,8 +1,11 @@
-name: Deploy to GitHub Pages
+name: Deploy do manual (GitHub Pages)
 
 on:
   push:
     branches: [main]
+    paths:
+      - 'manual/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -33,6 +36,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy do manual (GitHub Pages)
         id: deployment
         uses: actions/deploy-pages@v4

@@ -12,6 +12,7 @@ Un manual de referencia y una app que lleva el manual a la práctica, para quien
 
 [English](README.md) · [Português](README.pt-BR.md) · **Español**
 
+[![CI](https://github.com/felipiadenildo/scaffold/actions/workflows/ci.yml/badge.svg)](https://github.com/felipiadenildo/scaffold/actions/workflows/ci.yml)
 [![Licencia: AGPL-3.0](https://img.shields.io/badge/licencia-AGPL--3.0-2f6b5f)](LICENSE)
 [![Contenido: CC BY-NC-SA 4.0](https://img.shields.io/badge/contenido-CC%20BY--NC--SA%204.0-8a6d3b)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es)
 ![PWA](https://img.shields.io/badge/PWA-offline-5a4fcf)
