@@ -56,7 +56,7 @@ export function DialogoImpressao({
 			</h2>
 
 			{/* Celular: a prévia vem primeiro (ordem do HTML), depois modelo/opções/aviso, depois download. */}
-			<div className="grid gap-x-8 sm:grid-cols-2 sm:grid-rows-[auto_1fr]">
+			<div className="grid grid-cols-1 gap-x-8 sm:grid-cols-2 sm:grid-rows-[auto_1fr]">
 				<div className="mt-4 sm:col-start-2 sm:row-start-1">
 					<p className="mb-2 text-sm text-paper-ink-soft">{textos.previa}</p>
 					<PreviaImpressao conteudo={conteudo} opcoes={opcoesImpressao} />

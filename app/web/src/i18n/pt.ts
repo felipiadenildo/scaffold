@@ -126,6 +126,8 @@ export const pt = {
 		calendario: 'Calendário',
 		diaAnterior: 'Dia anterior',
 		proximoDia: 'Próximo dia',
+		dicaDeslizar: 'Dica: deslize a folha para o lado para trocar de dia.',
+		dicaDeslizarOk: 'Entendi',
 		paraModoVisualizacao: 'Mudar para modo de visualização',
 		paraModoEdicao: 'Mudar para modo de edição',
 		editandoDica: 'Editando — clique pra só visualizar',
