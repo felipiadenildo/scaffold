@@ -1,5 +1,10 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { AtualizacaoApp } from './components/AtualizacaoApp'
+import { Avisos } from './components/Avisos'
+import { JanelasGlobais } from './components/JanelasGlobais'
+import { LimiteDeErro } from './components/LimiteDeErro'
+import { useIdioma } from './i18n/useIdioma'
 import { Layout } from './layout/Layout'
 import { Catalogo } from './pages/Catalogo'
 import { CartaoSos } from './pages/CartaoSos'
@@ -23,54 +28,73 @@ const ImprimirDiarioA4 = lazy(() =>
 // Fallback das rotas de impressão. Sem isso, a aba nova abre em branco enquanto o
 // chunk do gerador de PDF carrega, e o usuário acha que quebrou.
 function CarregandoImpressao() {
+	const { t } = useIdioma()
 	return (
 		<div className="flex min-h-svh items-center justify-center p-8 text-sm text-ink-soft">
-			Carregando editor de impressão…
+			{t.app.carregandoImpressao}
 		</div>
 	)
 }
 
 function App() {
+	const { locale } = useIdioma()
+
+	// Leitor de tela e hifenização do navegador seguem o idioma escolhido.
+	useEffect(() => {
+		document.documentElement.lang = locale
+	}, [locale])
+
 	return (
-		<Routes>
-			{/* Fora do Layout de propósito — é uma folha pra imprimir, sem cabeçalho/rodapé do app. */}
-			<Route
-				path="planners/diario/imprimir-a5"
-				element={
-					<Suspense fallback={<CarregandoImpressao />}>
-						<ImprimirDiarioA5 />
-					</Suspense>
-				}
-			/>
-			<Route
-				path="planners/diario/imprimir-a4"
-				element={
-					<Suspense fallback={<CarregandoImpressao />}>
-						<ImprimirDiarioA4 />
-					</Suspense>
-				}
-			/>
+		<>
+			{/* Erro de renderização em qualquer tela: TelaDeErro no lugar da página em branco. */}
+			<LimiteDeErro>
+				<Routes>
+					{/* Fora do Layout de propósito — é uma folha pra imprimir, sem cabeçalho/rodapé do app. */}
+					<Route
+						path="planners/diario/imprimir-a5"
+						element={
+							<Suspense fallback={<CarregandoImpressao />}>
+								<ImprimirDiarioA5 />
+							</Suspense>
+						}
+					/>
+					<Route
+						path="planners/diario/imprimir-a4"
+						element={
+							<Suspense fallback={<CarregandoImpressao />}>
+								<ImprimirDiarioA4 />
+							</Suspense>
+						}
+					/>
 
-			<Route element={<Layout />}>
-				<Route index element={<Catalogo />} />
-				<Route path="planners" element={<PlannersHub />}>
-					<Route index element={<Navigate to="diario" replace />} />
-					<Route path="diario" element={<PlannerDiario />} />
-				</Route>
-				<Route path="lista-compras" element={<ShoppingList />} />
-				<Route path="dopamine-menu" element={<DopamineMenu />} />
-				<Route path="meal-prep" element={<MealPrep />} />
-				<Route path="cartao-sos" element={<CartaoSos />} />
-				<Route path="financeiro" element={<Financeiro />} />
-				<Route path="viagem" element={<Viagem />} />
+					<Route element={<Layout />}>
+						<Route index element={<Catalogo />} />
+						<Route path="planners" element={<PlannersHub />}>
+							<Route index element={<Navigate to="diario" replace />} />
+							<Route path="diario" element={<PlannerDiario />} />
+						</Route>
+						<Route path="lista-compras" element={<ShoppingList />} />
+						<Route path="dopamine-menu" element={<DopamineMenu />} />
+						<Route path="meal-prep" element={<MealPrep />} />
+						<Route path="cartao-sos" element={<CartaoSos />} />
+						<Route path="financeiro" element={<Financeiro />} />
+						<Route path="viagem" element={<Viagem />} />
 
-				{/*
-					URL inválida volta pro catálogo em vez de renderizar <Outlet /> vazio.
-					Se um dia houver 404 dedicado, trocar por <Route path="*" element={<NaoEncontrado />} />.
-				*/}
-				<Route path="*" element={<Navigate to="/" replace />} />
-			</Route>
-		</Routes>
+						{/*
+							URL inválida volta pro catálogo em vez de renderizar <Outlet /> vazio.
+							Se um dia houver 404 dedicado, trocar por <Route path="*" element={<NaoEncontrado />} />.
+						*/}
+						<Route path="*" element={<Navigate to="/" replace />} />
+					</Route>
+				</Routes>
+			</LimiteDeErro>
+
+			{/* Fora das rotas, valem pra todas: avisos (com "Desfazer"), janelas abertas de vários
+			    menus (Seus dados, Instalar no iPhone) e o aviso de versão nova do app. */}
+			<Avisos />
+			<JanelasGlobais />
+			<AtualizacaoApp />
+		</>
 	)
 }
 

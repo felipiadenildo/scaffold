@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import { useIdioma } from '../i18n/useIdioma'
 import { HeaderSlotContext } from './headerSlot'
+import { MenuPerfil } from '../components/MenuPerfil'
+import { SeletorIdioma } from './SeletorIdioma'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Layout() {
 	const [headerExtra, setHeaderExtra] = useState<ReactNode>(null)
 	const { pathname } = useLocation()
+	const { t } = useIdioma()
 
 	// "Modo foco": mais espaço, menos ruído visual, pra quando a pessoa está dentro de uma
 	// solução (não navegando o catálogo). Derivado da rota, não de estado — sem isso, tem que
@@ -21,14 +25,15 @@ export function Layout() {
 		<HeaderSlotContext.Provider value={setHeaderExtra}>
 			<div className="flex min-h-svh flex-col bg-bg text-ink">
 				{!emFoco && (
-					<header className="border-b border-border">
+					// Com o app ocupando a tela toda (viewport-fit=cover), o cabeçalho desce da área do relógio.
+					<header className="border-b border-border pt-[env(safe-area-inset-top)]">
 						{/*
-							Três zonas: logo (fixo) | slot (flexível, truncável) | toggle (fixo).
+							Três zonas: logo (fixo) | slot (flexível, truncável) | ações (fixo: idioma, tema, perfil).
 							`min-w-0` no slot é o que permite `truncate` funcionar dentro de flex;
-							sem ele, o conteúdo do slot estoura e empurra o toggle.
+							sem ele, o conteúdo do slot estoura e empurra as ações.
 						*/}
 						<div className="mx-auto flex h-header max-w-4xl items-center gap-4 px-4">
-							<nav aria-label="Navegação principal" className="shrink-0">
+							<nav aria-label={t.app.navegacaoPrincipal} className="shrink-0">
 								<Link to="/" className="rounded text-lg font-bold tracking-tight">
 									Scaffold <span className="text-accent">app</span>
 								</Link>
@@ -42,17 +47,24 @@ export function Layout() {
 							*/}
 							<div className="min-w-0 flex-1 truncate">{headerExtra}</div>
 
-							<div className="shrink-0">
+							<div className="flex shrink-0 items-center gap-2">
+								<SeletorIdioma />
 								<ThemeToggle />
+								<MenuPerfil local="cabecalho" />
 							</div>
 						</div>
 					</header>
 				)}
 
 				<main
+					style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
 					className={
 						'mx-auto w-full flex-1 px-4 transition-[max-width] duration-300 ease-out ' +
-						(emFoco ? 'max-w-none py-4' : 'max-w-4xl py-6 sm:py-8')
+						// Celular no modo foco: laterais menores (mais largura pra folha); em cima, o respiro
+						// inclui a área do relógio quando o app ocupa a tela toda.
+						(emFoco
+							? 'max-w-none py-4 max-sm:px-3 max-sm:pt-[max(0.75rem,env(safe-area-inset-top))]'
+							: 'max-w-4xl py-6 sm:py-8')
 					}
 				>
 					<Outlet />
@@ -63,14 +75,21 @@ export function Layout() {
 				{!emFoco && (
 					<footer className="border-t border-border">
 						<div className="mx-auto max-w-4xl px-4 py-6 text-sm text-ink-soft">
-							Versão em construção. Consulte o{' '}
+							{t.app.rodapeAviso}{' '}
 							<a
 								href="https://felipiadenildo.github.io/scaffold/"
 								className="rounded underline decoration-border underline-offset-2 hover:text-ink"
 							>
-								manual completo
+								{t.app.rodapeManual}
 							</a>
-							.
+							. ·{' '}
+							{/* AGPL-3.0: quem usa o app pela rede precisa ter acesso ao código-fonte. */}
+							<a
+								href="https://github.com/felipiadenildo/scaffold"
+								className="rounded underline decoration-border underline-offset-2 hover:text-ink"
+							>
+								{t.app.rodapeCodigo}
+							</a>
 						</div>
 					</footer>
 				)}

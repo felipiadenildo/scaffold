@@ -1,77 +1,108 @@
 import { Anchor, ListChecks, NotebookPen } from 'lucide-react'
 import { ChecklistEditable } from '../../components/ChecklistEditable'
 import { LinhasImpressao } from '../../components/LinhasImpressao'
+import type { ItemLista } from '../../data/planner/tipos'
+import { useCampoDeEscrita } from '../../hooks/useCampoDeEscrita'
+import { useIdioma } from '../../i18n/useIdioma'
+
+// Uma lista do verso (hábitos ou "não pode deixar de fazer"). `onAdicionar`/`onRemover` ausentes =
+// lista travada naquele dia (dias passados), só marcar/desmarcar.
+export interface PropsListaVerso {
+	mostrar: boolean
+	itens: ItemLista[]
+	marcados: Record<string, boolean>
+	onMarcadosChange: (v: Record<string, boolean>) => void
+	onAdicionar?: (texto: string) => void
+	onRemover?: (id: string) => void
+	// Só na impressão: no lugar dos itens, esta quantidade de linhas em branco pra escrever à mão.
+	linhasEmBranco?: number
+}
+
+export interface PropsVersoDiario {
+	anotacoes: string
+	onAnotacoesChange: (v: string) => void
+	habitos: PropsListaVerso
+	importantes: PropsListaVerso
+	somenteLeitura?: boolean
+	modoImpressao?: boolean
+}
 
 export function VersoDiario({
 	anotacoes,
 	onAnotacoesChange,
 	habitos,
-	onHabitosChange,
-	habitosMarcados,
-	onHabitosMarcadosChange,
-	protocolo,
-	onProtocoloChange,
-	protocoloMarcados,
-	onProtocoloMarcadosChange,
+	importantes,
 	somenteLeitura,
 	modoImpressao,
-}: {
-	anotacoes: string
-	onAnotacoesChange: (v: string) => void
-	habitos: string[]
-	onHabitosChange: (v: string[]) => void
-	habitosMarcados: Record<string, boolean>
-	onHabitosMarcadosChange: (v: Record<string, boolean>) => void
-	protocolo: string[]
-	onProtocoloChange: (v: string[]) => void
-	protocoloMarcados: Record<string, boolean>
-	onProtocoloMarcadosChange: (v: Record<string, boolean>) => void
-	somenteLeitura?: boolean
-	modoImpressao?: boolean
-}) {
+}: PropsVersoDiario) {
+	const { t } = useIdioma()
+	const anotacoesRef = useCampoDeEscrita(anotacoes, onAnotacoesChange)
+	const duasListas = habitos.mostrar && importantes.mostrar
+
 	return (
-		<div className="flex h-full flex-col">
+		// Impressão: min-h-full (não h-full) — ver FrenteDiario.
+		<div className={'flex flex-col ' + (modoImpressao ? 'min-h-full' : 'h-full')}>
 			<div className="flex flex-1 flex-col rounded-scaffold border border-border p-4">
 				<h3 className="flex items-center gap-1.5 text-sm font-semibold text-paper-ink-soft">
 					<NotebookPen className="h-4 w-4" aria-hidden="true" />
-					Anotações
+					{t.planner.anotacoes}
 				</h3>
 				{modoImpressao ? (
 					<LinhasImpressao className="mt-2 min-h-24 px-0.5" />
 				) : (
 					<textarea
+						ref={anotacoesRef}
 						value={anotacoes}
 						onChange={(e) => onAnotacoesChange(e.target.value)}
 						disabled={somenteLeitura}
-						placeholder="Qualquer pensamento que atravessar o dia, anota aqui."
-						className="paper-lines mt-2 min-h-24 w-full flex-1 resize-none bg-transparent px-0.5 text-sm outline-none placeholder:text-ink-soft"
+						placeholder={t.planner.anotacoesPlaceholder}
+						// No celular começa maior (é o espaço livre do verso) e cresce com o texto.
+						className="paper-lines campo-cresce mt-2 min-h-24 w-full flex-1 resize-none bg-transparent px-0.5 text-sm outline-none placeholder:text-ink-soft max-sm:min-h-40"
 					/>
 				)}
 			</div>
 
-			<div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-				<ChecklistEditable
-					titulo="Habit tracker"
-					icone={ListChecks}
-					itens={habitos}
-					onItensChange={onHabitosChange}
-					marcados={habitosMarcados}
-					onMarcadosChange={onHabitosMarcadosChange}
-					cor="var(--color-accent)"
-					somenteLeitura={somenteLeitura}
-				/>
-				<ChecklistEditable
-					titulo="Não pode deixar de fazer:"
-					icone={Anchor}
-					itens={protocolo}
-					onItensChange={onProtocoloChange}
-					marcados={protocoloMarcados}
-					onMarcadosChange={onProtocoloMarcadosChange}
-					cor="var(--color-caution)"
-					corFundo="var(--color-caution-bg)"
-					somenteLeitura={somenteLeitura}
-				/>
-			</div>
+			{(habitos.mostrar || importantes.mostrar) && (
+				// Impressão: lado a lado sempre (a folha tem largura fixa), também quando gerada no celular.
+				<div
+					className={
+						'mt-4 grid gap-3 ' +
+						(duasListas && modoImpressao ? 'grid-cols-2' : 'grid-cols-1' + (duasListas ? ' sm:grid-cols-2' : ''))
+					}
+				>
+					{habitos.mostrar && (
+						<ChecklistEditable
+							titulo={t.planner.habitos}
+							icone={ListChecks}
+							itens={habitos.itens}
+							marcados={habitos.marcados}
+							onMarcadosChange={habitos.onMarcadosChange}
+							onAdicionar={habitos.onAdicionar}
+							onRemover={habitos.onRemover}
+							linhasEmBranco={habitos.linhasEmBranco}
+							modoImpressao={modoImpressao}
+							cor="var(--color-accent)"
+							somenteLeitura={somenteLeitura}
+						/>
+					)}
+					{importantes.mostrar && (
+						<ChecklistEditable
+							titulo={t.planner.importantes}
+							icone={Anchor}
+							itens={importantes.itens}
+							marcados={importantes.marcados}
+							onMarcadosChange={importantes.onMarcadosChange}
+							onAdicionar={importantes.onAdicionar}
+							onRemover={importantes.onRemover}
+							linhasEmBranco={importantes.linhasEmBranco}
+							modoImpressao={modoImpressao}
+							cor="var(--color-caution)"
+							corFundo="var(--color-caution-bg)"
+							somenteLeitura={somenteLeitura}
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	)
 }

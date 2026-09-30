@@ -1,4 +1,5 @@
-import { categoriaCor, categoriaLabel, type Categoria } from '../data/catalogo'
+import { categoriaCor, type Categoria } from '../data/catalogo'
+import { useIdioma } from '../i18n/useIdioma'
 
 export function CategoriaBadge({
 	categoria,
@@ -8,6 +9,7 @@ export function CategoriaBadge({
 	// 'md' é o padrão atual (usado no PageHeader). 'sm' serve pra cards compactos.
 	tamanho?: 'sm' | 'md'
 }) {
+	const { t } = useIdioma()
 	const cor = categoriaCor[categoria]
 
 	// Classes variam por tamanho. Mantidas num mapa pra não espalhar if/else no JSX.
@@ -31,7 +33,7 @@ export function CategoriaBadge({
 				border: `1px solid color-mix(in srgb, ${cor} 25%, transparent)`,
 			}}
 		>
-			{categoriaLabel[categoria]}
+			{t.catalogo.categorias[categoria]}
 		</span>
 	)
 }

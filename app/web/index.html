@@ -3,8 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Ícone na tela inicial do iPhone (o iOS não usa os ícones do manifesto). -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!--
+      viewport-fit=cover: o app pode ocupar a tela toda (atrás do entalhe e da barra de gestos) —
+      as margens seguras vêm de env(safe-area-inset-*) no CSS. interactive-widget=resizes-content:
+      no Android, abrir o teclado encolhe a página em vez de cobrir o campo em que se escreve.
+    -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <!-- Cor da barra do sistema no celular (e da janela do app instalado). Acompanha o tema: ver useTema.ts. -->
+    <meta name="theme-color" content="#faf8f3" />
     <title>Scaffold App</title>
+    <!--
+      Aplica o tema salvo antes do primeiro paint, pra quem usa o escuro não ver a tela clara
+      piscar enquanto o React carrega. Mesma chave de useTema.ts (scaffold.local.tema), salva
+      como documento { atualizadoEm, dados } pela camada de armazenamento. Claro é o padrão.
+    -->
+    <script>
+      try {
+        var tema = JSON.parse(localStorage.getItem('scaffold.local.tema') || 'null')
+        var escuro = tema && tema.dados === 'dark'
+        document.documentElement.setAttribute('data-theme', escuro ? 'dark' : 'light')
+        if (escuro) document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1c1815')
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light')
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

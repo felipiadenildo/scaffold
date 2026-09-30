@@ -2,24 +2,31 @@ function capitalizar(texto: string): string {
 	return texto.charAt(0).toUpperCase() + texto.slice(1)
 }
 
-export function formatarDataLonga(data: Date): string {
-	return data.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
+// `locale` vem do idioma escolhido (useIdioma) — ex.: 'pt-BR', 'en-US', 'es'.
+
+// "Terça-feira, 15 de setembro de 2026" / "Tuesday, September 15, 2026" — pra espaço sobrando
+// (desktop/tablet). A ordem das partes é a de cada idioma, decidida pelo Intl.
+export function formatarDataLongaComDiaSemana(data: Date, locale: string): string {
+	return capitalizar(data.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))
 }
 
-export function formatarDataCurta(data: Date): string {
-	return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+// "Ter, 15/09/2026" / "Tue, 09/15/2026" — pra espaço curto (celular).
+export function formatarDataCurtaComDiaSemana(data: Date, locale: string): string {
+	const diaSemana = data.toLocaleDateString(locale, { weekday: 'short' }).replace('.', '')
+	const dataCurta = data.toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' })
+	return `${capitalizar(diaSemana)}, ${dataCurta}`
 }
 
-// "Terça-feira, 15 de setembro de 2026" — pra espaço sobrando (desktop/tablet).
-export function formatarDataLongaComDiaSemana(data: Date): string {
-	const diaSemana = data.toLocaleDateString('pt-BR', { weekday: 'long' })
-	return `${capitalizar(diaSemana)}, ${formatarDataLonga(data)}`
+// "Ter, 15/09" / "Tue, 09/15" — celular, onde a data divide a linha com o humor e os controles.
+export function formatarDataCurtissima(data: Date, locale: string): string {
+	const diaSemana = data.toLocaleDateString(locale, { weekday: 'short' }).replace('.', '')
+	const diaMes = data.toLocaleDateString(locale, { day: '2-digit', month: '2-digit' })
+	return `${capitalizar(diaSemana)}, ${diaMes}`
 }
 
-// "Ter, 15/09/2026" — pra espaço curto (celular).
-export function formatarDataCurtaComDiaSemana(data: Date): string {
-	const diaSemana = data.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '')
-	return `${capitalizar(diaSemana)}, ${formatarDataCurta(data)}`
+// "15/09" / "09/15" — telas bem estreitas (menos de 375px), onde nem o dia da semana cabe.
+export function formatarDiaMes(data: Date, locale: string): string {
+	return data.toLocaleDateString(locale, { day: '2-digit', month: '2-digit' })
 }
 
 export function paraISO(data: Date): string {
@@ -27,6 +34,13 @@ export function paraISO(data: Date): string {
 	const mes = String(data.getMonth() + 1).padStart(2, '0')
 	const dia = String(data.getDate()).padStart(2, '0')
 	return `${ano}-${mes}-${dia}`
+}
+
+// Inverso de paraISO: "2026-09-30" → Date local (meia-noite no fuso da pessoa, não em UTC — o que
+// `new Date("2026-09-30")` faria, voltando um dia no Brasil).
+export function deISO(dataISO: string): Date {
+	const [ano, mes, dia] = dataISO.split('-').map(Number)
+	return new Date(ano, mes - 1, dia)
 }
 
 export function ehMesmoDia(a: Date, b: Date): boolean {

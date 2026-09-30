@@ -1,5 +1,7 @@
 # Organização de `app/` — diagnóstico e histórico da decisão
 
+> **Documento histórico (setembro de 2026).** Registra o raciocínio da reorganização do repositório. Várias decisões mudaram depois (por exemplo, o app é React + Vite, não Astro). O estado atual está no [README](../README.pt-BR.md), em [`PLANO-FASE-0.md`](PLANO-FASE-0.md) e em [`PROXIMOS-PASSOS.md`](PROXIMOS-PASSOS.md).
+
 Documento de trabalho. Onde eu tenho uma recomendação clara eu digo qual é e por quê; onde é decisão sua, eu deixo registrado o que foi decidido e por quê.
 
 > **Nota de nomenclatura:** a renomeação `tools/` → `app/` e `site/` → `manual/`, discutida na seção 0, **já foi aplicada** — histórico do `site/` preservado via `git subtree` dentro de `manual/`. As seções abaixo ainda descrevem o raciocínio original; onde uma decisão específica já foi tomada em conversa posterior (ferramenta de design dos impressos, stack do `app/web`, hospedagem), isso está registrado no plano de execução, não reaberto aqui.

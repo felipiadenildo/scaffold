@@ -1,18 +1,17 @@
-import { ChevronLeft, ChevronRight, FlipHorizontal2 } from 'lucide-react'
-import { AnimatePresence, motion } from 'motion/react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { CLASSE_LARGURA_EXPANDIDA, CLASSE_LARGURA_NORMAL } from '../../components/DateNav'
-import { DiaStepper } from '../../components/DiaStepper'
-import type { ValorSecao } from '../../components/SecaoDia'
-import type { NivelHumor, SecaoDia as SecaoDiaTipo } from '../../data/planner'
-import { FrenteDiario } from './FrenteDiario'
-import { VersoDiario } from './VersoDiario'
+import { useIdioma } from '../../i18n/useIdioma'
+import { FrenteDiario, type PropsFrenteDiario } from './FrenteDiario'
+import { VersoDiario, type PropsVersoDiario } from './VersoDiario'
 
 // Base comum às duas faces. Grain/borda/sombra são por face mesmo quando elas aparecem lado a
 // lado (R3) — cada uma continua parecendo uma folha de papel própria, não a metade de uma só.
 const faceClasseBase =
-	'paper-grain rounded-scaffold-lg border border-border/60 bg-paper p-5 text-paper-ink shadow-paper transition-[filter] duration-300 sm:p-8'
+	// max-sm:pt-7: no celular a linha de controles (ControlesCelular) entra 16px na folha pelo topo.
+	'paper-grain rounded-scaffold-lg border border-border/60 bg-paper p-4 text-paper-ink shadow-paper transition-[filter] duration-300 max-sm:pt-7 sm:p-8'
 
 // O breakpoint 1180px usado abaixo (classeAlturaTravada/classesGrade) vem de: espaço mínimo pra
 // duas folhas A5 reais lado a lado é ~559px cada (A5 retrato a 96dpi) x2 + um respiro de ~32px
@@ -26,58 +25,18 @@ export function FolhaFlip({
 	modoVisualizacao,
 	lado,
 	onGirar,
-	data,
-	onDataChange,
-	modoEdicao,
-	onToggleModo,
-	humor,
-	onHumorChange,
-	secoesTemplate,
-	onRenomearSecao,
-	valoresSecoes,
-	onValorSecaoChange,
-	sobreDia,
-	onSobreDiaChange,
-	anotacoes,
-	onAnotacoesChange,
-	habitos,
-	onHabitosChange,
-	habitosMarcados,
-	onHabitosMarcadosChange,
-	protocolo,
-	onProtocoloChange,
-	protocoloMarcados,
-	onProtocoloMarcadosChange,
-	somenteLeitura,
+	frente,
+	verso,
 }: {
 	expandido: boolean
 	modoVisualizacao: 'girar' | 'nao-girar'
 	lado: 'frente' | 'verso'
 	onGirar: (direcao: 1 | -1) => void
-	data: Date
-	onDataChange: (data: Date) => void
-	modoEdicao: boolean
-	onToggleModo: () => void
-	humor: NivelHumor['slug'] | null
-	onHumorChange: (humor: NivelHumor['slug']) => void
-	secoesTemplate: SecaoDiaTipo[]
-	onRenomearSecao: (slug: string, nome: string) => void
-	valoresSecoes: Record<string, ValorSecao>
-	onValorSecaoChange: (slug: string, valor: ValorSecao) => void
-	sobreDia: string
-	onSobreDiaChange: (v: string) => void
-	anotacoes: string
-	onAnotacoesChange: (v: string) => void
-	habitos: string[]
-	onHabitosChange: (v: string[]) => void
-	habitosMarcados: Record<string, boolean>
-	onHabitosMarcadosChange: (v: Record<string, boolean>) => void
-	protocolo: string[]
-	onProtocoloChange: (v: string[]) => void
-	protocoloMarcados: Record<string, boolean>
-	onProtocoloMarcadosChange: (v: Record<string, boolean>) => void
-	somenteLeitura?: boolean
+	frente: PropsFrenteDiario
+	verso: PropsVersoDiario
 }) {
+	const { somenteLeitura } = frente
+	const { t } = useIdioma()
 	const emGirar = modoVisualizacao === 'girar'
 	// Ângulo continua sendo derivado de `lado` fora daqui (em Diario.tsx) — precisa sobreviver à
 	// troca de dia, então não pode reiniciar sempre que este componente remonta.
@@ -129,35 +88,6 @@ export function FolhaFlip({
 			? 'grid w-full grid-cols-1 gap-4 min-[1180px]:grid-cols-2 min-[1180px]:gap-6'
 			: 'grid w-full grid-cols-1 gap-4'
 
-	const propsFrente = {
-		data,
-		onDataChange,
-		modoEdicao,
-		onToggleModo,
-		humor,
-		onHumorChange,
-		secoesTemplate,
-		onRenomearSecao,
-		valoresSecoes,
-		onValorSecaoChange,
-		sobreDia,
-		onSobreDiaChange,
-		somenteLeitura,
-	}
-	const propsVerso = {
-		anotacoes,
-		onAnotacoesChange,
-		habitos,
-		onHabitosChange,
-		habitosMarcados,
-		onHabitosMarcadosChange,
-		protocolo,
-		onProtocoloChange,
-		protocoloMarcados,
-		onProtocoloMarcadosChange,
-		somenteLeitura,
-	}
-
 	const frenteEscondida = emGirar && lado !== 'frente'
 	const versoEscondido = emGirar && lado !== 'verso'
 	// Mesmo objeto pra `initial` e `animate`: numa troca de dia (que remonta este componente via
@@ -193,43 +123,8 @@ export function FolhaFlip({
 				className="invisible pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto w-full max-w-2xl sm:aspect-[148/210]"
 			/>
 
-			{/* Controles exclusivos do modo girar — o botão de canto e o stepper flutuante somem (com
-			    fade) fora dele, porque não fazem sentido com as duas faces já visíveis ao mesmo tempo. */}
-			<AnimatePresence>
-				{emGirar && (
-					<motion.button
-						key="botao-girar"
-						type="button"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
-						// Alternador: da frente avança (+1), do verso volta (-1). Ao contrário das bordas
-						// (sempre no mesmo sentido, ver abaixo), sem isso o ângulo só crescia e o giro
-						// visual parecia "trocar de sentido" de um jeito que não combinava com o rótulo.
-						onClick={() => onGirar(lado === 'frente' ? 1 : -1)}
-						className="absolute -top-3 right-4 z-10 flex items-center gap-1.5 rounded-full border border-border bg-bg-raised px-3 py-1.5 text-xs font-medium text-ink-soft shadow-raised transition-colors hover:text-ink"
-					>
-						<FlipHorizontal2 className="h-3.5 w-3.5" aria-hidden="true" />
-						Ver {lado === 'frente' ? 'verso' : 'frente'}
-					</motion.button>
-				)}
-			</AnimatePresence>
-
-			<AnimatePresence>
-				{emGirar && lado === 'verso' && (
-					<motion.div
-						key="stepper-flutuante"
-						initial={{ opacity: 0, scale: 0.9, y: -4 }}
-						animate={{ opacity: 1, scale: 1, y: 0 }}
-						exit={{ opacity: 0, scale: 0.9, y: -4 }}
-						transition={{ duration: 0.25 }}
-						className="absolute -top-3 left-4 z-10"
-					>
-						<DiaStepper data={data} onChange={onDataChange} modoEdicao={modoEdicao} onToggleModo={onToggleModo} tamanho="pequeno" />
-					</motion.div>
-				)}
-			</AnimatePresence>
+			{/* Virar e a data do verso ficam nas barras (DateNav no PC, ControlesCelular no celular).
+			    Aqui sobram só as bordas de virar página, pra quem usa mouse. */}
 
 			{/* Bordas: cada uma sempre gira no mesmo sentido, clique atrás de clique — esquerda
 			    sempre soma -1, direita sempre soma +1, sem depender de `lado`. Ficam de fora do
@@ -240,8 +135,10 @@ export function FolhaFlip({
 				<button
 					type="button"
 					onClick={() => onGirar(-1)}
-					aria-label="Virar página pra esquerda"
-					className="absolute left-0 top-0 z-10 flex h-full w-5 items-center justify-start rounded-l-xl bg-linear-to-r from-paper-ink/10 to-transparent opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 sm:w-7"
+					aria-label={t.planner.virarEsquerda}
+					// Invisível até o hover, então não existe no toque: lá ela só roubava os toques perto
+					// da borda dos blocos (vira pelo botão "Ver verso"; deslizar troca o dia).
+					className="absolute left-0 top-0 z-10 flex h-full w-5 items-center justify-start rounded-l-xl bg-linear-to-r from-paper-ink/10 to-transparent opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 pointer-coarse:hidden sm:w-7"
 				>
 					<ChevronLeft className="h-4 w-4 text-paper-ink/70" aria-hidden="true" />
 				</button>
@@ -250,8 +147,8 @@ export function FolhaFlip({
 				<button
 					type="button"
 					onClick={() => onGirar(1)}
-					aria-label="Virar página pra direita"
-					className="absolute right-0 top-0 z-10 flex h-full w-5 items-center justify-end rounded-r-xl bg-linear-to-l from-paper-ink/10 to-transparent opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 sm:w-7"
+					aria-label={t.planner.virarDireita}
+					className="absolute right-0 top-0 z-10 flex h-full w-5 items-center justify-end rounded-r-xl bg-linear-to-l from-paper-ink/10 to-transparent opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100 pointer-coarse:hidden sm:w-7"
 				>
 					<ChevronRight className="h-4 w-4 text-paper-ink/70" aria-hidden="true" />
 				</button>
@@ -283,7 +180,7 @@ export function FolhaFlip({
 					className={faceClasse + (emGirar ? ' [backface-visibility:hidden]' : '')}
 					inert={frenteEscondida}
 				>
-					<FrenteDiario {...propsFrente} />
+					<FrenteDiario {...frente} />
 				</motion.div>
 				<motion.div
 					layout
@@ -298,7 +195,7 @@ export function FolhaFlip({
 					className={faceClasse + (emGirar ? ' [backface-visibility:hidden]' : '')}
 					inert={versoEscondido}
 				>
-					<VersoDiario {...propsVerso} />
+					<VersoDiario {...verso} />
 				</motion.div>
 			</motion.div>
 		</motion.div>
