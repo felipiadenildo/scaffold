@@ -82,7 +82,14 @@ export function Layout() {
 							>
 								{t.app.rodapeManual}
 							</a>
-							.
+							. ·{' '}
+							{/* AGPL-3.0: quem usa o app pela rede precisa ter acesso ao código-fonte. */}
+							<a
+								href="https://github.com/felipiadenildo/scaffold"
+								className="rounded underline decoration-border underline-offset-2 hover:text-ink"
+							>
+								{t.app.rodapeCodigo}
+							</a>
 						</div>
 					</footer>
 				)}

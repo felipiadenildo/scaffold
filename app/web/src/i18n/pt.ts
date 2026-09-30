@@ -5,6 +5,7 @@ export const pt = {
 		navegacaoPrincipal: 'Navegação principal',
 		rodapeAviso: 'Versão em construção. Consulte o',
 		rodapeManual: 'manual completo',
+		rodapeCodigo: 'Código-fonte',
 		carregandoImpressao: 'Carregando editor de impressão…',
 		fecharAviso: 'Fechar aviso',
 		desfazer: 'Desfazer',

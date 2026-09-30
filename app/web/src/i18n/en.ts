@@ -5,6 +5,7 @@ export const en: Dicionario = {
 		navegacaoPrincipal: 'Main navigation',
 		rodapeAviso: 'Work in progress. See the',
 		rodapeManual: 'full manual (in Portuguese)',
+		rodapeCodigo: 'Source code',
 		carregandoImpressao: 'Loading print editor…',
 		fecharAviso: 'Dismiss',
 		desfazer: 'Undo',

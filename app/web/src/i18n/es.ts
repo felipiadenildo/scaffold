@@ -5,6 +5,7 @@ export const es: Dicionario = {
 		navegacaoPrincipal: 'Navegación principal',
 		rodapeAviso: 'Versión en construcción. Consulta el',
 		rodapeManual: 'manual completo (en portugués)',
+		rodapeCodigo: 'Código fuente',
 		carregandoImpressao: 'Cargando editor de impresión…',
 		fecharAviso: 'Cerrar aviso',
 		desfazer: 'Deshacer',

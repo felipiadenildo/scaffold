@@ -28,6 +28,6 @@ A cláusula não comercial existe para isso, não para restringir uso pessoal ou
 
 ## O que não está coberto por esta licença
 
-Código-fonte do site (a implementação em Astro e Starlight) segue licença própria de software, à parte do conteúdo. Consulte o repositório do projeto para os termos específicos de código, quando publicado.
+O código-fonte do site e do app é distribuído sob a [GNU Affero General Public License v3.0 (AGPL-3.0)](https://github.com/felipiadenildo/scaffold/blob/main/LICENSE), à parte do conteúdo. Ele pode ser usado, estudado, modificado e redistribuído. Quem publicar uma versão modificada, inclusive como serviço na internet, precisa disponibilizar o código-fonte dela sob a mesma licença. O código está em [github.com/felipiadenildo/scaffold](https://github.com/felipiadenildo/scaffold).
 
 Produtos e marcas mencionados no [Guia de Produtos](/produtos/guia-de-produtos/) pertencem aos respectivos fabricantes; menção aqui não implica endosso nem parceria comercial.
